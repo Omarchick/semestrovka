@@ -19,6 +19,9 @@ while(listener.IsListening)
         case "/":
             await response.ShowFile("WWW/html/mainpage.html");
             break;
+        case "/m":
+            await response.ShowFile("WWW/html/m.html");
+            break;
         default:
             break;
     }
