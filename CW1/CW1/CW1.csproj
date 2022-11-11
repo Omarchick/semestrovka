@@ -13,4 +13,13 @@
       <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="WWW\index.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="WWW\index.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

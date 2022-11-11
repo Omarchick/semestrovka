@@ -9,7 +9,7 @@ namespace WebServer
 {
     public static class SqlRequests
     {
-        static string ConnectionString { get; set; } = @"Data source= LAPTOP-QHM9MDKR;Initial Catalog=MyDataBase; Integrated Security=True";     //DB Name
+        static string ConnectionString { get; set; } = @"Data source= LAPTOP-QHM9MDKR;Initial Catalog=CW1; Integrated Security=True";     //DB Name
         //static string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public static SqlDataReader WorkManyValues(this string cmdStr)
         {
@@ -40,15 +40,3 @@ namespace WebServer
         }
     }
 }
-//"SELECT * FROM TableDB"*while (Table.Read())
-
-/*var Table = command.ExecuteReader();
-if (Table.HasRows)
-{
-    {
-        int id = Table.GetInt32(0);
-        string password = Table.GetString(1);
-        string name = Table.GetString(2);
-        Console.WriteLine($"{id} {password} {name}");
-    }
-}*/
