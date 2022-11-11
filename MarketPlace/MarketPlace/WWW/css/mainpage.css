@@ -36,11 +36,25 @@ body {
     !*line-height: 10vh;*!
 }*/
 
+/*.mainTitle:visited
+{
+    color: chocolate;
+}*/
+.mainTitle:hover
+{
+    color: #fbff00;
+    /*color: olive; !important;*/
+}
+.mainTitle:active
+{
+    color: cornsilk;
+}
 .mainTitle {
     position: absolute;
     color: gold;
     right: 45vw;
     top: 10vh;
+    text-decoration: none;
 /*    width: 5vw;
     height: 5vh;*/
     /*background-color: black;*/
@@ -74,7 +88,7 @@ body {
     /*    -webkit-text-fill-color:transparent;*/
     outline: burlywood outset 0.15vw;
     font-family: Righteous, cursive;
-    font-size: 3vh;
+    font-size: 6vh;
     line-height: 6vh;
 }
 

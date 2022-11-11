@@ -21,16 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="WWW\css\mainpagecss.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="WWW\html\mainpage.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="WWW\pictures\banan.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="WWW\html\m.html">
+    <None Update="WWW\html\products.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="WWW\css\products.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
