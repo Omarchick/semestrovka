@@ -17,13 +17,15 @@ body {
     /*-webkit-text-stroke:0.1vw darkkhaki;*/
     /*    -webkit-text-fill-color:transparent;*/
 /*    font-family: Righteous, cursive;*/
-    font-size: 3vh;
-    line-height: 3vh;
+    font-size: 2vh;
+    line-height: 3vh; !important;
     
 }
 
 .enter > .enterBtn {
-    margin-top: 1vh;
+/*    margin-top: 1vh;*/
+    margin-right: 2vw;
+    
 }
 
 /*.dropdown {
@@ -93,5 +95,6 @@ body {
 }
 
 .input_data {
+    margin-bottom: 0.3vh;
 }
 

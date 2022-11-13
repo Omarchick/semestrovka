@@ -8,7 +8,6 @@ public static class PostgreSQL
     static string connString = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
     public static async Task<int> AddUser(User user)
     {
-    {
         await using var db = new NpgsqlConnection(connString);
         var sqlQuery = @"Insert Into TableDB (id, name, email, password) Values (@Id, @Name, @Email, @Password) RETURNING id";
         return await db.QuerySingleAsync<int>(sqlQuery, user);
@@ -16,7 +15,7 @@ public static class PostgreSQL
     
 
 
-    var connString = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
+    /*var connString = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
 
     await using var conn = new NpgsqlConnection(connString);
     await conn.OpenAsync();
@@ -34,5 +33,5 @@ public static class PostgreSQL
     {
         while (await reader.ReadAsync())
             Console.WriteLine(reader.GetString(0));
-    }
+    }*/
 }

@@ -22,6 +22,8 @@ while(listener.IsListening)
         case "/products":
             await response.ShowFile("WWW/html/products.html");
             break;
+        case "/registration":
+            break;
         default:
             break;
     }
