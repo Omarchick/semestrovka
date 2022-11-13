@@ -1,0 +1,31 @@
+version: '1.0'
+services:
+  pg:
+    container_name: pg
+    image: postgres
+    #restart: always
+    environment:
+      POSTGRES_DB: pgDB
+      POSTGRES_USER: omr
+      POSTGRES_PASSWORD: 1234
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+      #POSTGRES_INITDB_ARGS: "-A md5"
+    volumes:
+      #- D:/DockerFilesHere/dockerComposePgRds/volumePG/init:/docker-entrypoint-initdb.d
+      #- D:/DockerFilesHere/dockerComposePgRds/volumePG/base:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  pgadm:
+    container_name: admin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: a@b.com
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    ports:
+      - 1234:80
+  rds:
+    container_name: 'rds'
+    image: redis
+    #command: redis=server /usr/local/ect/redis/redis.conf mypassword
+    ports:
+      - '6379:6379'
