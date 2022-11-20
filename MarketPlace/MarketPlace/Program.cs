@@ -13,8 +13,10 @@ SqlConnection connection = new(@"Data source= LAPTOP-QHM9MDKR;Initial Catalog=My
 
 while (listener.IsListening)
 {
-    //await UserRepository.AddUser("12", "22");
-    Console.WriteLine((await UserRepository.GetUser("12", "22")).Name);
+    //Console.WriteLine(await UserRepository.AddUser("123asdf", "22we34Ff34f3@@4f43f3f43f"));
+    //Console.WriteLine(await UserRepository.AddUser(new(5,"123asdf", "22we34Ff34f3@@4f43f3f43f", 5)));
+    //Console.WriteLine(await UserRepository.GetUser("123asdf", "22we34Ff34f3@@4f43f3f43f"));
+    //Console.WriteLine(await UserRepository.UpdateUser("123asdf", "22we34Ff34f3@@4f43f3f43f", "5234", "sdafFEF#$F3"));
     //await UserRepository.UpdateUser("12", "22", "33", "34");
     //await UserRepository.DeleteUser(28);
     var context = await listener.GetContextAsync();
