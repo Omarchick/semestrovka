@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <Folder Include="WWW\html\" />
-    <Folder Include="WWW\js\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net" Version="0.1.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
     <PackageReference Include="Npgsql" Version="7.0.0" />
@@ -25,6 +25,9 @@
 
   <ItemGroup>
     <None Update="WWW\html\mainpage.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="WWW\js\mainpage.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="WWW\pictures\banan.png">

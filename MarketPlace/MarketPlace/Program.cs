@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Net;
-using WebServer;
+using System.Text;
+using System.Text.Json;
+using MarketPlace;
 
 HttpClient client = new();
 HttpListener listener = new();
@@ -9,25 +11,46 @@ listener.Prefixes.Add("http://localhost:1111/");
 listener.Start();
 SqlConnection connection = new(@"Data source= LAPTOP-QHM9MDKR;Initial Catalog=MyDataBase; Integrated Security=True");
 
-while(listener.IsListening)
+while (listener.IsListening)
 {
-    var context = listener.GetContext();
+    //await UserRepository.AddUser("12", "22");
+    Console.WriteLine((await UserRepository.GetUser("12", "22")).Name);
+    //await UserRepository.UpdateUser("12", "22", "33", "34");
+    //await UserRepository.DeleteUser(28);
+    var context = await listener.GetContextAsync();
     var request = context.Request;
     var response = context.Response;
-    switch (request.Url?.LocalPath)
+    _ = Task.Run(async () =>
     {
-        case "/":
-            await response.ShowFile("WWW/html/mainpage.html");
-            break;
-        case "/products":
-            await response.ShowFile("WWW/html/products.html");
-            break;
-        case "/registration":
-            break;
-        default:
-            break;
-    }
-    await context.ShowStatic();
-    response.Close();
+        switch (request.Url?.LocalPath)
+        {
+            case "/":
+                await WebHelper.Home(context);
+                break;
+            case "/products":
+                await WebHelper.Products(context);
+                break;
+            case "/registration":
+                break;
+            case "/signIn":
+                break;
+            case "/home":
+                using (var stream = response.OutputStream)
+                {
+                    var c = new { mydata = 51 };
+                    var a = JsonSerializer.Serialize(c);
+                    response.StatusCode = 200;
+                    response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    response.ContentType = "application/json";
+                    Console.WriteLine("Пришло");
+                    await stream.WriteAsync(Encoding.ASCII.GetBytes("56sdf"));
+                }
+                break;
+            default:
+                break;
+        }
+        await context.ShowStatic();
+        response.Close();
+    });
 }
 listener.Stop();

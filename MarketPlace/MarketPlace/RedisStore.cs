@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace WebServer
+namespace MarketPlace
 {
     public static class RedisStore
     {

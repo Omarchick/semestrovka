@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 
-namespace WebServer
+namespace MarketPlace
 {
     public static class StaticFile
     {
