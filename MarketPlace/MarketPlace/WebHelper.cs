@@ -16,38 +16,62 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/mainpage.html");
         }
-
+        
         public static async Task Products(HttpListenerContext context)
         {
-            using (var inputStream = context.Request.InputStream)
+            await context.Response.ShowFile("WWW/html/products.html");
+        }
+        public static async Task ProductsNotRegistered(HttpListenerContext context)
+        {
+            await context.Response.ShowFile("WWW/html/productsNotRegistered.html");
+        }
+        public static async Task SignIn(HttpListenerContext context)
+        {
+            Console.WriteLine(0);
+            await using (var inputStream = context.Request.InputStream)
             {
+                Console.WriteLine(1);
                 using var reader = new StreamReader(inputStream);
                 var content = await reader.ReadToEndAsync();
+                Console.WriteLine(2);
                 var user = JsonSerializer.Deserialize<User>(content);
-                Console.WriteLine(await UserRepository.AddUser(user));
-                if (await UserRepository.AddUser(user) != -1)
+                await using var stream = context.Response.OutputStream;
+                Console.WriteLine(UserRepository.GetUser(user?.Name, user?.Password).Result);
+                if (UserRepository.GetUser(user?.Name, user?.Password).Result != null)
                 {
                     var succsessOperation = Encoding.ASCII.GetBytes("All done!");
-                    await using var stream = context.Response.OutputStream;
                     context.Response.StatusCode = 201;
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
                 }
                 else
                 {
-                    Console.WriteLine(2133);
                     var succsessOperation = Encoding.ASCII.GetBytes("Error");
-                    await using var stream = context.Response.OutputStream;
-                    context.Response.StatusCode = 400;
+                    context.Response.StatusCode = 208;
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
                 }
-
-                Console.WriteLine("ALL FIN");
             }
         }
-
         public static async Task Register(HttpListenerContext context)
         {
-            await context.Response.ShowFile("WWW/html/mainpage.html");
+            await using (var inputStream = context.Request.InputStream)
+            {
+                using var reader = new StreamReader(inputStream);
+                var content = await reader.ReadToEndAsync();
+                var user = JsonSerializer.Deserialize<User>(content);
+                await using var stream = context.Response.OutputStream;
+                if (UserRepository.AddUser(user).Result != -1)
+                {
+                    var succsessOperation = Encoding.ASCII.GetBytes("All done!");
+                    context.Response.StatusCode = 201;
+                    await context.Response.OutputStream.WriteAsync(succsessOperation);
+                }
+                else
+                {
+                    var succsessOperation = Encoding.ASCII.GetBytes("Error");
+                    context.Response.StatusCode = 208;
+                    await context.Response.OutputStream.WriteAsync(succsessOperation);
+                }
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 body {
     background-size: auto;
-    overflow: scroll;
 }
 
 
@@ -41,7 +40,7 @@ body {
     border-radius: 1vh;
     border: 0.5vh solid #00ff1e;
     background-color: #7bff71;
-    position: fixed;
+    position: absolute;
     top: 25vh;
     left: 35vw;
     font-size: 4vh;
@@ -57,5 +56,33 @@ body {
     height: 20vh;
     width: 20vw;
     vertical-align: bottom;
+}
+.enter {
+    position: absolute;
+    color: black;
+    right: 2vw;
+    top: 2vh;
+    /*    display: inline;*/
+    white-space:pre;
+    /*    width: 5vw;
+        height: 5vh;*/
+    /*background-color: black;*/
+    /*outline-color: black;*/
+    /*    text-outline: black 50px 50px;*/
+    /*-webkit-text-stroke:0.1vw darkkhaki;*/
+    /*    -webkit-text-fill-color:transparent;*/
+    /*    font-family: Righteous, cursive;*/
+    font-size: 2vh;
+    line-height: 3vh; !important;
+}
+
+.enter > .enterBtn {
+    /*    margin-top: 1vh;*/
+    size: 5vh;
+    margin-right: 2vw;
+
+}
+.input_data {
+    margin-bottom: 0.3vh;
 }
 

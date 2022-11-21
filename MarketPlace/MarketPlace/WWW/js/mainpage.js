@@ -9,10 +9,9 @@
         console.log(nameEl.value)
         let response = await fetch("/register", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
-        console.log(responseText + "RT");
         if (responseText == "All done!") {
             errorBlock.innerText = "You have successfully registered!";
-            document.location.href = "http://localhost:1111/products";
+           //document.location.href = "http://localhost:1111/products";
         }
         else {
             errorBlock.innerText = "Invalid user name or such user name already exists. \n" +
@@ -30,13 +29,15 @@ async function signIn() {
         errorBlock.innerText = "The password must contain 8 characters or more!";
     }
     else {
-        var response = await fetch("/signIn", { method: "POST", body: nameEl.value + ":" + passwordEl.value });
+        console.log(nameEl.value)
+        let response = await fetch("/signIn", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
+        console.log(responseText + "RT");
         if (responseText == "All done!") {
             errorBlock.innerText = "You have successfully entered!";
             document.location.href ="http://localhost:1111/products";
         }
-        if(responseText == "Not registered!") {
+        else{
             errorBlock.innerText = "Incorrect data!";
         }
     }
@@ -47,6 +48,13 @@ function User(id = 0, name, password, balance = 0){
     this.Name = name;
     this.Password = password;
     this.Balance = balance;
+}
+
+async function redirectProducts(){
+    document.location.href("/products");
+}
+async function redirectProductsNotRegister(){
+    document.location.href="http://localhost:1111/productsNotRegistered";
 }
 
 

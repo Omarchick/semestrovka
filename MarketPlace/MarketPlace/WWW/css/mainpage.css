@@ -49,7 +49,7 @@ body {
 }
 .mainTitle:active
 {
-    color: cornsilk;
+/*    color: black;*/
 }
 .mainTitle {
     position: absolute;

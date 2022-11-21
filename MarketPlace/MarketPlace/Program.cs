@@ -24,7 +24,7 @@ while (listener.IsListening)
     var response = context.Response;
     _ = Task.Run(async () =>
     {
-        Console.WriteLine(request.Url?.LocalPath);
+        Console.WriteLine(request.Url?.LocalPath);//
         switch (request.Url?.LocalPath)
         {
             case "/":
@@ -33,11 +33,15 @@ while (listener.IsListening)
             case "/products":
                 await WebHelper.Products(context);
                 break;
+            case "/productsNotRegistered":
+                await WebHelper.ProductsNotRegistered(context);
+                break;
             case "/register":
-                WebHelper.Products(context);
+                await WebHelper.Register(context);
 
                 break;
             case "/signIn":
+                await WebHelper.SignIn(context);
                 break;
             case "/home":
                 break;
@@ -45,7 +49,7 @@ while (listener.IsListening)
                 break;
         }
         await context.ShowStatic();
-        //response.Close();
+        response.Close();
     });
 }
 listener.Stop();
