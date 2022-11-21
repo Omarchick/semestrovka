@@ -20,7 +20,6 @@ namespace MarketPlace
                 await ShowError(responce);
             }
         }
-
         public static async Task ShowFile(this HttpListenerResponse response, string path)
         {
             response.ContentType = Path.GetExtension(path) switch

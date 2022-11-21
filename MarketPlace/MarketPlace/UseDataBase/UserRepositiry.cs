@@ -12,12 +12,18 @@ public static class UserRepository
 
     public static async Task<int> AddUser(User user)
     {
+        Console.WriteLine("1!");
+        Console.WriteLine((await new UserValidator().ValidateAsync(user)).IsValid);
+        Console.WriteLine(
+                           await GetUser(user.Name, user.Password));
         if (!(user is not null &&
               await GetUser(user.Name, user.Password) is null &&
               (await new UserValidator().ValidateAsync(user)).IsValid))
         {
             return -1;
         }
+
+        Console.WriteLine("2!");
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         await using var db = new NpgsqlConnection(_connString);
         const string sqlQuery = @"Insert Into users (name, password) Values (@name, @password) RETURNING id";
@@ -56,12 +62,22 @@ public static class UserRepository
 
     public static async Task<User> GetUser(string name, string password)
     {
+        Console.WriteLine("REallu");
         await using var db = new NpgsqlConnection(_connString);
+        Console.WriteLine(db.State);
+        Console.WriteLine("KAK");
         await db.OpenAsync();
+        Console.WriteLine(db.State);
+        Console.WriteLine("TOPCHIck7");
         await using var cmd = new NpgsqlCommand($@"SELECT * FROM users WHERE name = @name", db);
+        Console.WriteLine("TOPCHIc6");
         cmd.Parameters.AddWithValue("name", $@"{name}");
         await using var reader = await cmd.ExecuteReaderAsync();
+        Console.WriteLine("TOPCHIck4");
         var user = await GetUserFromReader(reader);
+        Console.WriteLine("TOPCHIck");
+        Console.WriteLine(user);
+        await db.CloseAsync();
         return user is not null && BCrypt.Net.BCrypt.Verify(password, user.Password) ? user : null;
     }
 
