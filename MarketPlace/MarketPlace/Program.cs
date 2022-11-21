@@ -35,26 +35,17 @@ while (listener.IsListening)
                 break;
             case "/register":
                 WebHelper.Products(context);
+
                 break;
             case "/signIn":
                 break;
             case "/home":
-                using (var stream = response.OutputStream)
-                {
-                    var c = new { mydata = 51 };
-                    var a = JsonSerializer.Serialize(c);
-                    response.StatusCode = 200;
-                    response.Headers.Add("Access-Control-Allow-Origin", "*");
-                    response.ContentType = "application/json";
-                    Console.WriteLine("Пришло");
-                    await stream.WriteAsync(Encoding.ASCII.GetBytes("56sdf"));
-                }
                 break;
             default:
                 break;
         }
         await context.ShowStatic();
-        response.Close();
+        //response.Close();
     });
 }
 listener.Stop();

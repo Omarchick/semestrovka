@@ -24,24 +24,24 @@ namespace MarketPlace
                 using var reader = new StreamReader(inputStream);
                 var content = await reader.ReadToEndAsync();
                 var user = JsonSerializer.Deserialize<User>(content);
-                Console.WriteLine(user.Name);
-                Console.WriteLine(user.Password);
+                Console.WriteLine(await UserRepository.AddUser(user));
                 if (await UserRepository.AddUser(user) != -1)
                 {
-                    Console.WriteLine(1121);
                     var succsessOperation = Encoding.ASCII.GetBytes("All done!");
-                    using var stream = context.Response.OutputStream;
-                    context.Response.StatusCode = 200;
+                    await using var stream = context.Response.OutputStream;
+                    context.Response.StatusCode = 201;
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
                 }
                 else
                 {
                     Console.WriteLine(2133);
                     var succsessOperation = Encoding.ASCII.GetBytes("Error");
-                    using var stream = context.Response.OutputStream;
+                    await using var stream = context.Response.OutputStream;
                     context.Response.StatusCode = 400;
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
                 }
+
+                Console.WriteLine("ALL FIN");
             }
         }
 

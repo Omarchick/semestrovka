@@ -20,6 +20,7 @@ public static class UserRepository
               await GetUser(user.Name, user.Password) is null &&
               (await new UserValidator().ValidateAsync(user)).IsValid))
         {
+            Console.WriteLine("GU Finished 1");
             return -1;
         }
 
@@ -27,6 +28,7 @@ public static class UserRepository
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         await using var db = new NpgsqlConnection(_connString);
         const string sqlQuery = @"Insert Into users (name, password) Values (@name, @password) RETURNING id";
+        Console.WriteLine("GU Finished2");
         return await db.QuerySingleAsync<int>(sqlQuery, user);
     }
 

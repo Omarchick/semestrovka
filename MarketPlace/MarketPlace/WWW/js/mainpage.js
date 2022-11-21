@@ -7,8 +7,9 @@
     }
     else {
         console.log(nameEl.value)
-        var response = await fetch("/register", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
+        let response = await fetch("/register", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
+        console.log(responseText + "RT");
         if (responseText == "All done!") {
             errorBlock.innerText = "You have successfully registered!";
             document.location.href = "http://localhost:1111/products";
