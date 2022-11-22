@@ -7,18 +7,13 @@
     <script src="../js/products.js"></script>
 </head>
 
-<body style="background-color: cornsilk">
+<body onload="addProductItem('really', 'work', )" style="background-color: cornsilk">
 <a class="mainTitle" href="/">Freedom</a>
-<button onclick="addProductItem(1, 2)">Create</button>
+<div>
+    <button onclick="addProductItem(1, 2, 2)">Create</button>
+    <button onclick="removeProduct(2)">Delete</button>
+</div>
 <div class="productItemCollector" id="productItemCollector">
-    <div class="productItem" id="productItem" style="top: 25vh; left: 35vw;">
-        <strong style="display: flex; flex-direction: column">Name
-            <label>
-            <textarea class="productInfo" maxlength="250" readonly>Iformation!
-            </textarea>
-            </label>
-        </strong>
-    </div>
 </div>
 
 

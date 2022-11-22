@@ -38,24 +38,26 @@ body {
     /*margin: 10vh 50vw;*/
 }
 .productItem{
+    height: 50vh;
+    width: 35vw;
     border-radius: 1vh;
     border: 0.5vh solid #00ff1e;
     background-color: #7bff71;
-    position: fixed;
+    position: absolute;
     top: 25vh;
-    left: 35vw;
-    font-size: 4vh;
+    left: 30vw;
+    font-size: 7vh;
     text-align: center;
 }
 .productInfo{
     border-radius: 1.5vh;
     border: 0.5vh solid black;
-    font-size: 2vh;
+    font-size: 3.5vh;
     text-align: left;
     position: relative;
     resize: none;
-    height: 20vh;
-    width: 20vw;
+    height: 40vh;
+    width: 30vw;
     vertical-align: bottom;
 }
 
