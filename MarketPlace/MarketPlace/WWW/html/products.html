@@ -6,11 +6,11 @@
     <link rel="stylesheet" type="text/css" href="../css/products.css">
     <script src="../js/products.js"></script>
 </head>
-
-<body onload="addProductItem('really', 'work', )" style="background-color: cornsilk">
+<!--onload="addProductItem('really', 'work', 0)"-->
+<body style="background-color: cornsilk">
 <a class="mainTitle" href="/">Freedom</a>
 <div>
-    <button onclick="addProductItem(1, 2, 2)">Create</button>
+    <button onclick="addProductItemWithIndex(1, 2)">Create</button>
     <button onclick="removeProduct(2)">Delete</button>
 </div>
 <div class="productItemCollector" id="productItemCollector">

@@ -27,6 +27,7 @@ while (listener.IsListening)
         Console.WriteLine(request.Url?.LocalPath);//
         switch (request.Url?.LocalPath)
         {
+            //Pages
             case "/":
                 await WebHelper.Home(context);
                 break;
@@ -36,12 +37,15 @@ while (listener.IsListening)
             case "/productsNotRegistered":
                 await WebHelper.ProductsNotRegistered(context);
                 break;
+            //Actions
             case "/register":
                 await WebHelper.Register(context);
 
                 break;
             case "/signIn":
                 await WebHelper.SignIn(context);
+                break;
+            case "/getProductsFromDB":
                 break;
             case "/home":
                 break;

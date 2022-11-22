@@ -12,14 +12,24 @@ async function addProductItem(name, information, id){
     </div>
     `;
     productsId.push(id);
+    productsOnPage.push(new Product(id, name, information));
     productItem.appendChild(item);
 }
 async function removeProduct(id) {
-    //document.getElementById(String(id)+ "product").remove();
-    moveUpElements(id);
-    //document.removeChild(document.getElementById("1"));
+    if (id < productsId.length)
+    {
+        console.log(document.getElementById(String(id)+ "product").id)
+        document.getElementById(String(id) + "product").remove();
+        await moveUpElements(id);
+        count -= 55;
+        productsId.pop();
+        productsOnDB.slice(id, id);
+        //document.removeChild(document.getElementById("1"));
+    }
 }
+var productsOnPage = [];
 var productsId = [];
+var productsOnDB = [];
 var count = -30;
 function getCount(){
     count += 55;
@@ -27,12 +37,30 @@ function getCount(){
 }
 
 async function moveUpElements(deletedId){
-    for (i = deletedId; i <= productsId.length; i++){
-        console.log(deletedId + 1);
-        document.getElementById("2product").setAttribute("style", "top:"+ ${} + "vh");
-        document.getElementById("2product").setAttribute("id", "top:"+ ${} + "vh");
+    for (let i = deletedId + 1; i < productsId.length; i++){
+        let product = document.getElementById(i + "product");
+        document.getElementById(i +"product").setAttribute("id", 
+            (Number(product.id.replace("product", "")) - 1) + "product");
+        product.setAttribute("style", "top:"+ (Number(product.id.replace("product", "")) * 55 + 25 + "vh"));
         //document.querySelector('#reg').style.top = '10vh';
         //document.getElementById("2").style.top = '10vh';
     }
-    count -= 55;
+}
+async function addProductItemWithIndex(name, information){
+    await addProductItem(name, information, productsId.length);
+}
+
+async function addProductsFromDB() {
+    let result = await (await fetch('/getProductsFromDB')).text();
+    productsOnDB = JSON.parse(result);
+    for (let i = 0; i < productsOnDB.length; i++)
+    {
+        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information);
+    }
+}
+
+function Product(id, name, information){
+    this.Id = id;
+    this.Name = name;
+    this.Information = information;
 }
