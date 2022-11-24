@@ -3,66 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using StackExchange.Redis;
+using System.Security.Cryptography;
 
 namespace MarketPlace
 {
     public class Session
     {
-        /*const double _sessionTime = 20;
-        public readonly string? UserName;
-        public readonly string? UserPassword;
-        public readonly int UserId;
-        public string? SessionId;
+        private readonly User _user;
+        const double _sessionTime = 20;
+        private readonly int _id;
+        private readonly string? _name;
+        private readonly string? _password;
+        private readonly long _balance;
+        private string? _sessionId;
 
-        public Session(User EnteredUser)
+        public Session(User user)
         {
-            if (EnteredUser is not null)
+            if (user is not null)
             {
-                UserName = EnteredUser.UserName!;
-                UserPassword = EnteredUser.UserPassword!;
-                UserId = EnteredUser.Id;
-                SessionId = EnteredUser.Id.ToString().CreateMD5() + "mysite";
+                _name = user.Name!;
+                _password = user.Password!;
+                _id = user.Id;
+                _balance = user.Balance;
+                _sessionId = BCrypt.Net.BCrypt.HashString(user.Id + "mysite");
             }
         }
         public override string ToString()
         {
-            return $"{UserName}:{UserPassword}:{UserId}";
+            return JsonSerializer.Serialize(new User(_id, _name, _password, _balance));
         }
-        public string this[int key]
+        public static async Task SetSession(User user, HttpListenerContext context)
         {
-            get
+            var randomBytes = new byte[32];
+            new Random().NextBytes(randomBytes);
+            var sessionId = Convert.ToBase64String(randomBytes);
+            if (user != null)
             {
-                if (key < 0 && key > 4)
-                    return null!;
-                return ToString().Split(":")[key];
-            }
-        }
-        public static async Task<bool> IsInSession(HttpListenerContext context, User EnteredUser)
-        {
-            var request = context.Request;
-            if (request.Cookies["sessionId"] != null)
-            {
-                if ((await RedisStore.RedisCashe.StringGetAsync(request.Cookies[EnteredUser.Id.ToString().CreateMD5() + "mysite"]!.Value)).HasValue)
+                await RedisStore.RedisCashe.StringSetAsync(sessionId,user.Id, TimeSpan.FromMinutes(_sessionTime));
+                context.Response.Cookies.Add(new Cookie("sessionId", sessionId)
                 {
-                    request.Cookies["sessionId"]!.Expires = DateTime.UtcNow.AddMinutes(_sessionTime);
-                }
+                    Expires = DateTime.UtcNow.AddMinutes(_sessionTime),
+                    Path = "/"
+                });
             }
-            else
-            {
-                return false;
-            }
-            return true;
         }
-        public static async Task SetSession(User EnteredUser, HttpListenerContext context)
-        {
-            if (EnteredUser != null)
-            {
-                await RedisStore.RedisCashe.StringSetAsync(EnteredUser.Id.ToString().CreateMD5() + "mysite",new Session(EnteredUser).ToString());
-                context.Response.Cookies.Add(new Cookie("sessionId", EnteredUser.Id.ToString().CreateMD5() + "mysite")
-                { Expires = DateTime.UtcNow.AddMinutes(_sessionTime) });
-            }
-        }*/
     }
 }

@@ -3,6 +3,7 @@ CREATE TABLE public.products
     id serial NOT NULL,
     name character varying(50) NOT NULL,
     information text,
+    rating int default -1,
     PRIMARY KEY (id)
 );
 

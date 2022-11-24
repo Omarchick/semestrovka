@@ -1,10 +1,10 @@
-CREATE TABLE public.userproducts
+CREATE TABLE public.user_products
 (
-    userid int NOT NULL,
-    productname character varying(50) NOT NULL,
-    productcount BIGINT,
-    PRIMARY KEY (userid, productcount)
+    user_id int NOT NULL,
+    product_id character varying(50) NOT NULL,
+    product_count BIGINT,
+    PRIMARY KEY (user_id, product_count)
 );
 
-ALTER TABLE IF EXISTS public.userproducts
+ALTER TABLE IF EXISTS public.user_products
     OWNER to omr;

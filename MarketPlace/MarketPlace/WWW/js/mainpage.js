@@ -11,7 +11,7 @@
         let responseText = await response.text();
         if (responseText == "All done!") {
             errorBlock.innerText = "You have successfully registered!";
-           //document.location.href = "http://localhost:1111/products";
+           document.location.href = "http://localhost:1111/products";
         }
         else {
             errorBlock.innerText = "Invalid user name or such user name already exists. \n" +

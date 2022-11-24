@@ -19,13 +19,13 @@ body {
     right: 45vw;
     top: 10vh;
     text-decoration: none;
-/*    width: 5vw;
-    height: 5vh;*/
+    /*    width: 5vw;
+        height: 5vh;*/
     /*background-color: black;*/
     /*outline-color: black;*/
-/*    text-outline: black 50px 50px;*/
+    /*    text-outline: black 50px 50px;*/
     -webkit-text-stroke:0.05vw black;
-/*    -webkit-text-fill-color:transparent;*/
+    /*    -webkit-text-fill-color:transparent;*/
     text-shadow: 0.25vh 0 0.25vw #000,
     0 0.25vh 0.5vw #000,
     -0.25vh 0 0.5vw #000,
@@ -50,14 +50,86 @@ body {
     text-align: center;
 }
 .productInfo{
+    top: -16vh;
+    right: -2vw;
     border-radius: 1.5vh;
     border: 0.5vh solid black;
-    font-size: 3.5vh;
+    font-size: 3vh;
     text-align: left;
-    position: relative;
+    position: sticky;
     resize: none;
-    height: 40vh;
+    height: 30vh;
     width: 30vw;
-    vertical-align: bottom;
+    vertical-align: top;
 }
 
+.deleteBtn{
+    text-align: center;
+    font-size: 2vw;
+    position:  relative;
+    margin-left: 30vw;
+    width: 3vw;
+    height: 3vw;
+    top: -2vw;
+    right: 3vw;
+    background: #ff1300;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
+}
+
+.addBtn{
+    text-align: center;
+    font-size: 2vw;
+    position:  relative;
+    margin-left: 30vw;
+    width: 3vw;
+    height: 3vw;
+    top: -5vw;
+    right: 7vw;
+    background: #004fe2;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
+}
+.makeReview{
+    text-align: center;
+    font-size: 2vw;
+    position:  relative;
+    margin-left: 30vw;
+    width: 5vw;
+    height: 2.5vw;
+    top: -8vw;
+    right: 13vw;
+    background: #e2cd00;
+    cursor: pointer;
+    border-radius: 35%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
+}
+
+.PlusBtn{
+    width: 1.5vw;
+    z-index: 1;
+}
+
+.MinusBtn{
+    width: 1.5vw;
+    z-index: 1;
+}
+
+.btnImg{
+    width: 1.5vw;
+    z-index: 1;
+}

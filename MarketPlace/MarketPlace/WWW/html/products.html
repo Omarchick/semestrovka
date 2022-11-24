@@ -2,20 +2,29 @@
 <html lang="en">
 <head>
     <title>Products</title>
-    <link rel="icon" href="..//pictures/banan.png" type="image/png">
+    <link rel="icon" href="/pictures/banan.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="../css/products.css">
     <script src="../js/products.js"></script>
 </head>
 <!--onload="addProductItem('really', 'work', 0)"-->
-<body style="background-color: cornsilk">
+<body onload="getProductsFromDB()" style="background-color: cornsilk">
 <a class="mainTitle" href="/">Freedom</a>
 <div>
     <button onclick="addProductItemWithIndex(1, 2)">Create</button>
     <button onclick="removeProduct(2)">Delete</button>
 </div>
-<div class="productItemCollector" id="productItemCollector">
-</div>
+<div class="productItemCollector" id="productItemCollector"></div>
 
+<!--<div class="productItem" id="${id}product" style="top: 35vh; left: 30vw">
+    <strong style="display: flex; flex-direction: column;">${name}
+        <b class="productRating" style="display: flex; flex-direction: column; text-align: left">{rating}</b>
+        <label>
+            <button class="deleteBtn">-</button>
+            <button class="addBtn">+</button>
+            <textarea class="productInfo" maxlength="250" readonly>${information}</textarea>
+        </label>
+    </strong>
+</div>-->
 
 
 

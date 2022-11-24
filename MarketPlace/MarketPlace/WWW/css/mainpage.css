@@ -2,6 +2,10 @@ body {
     background-size: auto;
 }
 
+.enterElements{
+    white-space:revert;
+}
+
 .enter {
     position: absolute;
     color: black;
@@ -25,7 +29,27 @@ body {
 .enter > .enterBtn {
 /*    margin-top: 1vh;*/
     margin-right: 2vw;
-    
+}
+
+
+#errorBlock {
+    top: 5vh;
+    right: 16vw;
+    overflow: hidden;
+    text-align: left;
+    word-break: break-all;
+    position: absolute;
+    font-size: 2vh;
+    color: #ff0002;
+    -webkit-text-stroke-width: 0.05vh;
+    -webkit-text-stroke-color: black;
+/*    white-space:break-spaces;
+    text-shadow: #00ff1e;
+    border:0.5vh solid #ff1733;
+    margin:20px auto;*/
+/*    padding:10px;*/
+/*    padding-right: -3px;
+    padding-bottom: 10px;*/
 }
 
 /*.dropdown {

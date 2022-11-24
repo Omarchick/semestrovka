@@ -3,6 +3,7 @@ CREATE TABLE public.products
     id serial NOT NULL,
     name character varying(50) NOT NULL,
     information text,
+    rating int default -1,
     PRIMARY KEY (id)
 );
 
@@ -11,23 +12,24 @@ ALTER TABLE IF EXISTS public.products
 CREATE TABLE public.reviews
 (
     id serial NOT NULL,
-    reviewername character varying NOT NULL,
-    rating int NOT NULL,
+    reviewer_id int NOT NULL,
+    product_id int NOT NULL,
+    rating int default -1,
     message text,
     PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS public.reviews
     OWNER to omr;
-CREATE TABLE public.userproducts
+CREATE TABLE public.user_products
 (
-    userid int NOT NULL,
-    productname character varying(50) NOT NULL,
-    productcount BIGINT,
-    PRIMARY KEY (userid, productcount)
+    user_id int NOT NULL,
+    product_id character varying(50) NOT NULL,
+    product_count BIGINT,
+    PRIMARY KEY (user_id, product_count)
 );
 
-ALTER TABLE IF EXISTS public.userproducts
+ALTER TABLE IF EXISTS public.user_products
     OWNER to omr;
 
 CREATE TABLE users
@@ -38,3 +40,5 @@ CREATE TABLE users
     balance BIGINT default 0,
     PRIMARY KEY (id)
 );
+ALTER TABLE IF EXISTS public.users
+    OWNER to omr;

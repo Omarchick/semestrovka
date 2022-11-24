@@ -12,16 +12,18 @@ public static class UserRepository
 
     public static async Task<int> AddUser(User user)
     {
+        Console.WriteLine();
         if (!(user is not null &&
-              await GetUser(user.Name, user.Password) is null &&
+              await GetUser(user.Name) is null &&
               (await new UserValidator().ValidateAsync(user)).IsValid))
         {
             return -1;
         }
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
         await using var db = new NpgsqlConnection(_connString);
-        const string sqlQuery = @"Insert Into users (name, password) Values (@name, @password) RETURNING id";
-        return await db.QuerySingleAsync<int>(sqlQuery, user);
+        const string sqlQuery = @"Insert Into public.users (name, password) Values (@name, @password) RETURNING id";
+        user.Id = await db.QuerySingleAsync<int>(sqlQuery, user);
+        return user.Id;
     }
 
     public static async Task<int> AddUser(string name, string password)
@@ -36,7 +38,7 @@ public static class UserRepository
         }
         await using var db = new NpgsqlConnection(_connString);
         await db.OpenAsync();
-        await using var cmd = new NpgsqlCommand(@"INSERT INTO users (name, password) VALUES (@name, @password)", db);
+        await using var cmd = new NpgsqlCommand(@"INSERT INTO public.users (name, password) VALUES (@name, @password)", db);
         cmd.Parameters.AddWithValue("name", $@"{name}");
         cmd.Parameters.AddWithValue("password", $@"{BCrypt.Net.BCrypt.HashPassword(password)}");
         await cmd.ExecuteNonQueryAsync();
@@ -48,7 +50,7 @@ public static class UserRepository
     {
         await using var db = new NpgsqlConnection(_connString);
         await db.OpenAsync();
-        await using var cmd = new NpgsqlCommand($@"SELECT * FROM users WHERE id = @id", db);
+        await using var cmd = new NpgsqlCommand($@"SELECT * FROM public.users WHERE id = @id", db);
         cmd.Parameters.AddWithValue("id", id);
         await using var reader = await cmd.ExecuteReaderAsync();
         return await GetUserFromReader(reader);
@@ -56,22 +58,36 @@ public static class UserRepository
 
     public static async Task<User> GetUser(string name, string password)
     {
+        if (name is not null && password is not null)
+        {
+            await using var db = new NpgsqlConnection(_connString);
+            await db.OpenAsync();
+            await using var cmd = new NpgsqlCommand($@"SELECT * FROM public.users WHERE name = @name", db);
+            cmd.Parameters.AddWithValue("name", $@"{name}");
+            await using var reader = await cmd.ExecuteReaderAsync();
+            var user = await GetUserFromReader(reader);
+            await db.CloseAsync();
+            return user is not null && BCrypt.Net.BCrypt.Verify(password, user.Password) ? user : null;
+        }
+
+        return null!;
+    }
+    public static async Task<User> GetUser(string name)
+    {
         await using var db = new NpgsqlConnection(_connString);
         await db.OpenAsync();
-        await using var cmd = new NpgsqlCommand($@"SELECT * FROM users WHERE name = @name", db);
-        cmd.Parameters.AddWithValue("name", $@"{name}");
+        await using var cmd = new NpgsqlCommand($@"SELECT * FROM public.users WHERE name = @name", db);
+        cmd.Parameters.AddWithValue("name", name);
         await using var reader = await cmd.ExecuteReaderAsync();
-        var user = await GetUserFromReader(reader);
-        await db.CloseAsync();
-        return user is not null && BCrypt.Net.BCrypt.Verify(password, user.Password) ? user : null;
+        return await GetUserFromReader(reader);
     }
 
-    public static async Task<int> UpdateUser(string name, string password, string newname, string newpassword)
+    public static async Task<int> UpdateUser(string name, string password, string? newname, string? newpassword)
     {
         if (!(name is not null &&
-              password is not null &&
-              (await new NameValidator().ValidateAsync(name)).IsValid &&
-              (await new PasswordValidator().ValidateAsync(password)).IsValid))
+              password! is not null &&
+              (await new NameValidator().ValidateAsync(newname!)).IsValid &&
+              (await new PasswordValidator().ValidateAsync(newpassword!)).IsValid))
         {
             return -1;
         }
@@ -82,7 +98,7 @@ public static class UserRepository
         if (user is not null)
         {
             await using var cmd =
-                new NpgsqlCommand(@"UPDATE users SET name = @name, password = @password Where id = @id", db);
+                new NpgsqlCommand(@"UPDATE public.users SET name = @name, password = @password Where id = @id", db);
             cmd.Parameters.AddWithValue("name", $@"{newname}");
             cmd.Parameters.AddWithValue("password", $@"{newpassword}");
             cmd.Parameters.AddWithValue("id", user.Id);
@@ -95,7 +111,7 @@ public static class UserRepository
     public static async Task DeleteUser(int id)
     {
         await using var db = new NpgsqlConnection(_connString);
-        const string sqlQuery = @"DELETE FROM users WHERE id = @id";
+        const string sqlQuery = @"DELETE FROM public.users WHERE id = @id";
         await db.ExecuteAsync(sqlQuery, new { id });
     }
 

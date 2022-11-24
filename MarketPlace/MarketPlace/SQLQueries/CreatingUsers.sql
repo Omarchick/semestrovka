@@ -6,3 +6,5 @@ CREATE TABLE users
     balance BIGINT default 0,
     PRIMARY KEY (id)
 );
+ALTER TABLE IF EXISTS public.users
+    OWNER to omr;

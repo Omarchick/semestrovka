@@ -21,36 +21,17 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/products.html");
         }
+        
         public static async Task ProductsNotRegistered(HttpListenerContext context)
         {
             await context.Response.ShowFile("WWW/html/productsNotRegistered.html");
         }
-        public static async Task SignIn(HttpListenerContext context)
+
+        public static async Task NotFound(HttpListenerContext context)
         {
-            Console.WriteLine(0);
-            await using (var inputStream = context.Request.InputStream)
-            {
-                Console.WriteLine(1);
-                using var reader = new StreamReader(inputStream);
-                var content = await reader.ReadToEndAsync();
-                Console.WriteLine(2);
-                var user = JsonSerializer.Deserialize<User>(content);
-                await using var stream = context.Response.OutputStream;
-                Console.WriteLine(UserRepository.GetUser(user?.Name, user?.Password).Result);
-                if (UserRepository.GetUser(user?.Name, user?.Password).Result != null)
-                {
-                    var succsessOperation = Encoding.ASCII.GetBytes("All done!");
-                    context.Response.StatusCode = 201;
-                    await context.Response.OutputStream.WriteAsync(succsessOperation);
-                }
-                else
-                {
-                    var succsessOperation = Encoding.ASCII.GetBytes("Error");
-                    context.Response.StatusCode = 208;
-                    await context.Response.OutputStream.WriteAsync(succsessOperation);
-                }
-            }
+            await context.Response.ShowFile("WWW/html/notFound.html");
         }
+        
         public static async Task Register(HttpListenerContext context)
         {
             await using (var inputStream = context.Request.InputStream)
@@ -63,6 +44,7 @@ namespace MarketPlace
                 {
                     var succsessOperation = Encoding.ASCII.GetBytes("All done!");
                     context.Response.StatusCode = 201;
+                    await Session.SetSession(user, context);
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
                 }
                 else
@@ -72,6 +54,38 @@ namespace MarketPlace
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
                 }
             }
+        }
+        public static async Task SignIn(HttpListenerContext context)
+        {
+            await using (var inputStream = context.Request.InputStream)
+            {
+                using var reader = new StreamReader(inputStream);
+                var content = await reader.ReadToEndAsync();
+                var user = JsonSerializer.Deserialize<User>(content);
+                await using var stream = context.Response.OutputStream;
+                user = UserRepository.GetUser(user?.Name, user?.Password).Result;
+                if (user != null)
+                {
+                    var succsessOperation = Encoding.ASCII.GetBytes("All done!");
+                    await Session.SetSession(user, context);
+                    context.Response.StatusCode = 201;
+                    await context.Response.OutputStream.WriteAsync(succsessOperation);
+                }
+                else
+                {
+                    var succsessOperation = Encoding.ASCII.GetBytes("Error");
+                    context.Response.StatusCode = 208;
+                    await context.Response.OutputStream.WriteAsync(succsessOperation);
+                }
+            }
+        }
+
+        public static async Task GetProductsFromDB(HttpListenerContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 200;
+            await context.Response.OutputStream.WriteAsync(Encoding.ASCII.GetBytes(
+                JsonSerializer.Serialize(await ProductRepository.GetProductFromDB())));
         }
     }
 }

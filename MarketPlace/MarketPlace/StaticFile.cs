@@ -8,16 +8,16 @@ namespace MarketPlace
         const string _errorMessage = "error";
         public static async Task ShowStatic(this HttpListenerContext context)
         {
-            var responce = context.Response;
+            var response = context.Response;
             var requestPath = context.Request.RawUrl;
             var staticPath = Path.Combine(Directory.GetCurrentDirectory(), $"WWW{requestPath}");
             if (File.Exists(staticPath))
             {
-                await ShowFile(responce, staticPath);
+                await ShowFile(response, staticPath);
             }
             else
             {
-                await ShowError(responce);
+                await ShowError(response);
             }
         }
         public static async Task ShowFile(this HttpListenerResponse response, string path)
