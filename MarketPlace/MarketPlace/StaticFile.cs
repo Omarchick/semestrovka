@@ -28,6 +28,8 @@ namespace MarketPlace
                 ".html" => "text/html",
                 ".css" => "text/css",
                 ".png" => "image/png",
+                ".cur" => "image/cur",
+                ".ani" => "image/ani",
                 _ => throw new NotImplementedException()
             };
             response.StatusCode = 200;

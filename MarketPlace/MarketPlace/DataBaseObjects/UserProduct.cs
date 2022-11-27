@@ -2,14 +2,14 @@ namespace MarketPlace;
 
 public class UserProduct
 {
-    public string ProductName { get; set; }
     public  int UserId { get; set; }
+    public int ProductId { get; set; }
     public  long ProductCount { get; set; }
 
-    public UserProduct(string productName, int userId, long productCount)
+    public UserProduct(int user_id, int product_id, long product_count)
     {
-        ProductName = productName;
-        UserId = userId;
-        ProductCount = productCount;
+        UserId = user_id;
+        ProductId = product_id;
+        ProductCount = product_count;
     }
 }

@@ -1,18 +1,18 @@
-async function addProductItem(name, information, id, rating){
+async function addProductItem(name, information, id, rating, count){
     let productItem = document.getElementById("productItemCollector");
     let item = document.createElement("div");
 /*    item.setAttribute('id', "productItem");*/
     item.innerHTML = `
     <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 30vw">
-        <strong style="display: flex; flex-direction: column;">${name}
-                <b class="productRating" style="display: flex; flex-direction: column; text-align: left">${rating}</b>   
-                <textarea class="productInfo" maxlength="250">${information}</textarea>
-                <button class="deleteBtn">-</button>
-                <button class="addBtn">+</button>
-                <button class="makeReview">
+        <strong title="${name}" style="display: flex; flex-direction: column; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}
+                <b title="${rating}" class="productRating" style="display: flex; flex-direction: column; text-align: left">${rating}</b>
+                <textarea title="${information}" class="productInfo" maxlength="250">${information}</textarea>
+                <button title="Delete from cart." class="deleteBtn">-</button>
+                <button title="Add into cart." class="addBtn">+</button>
+                <button title="Make a review to this product." class="makeReview">
                     <img class="btnImg" src="/pictures/message.png" alt="reviewImage"/>
                 </button>
-        </strong>
+                <b title="${count}" class="productCount" style="display: flex; flex-direction: row; text-align: left; position: relative; top: -56.5vh; right: -20vw;">${count}</b>
     </div>
     `;
 /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">
@@ -35,7 +35,7 @@ async function addProductItem(name, information, id, rating){
         </strong>
     </div>*/
     productsId.push(id);
-    productsOnPage.push(new Product(id, name, information, rating));
+    productsOnPage.push(new Product(id, name, information, rating, count));
     productItem.appendChild(item);
 }
 async function removeProduct(id) {
@@ -43,7 +43,6 @@ async function removeProduct(id) {
     {
         console.log(document.getElementById(String(id)+ "product").id)
         document.getElementById(String(id) + "product").remove();
-        await moveUpElements(id);
         count -= 55;
         productsId.pop();
         productsOnDB.slice(id, id);
@@ -69,17 +68,16 @@ async function moveUpElements(deletedId){
         //document.getElementById("2").style.top = '10vh';
     }
 }
-async function addProductItemWithIndex(name, information){
-    await addProductItem(name, information, productsId.length);
+async function addProductItemWithIndex(name, information, rating, count){
+    await addProductItem(name, information, productsId.length, rating, count);
 }
 
 async function getProductsFromDB() {
     let result = await (await fetch('/getProductsFromDB')).text();
-    console.log(result);
     productsOnDB = JSON.parse(result);
     for (let i = 0; i < productsOnDB.length; i++)
     {
-        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB.Rating);
+        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, count);
     }
 }
 

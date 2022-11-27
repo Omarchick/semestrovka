@@ -29,7 +29,7 @@ public class ReviewRepository
     {
         await using var db = new NpgsqlConnection(_connString);
         const string sqlQuery = @"SELECT * FROM public.reviews WHERE id = @id";
-        return await db.QueryFirstAsync<Review>(sqlQuery, new { id });
+        return await db.QueryFirstOrDefaultAsync<Review>(sqlQuery, new { id });
     }
 
     public static async Task<Review[]> GetReviewsByProductId(int productId)
@@ -41,13 +41,13 @@ public class ReviewRepository
 
     public static async Task<int> UpdateReview(int id, int newRating, string newMessage)
     {
-        if (GetReview(id) is null)
+        if (await GetReview(id) is null)
         {
             return -1;
         }
         await using var db = new NpgsqlConnection(_connString);
         const string sqlQuery = @"UPDATE public.reviews SET rating = @newRating, message = @newMessage WHERE id = @id RETURNING id";
-        return db.QueryFirstAsync<int>(sqlQuery, new { @newRating, @newMessage}).Result;
+        return await db.QueryFirstAsync<int>(sqlQuery, new { @newRating, @newMessage});
     }
 
     public static async Task DeleteReview(int id)

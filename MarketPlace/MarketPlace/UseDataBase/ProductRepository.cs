@@ -84,12 +84,12 @@ public class ProductRepository
         const string sqlQuery = @"SELECT * FROM public.products";
         return (await db.QueryAsync<Product>(sqlQuery)).ToArray();
     }
+    /*SELECT * FROM public.products, user_products WHERE products.id = user_products.product_id*/
     
     private static async Task<Product> GetProductFromReader(DbDataReader reader)
     {
         while (await reader.ReadAsync())
         {
-            Console.WriteLine(reader.FieldCount);
             Product product = new(
                 reader.GetInt32(0),
                 reader.GetString(1),

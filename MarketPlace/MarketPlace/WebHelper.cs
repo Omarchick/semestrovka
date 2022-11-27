@@ -12,6 +12,11 @@ namespace MarketPlace
 {
     public static class WebHelper
     {
+
+        public static byte[] GetBytes(this string convertingString)
+        {
+            return Encoding.UTF8.GetBytes(convertingString);
+        }
         public static async Task Home(HttpListenerContext context)
         {
             await context.Response.ShowFile("WWW/html/mainpage.html");
@@ -20,6 +25,11 @@ namespace MarketPlace
         public static async Task Products(HttpListenerContext context)
         {
             await context.Response.ShowFile("WWW/html/products.html");
+        }
+        
+        public static async Task GetMyProducts(HttpListenerContext context)
+        {
+            await context.Response.ShowFile("WWW/html/myProducts.html");
         }
         
         public static async Task ProductsNotRegistered(HttpListenerContext context)
@@ -84,8 +94,17 @@ namespace MarketPlace
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
-            await context.Response.OutputStream.WriteAsync(Encoding.ASCII.GetBytes(
-                JsonSerializer.Serialize(await ProductRepository.GetProductFromDB())));
+            await context.Response.OutputStream.WriteAsync(
+                JsonSerializer.Serialize(await ProductRepository.GetProductFromDB()).GetBytes());
+        }
+        
+        public static async Task GetUserProducts(HttpListenerContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 200;
+            await context.Response.OutputStream.WriteAsync(
+                JsonSerializer.Serialize(await UserProductRepository.
+                    GetProductsByUserId(Convert.ToInt32(await context.GetCookieInformation()))).GetBytes());
         }
     }
 }

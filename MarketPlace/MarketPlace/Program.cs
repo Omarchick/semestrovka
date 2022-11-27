@@ -14,7 +14,6 @@ client.DefaultRequestHeaders.UserAgent.ParseAdd(
 listener.Prefixes.Add("http://localhost:1111/");
 listener.Start();
 SqlConnection connection = new(@"Data source= LAPTOP-QHM9MDKR;Initial Catalog=MyDataBase; Integrated Security=True");
-
 while (listener.IsListening)
 {
     try
@@ -37,6 +36,10 @@ while (listener.IsListening)
         //Console.WriteLine(ReviewRepository.GetReview(111).Result.Id);
         //Console.WriteLine(ReviewRepository.DeleteReview(551));
         //Console.WriteLine(ReviewRepository.GetReviewsFromDB());
+
+        //Console.WriteLine(await UserProductRepository.AddUserProduct(new UserProduct(1,1, 57)));
+        Console.WriteLine(UserProductRepository.GetProductsByUserId(1).Result[0].Information);
+        
         
         var context = await listener.GetContextAsync();
         var request = context.Request;
@@ -70,22 +73,27 @@ while (listener.IsListening)
             
             if (context.Request.Cookies["sessionId"] is not null)
             {
-                var enteredUserId = 
-                    await RedisStore.RedisCashe.StringGetAsync(request.Cookies["sessionId"]!.Value);
-                var enteredUser = await UserRepository.GetUser(Convert.ToInt32(enteredUserId.ToString()));
+                var enteredUserId = await context.GetCookieInformation();
+                var enteredUser = await UserRepository.GetUser(Convert.ToInt32(enteredUserId));
                 if (enteredUser != null)
                 {
                     await Session.SetSession(enteredUser, context);
                 }
-
-                Console.WriteLine();
+                
                 switch (request.Url?.LocalPath)
                 {
                     //Pages
                     case "/products":
                         await WebHelper.Products(context);
                         break;
+                    case "/myProducts":
+                        await WebHelper.GetMyProducts(context);
+                        break;;
                     //Actions
+                    case "/getUserProducts":
+                        await WebHelper.GetUserProducts(context);
+                        isUsingShowStatic = false;
+                        break;
                     default:
                         break;
                 }
@@ -96,10 +104,12 @@ while (listener.IsListening)
                 {
                     //Pages
                     case "/products":
+                    case "/myProducts":
                         //case"/notFound": //Addings
                         await WebHelper.NotFound(context);
                         break;
                     //Actions
+
                     default:
                         break;
                 }

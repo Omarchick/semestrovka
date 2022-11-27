@@ -12,7 +12,6 @@ public static class UserRepository
 
     public static async Task<int> AddUser(User user)
     {
-        Console.WriteLine();
         if (!(user is not null &&
               await GetUser(user.Name) is null &&
               (await new UserValidator().ValidateAsync(user)).IsValid))
@@ -82,6 +81,13 @@ public static class UserRepository
         return await GetUserFromReader(reader);
     }
 
+    public static async Task<int> GetUserBalance(int userId)
+    {
+        await using var db = new NpgsqlConnection(_connString);
+        const string sqlQuery = @"SELECT * FROM public.users WHERE id = @userId";
+        return await db.QueryFirstOrDefaultAsync<int>(sqlQuery, new { userId });
+    }
+    
     public static async Task<int> UpdateUser(string name, string password, string? newname, string? newpassword)
     {
         if (!(name is not null &&
