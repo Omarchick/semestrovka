@@ -100,10 +100,10 @@
     <None Update="WWW\html\starRaitingproducts.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="WWW\js\starRaitingproducts.js">
+    <None Update="WWW\js\starRaitingProducts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="WWW\css\starRaitingproducts.css">
+    <None Update="WWW\css\starRaitingProducts.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="WWW\css\starRaitingproductsajax.css">

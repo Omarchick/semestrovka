@@ -1,11 +1,12 @@
 .rating {
+    margin-top: 3vh;
     display: flex; /**/
     align-items: flex-end; /**/
-    font-size: 40px;
-    line-height: 0.75;
+    font-size: 10vh;
+    line-height: 1;
 }
 
-.rating_body{
+.rating_body {
     position: relative; /**/
 }
 
@@ -13,6 +14,7 @@
     content: "★★★★★";
     display: block;
     color: white;
+    -webkit-text-stroke: 0.05vh black;
 }
 
 .rating_active{
@@ -23,7 +25,8 @@
     left: 0;
     overflow: hidden;
 }
-.rating_active::before{
+
+.rating_active::before {
     content: "★★★★★";
     position: absolute; /**/
     width: 100%;
@@ -31,6 +34,7 @@
     top: 0;
     left: 0;
     color: #f8c400;
+    -webkit-text-stroke: 0.05vh black;
 }
 
 .rating_items{
@@ -42,14 +46,18 @@
     left: 0;
 }
 
-.rating_item{
-    flex: 0 0 15%;
+
+
+.rating_item {
+    flex: 0 0 0 10%;
     height: 90%;
-    opacity: 0;
+    width: 100%;
+/*        opacity: 0;*/
 }
 
-.rating_value{
+.rating_value {
     font-size: 50%;
     line-height: 1;
-    padding: 0px 0px 0px 10px;
+    padding: 0 0 0 1vw;
+    -webkit-text-stroke: 0.15vh gold;
 }
