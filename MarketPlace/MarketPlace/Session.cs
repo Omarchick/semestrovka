@@ -42,8 +42,8 @@ namespace MarketPlace
             var sessionId = Convert.ToBase64String(randomBytes);
             if (user != null)
             {
-                await RedisStore.RedisCashe.StringSetAsync(sessionId + (user.Id * 10 - 3).ToString().GetBytes(),user.Id, TimeSpan.FromMinutes(_sessionTime));
-                context.Response.Cookies.Add(new Cookie("sessionId", sessionId + (user.Id * 10 - 3).ToString().GetBytes())
+                await RedisStore.RedisCashe.StringSetAsync(sessionId + (user.Id * 10 - 3),user.Id, TimeSpan.FromMinutes(_sessionTime));
+                context.Response.Cookies.Add(new Cookie("sessionId", sessionId + (user.Id * 10 - 3))
                 {
                     Expires = DateTime.UtcNow.AddMinutes(_sessionTime),
                     Path = "/"
@@ -53,7 +53,8 @@ namespace MarketPlace
 
         public static async Task<string> GetCookieInformation(this HttpListenerContext context)
         {
-            return context.Response.Cookies["sessionId"]?.Value is null ? null : (await RedisStore.RedisCashe.StringGetAsync(context.Response.Cookies["sessionId"]?.Value)).ToString();
+            return context.Request.Cookies["sessionId"]?.Value is null ? null :
+                (await RedisStore.RedisCashe.StringGetAsync(context.Request.Cookies["sessionId"]?.Value)).ToString();
         }
     }
 }

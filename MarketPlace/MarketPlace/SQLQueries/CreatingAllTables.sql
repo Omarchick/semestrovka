@@ -3,7 +3,7 @@ CREATE TABLE public.products
     id serial NOT NULL,
     name character varying(50) NOT NULL,
     information text,
-    rating int default -1,
+    rating real default -1,
     PRIMARY KEY (id)
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE public.user_products
     user_id int NOT NULL,
     product_id int NOT NULL,
     product_count BIGINT default 0,
-    PRIMARY KEY (user_id, product_count)
+    PRIMARY KEY (user_id, product_id)
 );
 
 ALTER TABLE IF EXISTS public.user_products

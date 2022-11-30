@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace MarketPlace
 {
-    public class Product
+    public class UserProductWithCount
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Information { get; set; }
         public List<Review>? Reviews { get; set; }
-        public float Rating { get; set; }
+        public decimal Rating { get; set; }
+        public long Count { get; set; }
 
 
-        public Product(int id, string name, string information)
+        public UserProductWithCount(int id, string name, string information,decimal rating , long count)
         {
             Id = id;
             Name = name;
             Information = information;
-            /*Reviews = ReviewRepository.GetReviewsByProductId(id).Result.ToList();
-            Rating = Reviews is not null ? Reviews.Sum(r => r.Rating) / Reviews.Count : -1; */
-            Rating = 1;
+            Rating = rating;
+            Count = count;
         }
     }
 }

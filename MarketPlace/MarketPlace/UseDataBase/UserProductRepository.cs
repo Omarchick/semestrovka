@@ -78,4 +78,11 @@ public class UserProductRepository
         const string sqlQuery = @"SELECT * FROM public.user_products";
         return (await db.QueryAsync<UserProduct>(sqlQuery)).ToArray();
     }
+    
+    public static async Task<UserProduct[]> GetUserProductsFromDBWithRating()
+    {
+        await using var db = new NpgsqlConnection(_connString);
+        const string sqlQuery = @"SELECT * FROM public.user_products";
+        return (await db.QueryAsync<UserProduct>(sqlQuery)).ToArray();
+    }
 }

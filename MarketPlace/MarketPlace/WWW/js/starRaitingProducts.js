@@ -1,11 +1,8 @@
-"use strict"
 window.addEventListener('load', () => {
 
 
     const ratings = document.querySelectorAll('.rating'); /*Mass of ratings on page (mb)*/
-    alert(ratings.length);
     if (ratings.length > 0){
-        alert(1);
         initRatings();
     }
 
@@ -18,11 +15,8 @@ window.addEventListener('load', () => {
 
         function initRating(rating) {
             initRatingVars(rating);
-
             setRatingActiveWidth(); /*Can change info if you have not number as 3.6 */
-
             if (rating.classList.contains('rating_set')) { /*If parent have class can set rating*/
-                alert(1);
                 setRating(rating);
             }
         }
@@ -39,6 +33,7 @@ window.addEventListener('load', () => {
 
 
         function setRating(rating) {
+
             let ratingItems = rating.querySelectorAll('.rating_item');
             for (let index = 0; index < ratingItems.length; index++) {
                 const ratingItem = ratingItems[index];

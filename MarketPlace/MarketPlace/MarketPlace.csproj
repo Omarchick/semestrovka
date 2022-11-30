@@ -109,6 +109,9 @@
     <None Update="WWW\css\starRaitingproductsajax.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="WWW\js\showingRating.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

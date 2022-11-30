@@ -38,8 +38,8 @@ body {
     /*margin: 10vh 50vw;*/
 }
 .productItem{
-    height: 50vh;
-    width: 35vw;
+    height: 58vh;
+    width: 38vw;
     border-radius: 1vh;
     border: 0.5vh solid #00ff1e;
     background-color: #7bff71;
@@ -50,8 +50,7 @@ body {
     text-align: center;
 }
 .productInfo{
-    top: -16vh;
-    right: -2vw;
+    margin-top: 1vh;
     border-radius: 1.5vh;
     border: 0.5vh solid black;
     font-size: 3.2vh;

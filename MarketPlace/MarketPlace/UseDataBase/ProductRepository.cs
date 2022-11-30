@@ -93,8 +93,7 @@ public class ProductRepository
             Product product = new(
                 reader.GetInt32(0),
                 reader.GetString(1),
-                reader.GetString(2))
-                {Rating = reader.GetInt32(3)};
+                reader.GetString(2));
                 return product;
         }
 

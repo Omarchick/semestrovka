@@ -41,7 +41,7 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/notFound.html");
         }
-        
+
         public static async Task Register(HttpListenerContext context)
         {
             await using (var inputStream = context.Request.InputStream)
@@ -95,7 +95,7 @@ namespace MarketPlace
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
             await context.Response.OutputStream.WriteAsync(
-                JsonSerializer.Serialize(await ProductRepository.GetProductFromDB()).GetBytes());
+                JsonSerializer.Serialize(await ProductRepositoryWithCount.GetProductFromDB()).GetBytes());
         }
         
         public static async Task GetUserProducts(HttpListenerContext context)
