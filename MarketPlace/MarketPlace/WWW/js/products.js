@@ -1,4 +1,4 @@
-async function addProductItem(name, information, id, rating, count) {
+async function addProductItem(realId, name, information, id, rating, count) {
     let productItem = document.getElementById("productItemCollector");
     let item = document.createElement("div");
     /*    item.setAttribute('id', "productItem");*/
@@ -12,12 +12,14 @@ async function addProductItem(name, information, id, rating, count) {
     }
     item.innerHTML = `
     <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 30vw">
-        <strong title="${name}" style="display: flex; flex-direction: column; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}  
+        <strong title="${name}" style="display: flex; flex-direction: column; 
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}
             <div class="form_item">
                 <div class="rating rating_set">
                     <div class="rating_body">
                         <div class="rating_active" style="width: ${rating * 20}%"></div>
                         <div title="${starRating}" class="rating_items">
+                            <input type="radio" class="rating_item" value="0" name="rating">
                             <input type="radio" class="rating_item" value="1" name="rating">
                             <input type="radio" class="rating_item" value="2" name="rating">
                             <input type="radio" class="rating_item" value="3" name="rating">
@@ -26,18 +28,17 @@ async function addProductItem(name, information, id, rating, count) {
                         </div>
                     </div>
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
+                    <div title="${count}" class="productCount">${count}</div>
+
                 </div>
             </div>
                 <textarea title="${information}" class="productInfo" maxlength="250" readonly>${information}</textarea>
-                <button title="Delete from cart." class="deleteBtn">-</button>
-                <button title="Add into cart." class="addBtn">+</button>
+                <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(${realId},-1, ${id})">-</button>
+                <button title="Add into cart." class="addBtn" onclick="changeProductCount(${realId},1, ${id})">+</button>
                 <button title="Make a review to this product." class="makeReview">
                     <img class="btnImg" src="/pictures/message.png" alt="reviewImage"/>
                 </button>
-                <b title="${count}" class="productCount" style="display: flex; flex-direction: row; text-align: left;
-                 position: relative; top: -58.5vh; right: -30vw;
-                 background-color: #0adfff; border-radius: 1vh">${count}</b>
-    </div>
+        </div>
     `;
     /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">
             <strong style="display: flex; flex-direction: column;">${name}
@@ -59,7 +60,7 @@ async function addProductItem(name, information, id, rating, count) {
             </strong>
         </div>*/
     productsId.push(id);
-    productsOnPage.push(new Product(id, name, information, rating, count));
+    productsOnPage.push(new Product(realId, id, name, information, rating, count));
     productItem.appendChild(item);
 }
 
@@ -95,22 +96,44 @@ async function moveUpElements(deletedId) {
     }
 }
 
-async function addProductItemWithIndex(name, information, rating, count) {
-    await addProductItem(name, information, productsId.length, rating, count);
+async function addProductItemWithIndex(realId, name, information, rating, count) {
+    await addProductItem(realId, name, information, productsId.length, rating, count);
 }
 
 async function getProductsFromDB() {
     let result = await (await fetch('/getProductsFromDB')).text();
     productsOnDB = JSON.parse(result);
     for (let i = 0; i < productsOnDB.length; i++) {
-        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count);
+        await addProductItemWithIndex(productsOnDB[i].Id, productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count);
     }
 }
 
-function Product(id, name, information, rating, count) {
+function Product(realId, id, name, information, rating, count) {
+    this.RealId = realId;
     this.Id = id;
     this.Name = name;
     this.Information = information;
     this.Rating = rating;
+    this.Count = count;
+}
+
+async function changeProductCount(realId, count, id) {
+    let response = await fetch("/addProductCount",
+        { method: "POST", body: JSON.stringify(new UserProduct(realId, count))});
+    if (response.ok){
+        let element = document.getElementById(id + "product");
+        let countElement = element.querySelector('.productCount');
+        countElement.title = Number(countElement.title) + count;
+        countElement.textContent = Number(countElement.textContent) + count;
+    }
+    else {
+        let errorBlock = document.getElementById('.errorBlock');
+        errorBlock.innerText = "Error!";
+    }
+    
+}
+
+function UserProduct(productId, count){
+    this.ProductId = productId;
     this.Count = count;
 }

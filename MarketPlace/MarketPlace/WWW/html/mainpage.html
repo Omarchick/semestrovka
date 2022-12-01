@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <title>Main Page</title>
+    <meta charset="UTF-8">
     <link rel="icon" href="..//pictures/banan.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="../css/mainpage.css">
+    <link rel="stylesheet" type="text/css" href="../css/personInformation.css">
+    <script src="../js/personInformation.js"></script>
     <script src="../js/mainpage.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -15,8 +18,8 @@
     <script async src="https://cookie-widget.ru/widget.js"></script>
 <!--    <script src="https://apps.elfsight.com/p/platform.js" defer></script>-->
 </head>
-
-<body style="background-color: cornsilk">
+<!--onload="GetPersonInformation()"-->
+<body  style="background-color: cornsilk">
     <h1 class="mainTitle" style="cursor: url('../pictures/darkCursor.cur') 0 0, pointer;">Freedom</h1>
     <button class="products" onclick="redirectProductsNotRegister()">Products</button>
     <div class="dropdown">
@@ -38,13 +41,18 @@
             <li><a class="dropdown-item" style="font-size: 3vh;" href="">Others</a></li>
         </ul>
     </div>
-    <p class="enter">
-        <input class="input_data" id="inputName" placeholder="Name"></input>
-        <input class="input_data" id="inputPassword" placeholder="Password"  type="password"></input>
-        <button class="enterBtn" onclick="register()" id="reg">Register</button>
-        <button class="enterBtn" onclick="signIn()" id="singIn">Sign in</button>
-    </p>
+    <div class="personInformation" id="personInformation">
+        <form>
+            <p class="userData">
+                <strong title="Name" class="userInfo" id="userName">${user.Name}</strong>
+                <text title="CountMoney" class="userInfo" id="UserBalance">Balance: ${user.Balance}⚡</text>
+                <button class="settingsBtn" onclick="changeBalance()" id="changeBalance">Put Money</button>
+                <button class="settingsBtn" onclick="configure()" id="settings">Settings</button>
+            </p>
+        </form>
+    </div>
     <text id="errorBlock"></text>
+    
 <!--    <div class="elfsight-app-5a022ceb-7a45-486e-9541-5ad68e5da4d2"></div>-->
 
 <!--

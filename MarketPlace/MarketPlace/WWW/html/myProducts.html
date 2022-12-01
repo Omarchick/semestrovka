@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>User Products</title>
+    <title>Products</title>
+    <meta charset="UTF-8">
     <link rel="icon" href="/pictures/banan.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="../css/myProducts.css">
+    <link rel="stylesheet" type="text/css" href="../css/Myproducts.css">
+    <link rel="stylesheet" type="text/css" href="../css/starRaitingProducts.css">
+    <link rel="stylesheet" type="text/css" href="../css/personInformation.css">
+    <script src="../js/personInformation.js"></script>
     <script src="../js/myProducts.js"></script>
+    <script src="../js/starRaitingProducts.js"></script>
+    <!--<script src="../js/showingRating.js"></script>-->
 </head>
 <!--onload="addProductItem('really', 'work', 0)"-->
-<body onload="getProductsFromDB()" style="background-color: cornsilk">
+<body onload="getProductsFromDB(); GetPersonInformation()" style="background-color: cornsilk">
+<div class="personInformation" id="personInformation"></div>
+<text id="errorBlock"></text>
 <a class="mainTitle" href="/">Freedom</a>
 <div>
     <button onclick="addProductItemWithIndex(1, 2)">Create</button>

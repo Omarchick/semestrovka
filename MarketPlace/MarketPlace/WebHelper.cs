@@ -12,7 +12,6 @@ namespace MarketPlace
 {
     public static class WebHelper
     {
-
         public static byte[] GetBytes(this string convertingString)
         {
             return Encoding.UTF8.GetBytes(convertingString);
@@ -42,6 +41,30 @@ namespace MarketPlace
             await context.Response.ShowFile("WWW/html/notFound.html");
         }
 
+        public static async Task GetUser(HttpListenerContext context)
+        {
+            await using var stream = context.Response.OutputStream;
+            var user = await UserRepository.GetUser(await context.GetUserId());
+            if (user is not null)
+            {
+                context.Response.StatusCode = 200;
+                await stream.WriteAsync((await user.ToJSON()).GetBytes());
+            }
+            else
+            {
+                context.Response.StatusCode = 418;
+            }
+        }
+
+        public static async Task AddProductCount(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            var userProduct = JsonSerializer.Deserialize<UserProduct>(content);
+            await UserProductRepository.UpdateUserProduct(await context.GetUserId(), userProduct.ProductId, userProduct.ProductCount);
+        }
+        
         public static async Task Register(HttpListenerContext context)
         {
             await using (var inputStream = context.Request.InputStream)
@@ -103,8 +126,8 @@ namespace MarketPlace
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
             await context.Response.OutputStream.WriteAsync(
-                JsonSerializer.Serialize(await UserProductRepository.
-                    GetProductsByUserId(Convert.ToInt32(await context.GetCookieInformation()))).GetBytes());
+                JsonSerializer.Serialize(await ProductRepositoryWithCount.
+                    GetProductFromDB(await context.GetUserId())).GetBytes());
         }
     }
 }

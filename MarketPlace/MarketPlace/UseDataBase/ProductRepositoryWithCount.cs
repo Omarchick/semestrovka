@@ -19,6 +19,7 @@ public class ProductRepositoryWithCount
         {
             sqlQuery +=  @$"and up.user_id = {id}";
         }
+        
         return (await db.QueryAsync<UserProductWithCount>(sqlQuery)).ToArray();
     }
 

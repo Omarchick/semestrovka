@@ -28,7 +28,7 @@ public class UserProductRepository
             userProduct.UserId = await db.QuerySingleAsync<int>(sqlQuery, userProduct);
             return userProduct.UserId;
         }
-        return await UpdateReview(userProduct.UserId, userProduct.ProductId, userProduct.ProductCount);
+        return await UpdateUserProduct(userProduct.UserId, userProduct.ProductId, userProduct.ProductCount);
     }
 
     public static async Task<UserProduct> GetUserProduct(int userId, int productId) 
@@ -44,10 +44,11 @@ public class UserProductRepository
         const string sqlQuery = "SELECT products.id, products.name, products.information, products.rating " +
                                 "FROM user_products, products " +
                                 @"WHERE user_products.user_id = @user_id AND user_products.product_id = products.id";
-        return (await db.QueryAsync<Product>(sqlQuery, new { userId })).ToArray();
+        var a = (await db.QueryAsync<Product>(sqlQuery, new { userId })).ToArray();
+        return a;
     }
 
-    public static async Task<int> UpdateReview(int userId, int productId, long productCount)
+    public static async Task<int> UpdateUserProduct(int userId, int productId, long productCount)
     {
         var product = await GetUserProduct(userId, productId);
         if (product is null)

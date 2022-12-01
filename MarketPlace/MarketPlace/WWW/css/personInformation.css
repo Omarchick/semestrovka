@@ -1,0 +1,119 @@
+body {
+    background-size: auto;
+}
+
+.enterElements{
+    white-space:revert;
+}
+
+.enter {
+    position: fixed;
+    color: black;
+    right: 2vw;
+    top: 2vh;
+    /*    display: inline;*/
+    white-space:pre;
+    /*    width: 5vw;
+        height: 5vh;*/
+    /*background-color: black;*/
+    /*outline-color: black;*/
+    /*    text-outline: black 50px 50px;*/
+    /*-webkit-text-stroke:0.1vw darkkhaki;*/
+    /*    -webkit-text-fill-color:transparent;*/
+    /*    font-family: Righteous, cursive;*/
+    font-size: 2vh;
+    line-height: 3vh; !important;
+
+}
+.enter > .enterBtn {
+    /*    margin-top: 1vh;*/
+    margin-right: 2vw;
+}
+
+
+#errorBlock {
+    top: 5vh;
+    right: 16vw;
+    overflow: hidden;
+    text-align: left;
+    word-break: break-all;
+    position: absolute;
+    font-size: 2vh;
+    color: #ff0002;
+    -webkit-text-stroke-width: 0.05vh;
+    -webkit-text-stroke-color: black;
+}
+
+.input_data {
+    margin-bottom: 0.3vh;
+}
+
+
+.userData {
+    position: fixed;
+    color: black;
+    left: 83vw;
+    top: 2vh;
+    white-space:pre;
+    font-size: 2vh;
+    line-height: 3vh; !important;
+}
+
+.userInfo {
+    margin-right: 2vw;
+    -webkit-text-stroke: 0.05vh black;
+}
+
+#userName {
+    font-size: 1.8vw;
+    color: #9cf5ff;
+    font-family: 'cursive';
+    margin-top: 3vh !important;
+    text-decoration: underline rgba(255,143,0,0.62) dashed;
+}
+
+#UserBalance {
+    position: relative;
+    color: #ff4b52;
+    top: 0.5vh;
+    font-family: "Comic Sans MS", monospace;
+    font-size: 1.2vw;
+    text-decoration: underline rgba(255,143,0,0.62) dashed;
+}
+
+#changeBalance {
+    margin-top: 2vh !important;
+    font-family: Righteous, cursive;
+}
+
+.settingsBtn {
+    margin: 0;
+    line-height: inherit;
+    font-size: inherit;
+    font-family: Righteous, cursive;
+}
+
+/*
+margin: 0;
+font-family: inherit;
+font-size: inherit;
+line-height: inherit;*/
+
+
+.productCount {
+    -webkit-text-stroke: 0.1vh #0036ff;
+    padding-left: 0.35vw;
+    align-items: center;
+    top: -6.5vh;
+    right: -8vw;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    margin-left: -10vw;
+    position: relative;
+    height: 4vh;
+    width: 100vw;
+    font-size: 3vh;
+    background-color: #0adfff;
+    border-radius: 1vh
+}

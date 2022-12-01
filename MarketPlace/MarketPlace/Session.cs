@@ -56,5 +56,13 @@ namespace MarketPlace
             return context.Request.Cookies["sessionId"]?.Value is null ? null :
                 (await RedisStore.RedisCashe.StringGetAsync(context.Request.Cookies["sessionId"]?.Value)).ToString();
         }
+
+        public static async Task<int> GetUserId(this HttpListenerContext context)
+        {
+            var id = await GetCookieInformation(context);
+            if (id is not null && int.TryParse(id, out var result))
+                return result;
+            return -1;
+        }
     }
 }

@@ -1,4 +1,5 @@
 .rating {
+    margin-left: 1.5vw;;
     margin-top: 3vh;
     display: flex; /**/
     align-items: flex-end; /**/
@@ -40,13 +41,11 @@
 .rating_items{
     display: flex; /**/
     position: absolute; /**/
-    width: 100%;
+    width: 120%;
     height: 100%;
     top: 0;
-    left: 0;
+    right: 0;
 }
-
-
 
 .rating_item {
     width: 100%;

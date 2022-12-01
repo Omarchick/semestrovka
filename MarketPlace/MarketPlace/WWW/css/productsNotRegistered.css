@@ -38,8 +38,8 @@ body {
     /*margin: 10vh 50vw;*/
 }
 .productItem{
-    height: 50vh;
-    width: 35vw;
+    height: 58vh;
+    width: 38vw;
     border-radius: 1vh;
     border: 0.5vh solid #00ff1e;
     background-color: #7bff71;
@@ -49,16 +49,55 @@ body {
     font-size: 7vh;
     text-align: center;
 }
-.productInfo {
-    top: -16vh;
-    right: -2vw;
+.productInfo{
+    margin-top: 1vh;
     border-radius: 1.5vh;
     border: 0.5vh solid black;
     font-size: 3.2vh;
     text-align: left;
     position: sticky;
     resize: none;
-    height: 30vh;
-    width: 33.5vw;
+    height: 35vh;
+    width: 35vw;
     vertical-align: top;
 }
+
+.deleteBtn{
+    text-align: center;
+    font-size: 2vw;
+    position:  relative;
+    margin-left: 30vw;
+    width: 3vw;
+    height: 3vw;
+    top: -2vw;
+    right: 0vw;
+    background: #ff1300;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
+}
+
+.addBtn{
+    text-align: center;
+    font-size: 2vw;
+    position:  relative;
+    margin-left: 30vw;
+    width: 3vw;
+    height: 3vw;
+    top: -5vw;
+    right: 4vw;
+    background: #004fe2;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
+}
+
+

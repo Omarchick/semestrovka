@@ -65,6 +65,10 @@ while (listener.IsListening)
                 case "/signIn":
                     await WebHelper.SignIn(context);
                     break;
+                case "/getPersonInfo":
+                    await WebHelper.GetUser(context);
+                    isUsingShowStatic = false;
+                    break;
                 case "/getProductsFromDB":
                     await WebHelper.GetProductsFromDB(context);
                     isUsingShowStatic = false;
@@ -96,6 +100,9 @@ while (listener.IsListening)
                         await WebHelper.GetUserProducts(context);
                         isUsingShowStatic = false;
                         break;
+                    case "/addProductCount":
+                        await WebHelper.AddProductCount(context);
+                        break;
                     default:
                         break;
                 }
@@ -107,6 +114,7 @@ while (listener.IsListening)
                     //Pages
                     case "/products":
                     case "/myProducts":
+                    case "/addProductCount":
                         //case"/notFound": //Addings
                         await WebHelper.NotFound(context);
                         break;

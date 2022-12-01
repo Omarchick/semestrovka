@@ -3,30 +3,33 @@ async function addProductItem(name, information, id, rating, count) {
     let item = document.createElement("div");
     /*    item.setAttribute('id', "productItem");*/
     //<b title="${rating}" class="productRating" style="display: flex; flex-direction: column; text-align: left">${rating}
+    let starRating = "";
+    if (rating < 1){
+        starRating = "No rating!";
+    }
+    for (let i = 0; i < Math.floor(rating); i++){
+        starRating+= "★";
+    }
     item.innerHTML = `
     <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 30vw">
-        <strong title="${name}" style="display: flex; flex-direction: column; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}
-               
-        <form action="#">
-             <div class="rating_set"><!-- .rating -->
-                <div class="form_item">
-                    <div class="rating">
-                        <div class="rating_body">
-                            <div class="rating_active"></div>
-                            <div class="rating_items">
-                                <input type="radio" class="rating_item" value="1" name="rating">
-                                <input type="radio" class="rating_item" value="2" name="rating">
-                                <input type="radio" class="rating_item" value="3" name="rating">
-                                <input type="radio" class="rating_item" value="4" name="rating">
-                                <input type="radio" class="rating_item" value="5" name="rating">
-                            </div>
+        <strong title="${name}" style="display: flex; flex-direction: column; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}  
+            <div class="form_item">
+                <div class="rating rating_set">
+                    <div class="rating_body">
+                        <div class="rating_active" style="width: ${rating * 20}%"></div>
+                        <div title="${starRating}" class="rating_items">
+                            <input type="radio" class="rating_item" value="0" name="rating">
+                            <input type="radio" class="rating_item" value="1" name="rating">
+                            <input type="radio" class="rating_item" value="2" name="rating">
+                            <input type="radio" class="rating_item" value="3" name="rating">
+                            <input type="radio" class="rating_item" value="4" name="rating">
+                            <input type="radio" class="rating_item" value="5" name="rating">
                         </div>
-                        <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
                     </div>
+                    <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
                 </div>
             </div>
-        </form>
-                <textarea title="${information}" class="productInfo" maxlength="250">${information}</textarea>
+                <textarea title="${information}" class="productInfo" maxlength="250" readonly>${information}</textarea>
                 <button title="Delete from cart." class="deleteBtn">-</button>
                 <button title="Add into cart." class="addBtn">+</button>
                 <button title="Make a review to this product." class="makeReview">
@@ -98,7 +101,7 @@ async function addProductItemWithIndex(name, information, rating, count) {
 }
 
 async function getProductsFromDB() {
-    let result = await (await fetch('/getProductsFromDB')).text();
+    let result = await (await fetch('/getUserProducts')).text();
     productsOnDB = JSON.parse(result);
     for (let i = 0; i < productsOnDB.length; i++) {
         await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count);

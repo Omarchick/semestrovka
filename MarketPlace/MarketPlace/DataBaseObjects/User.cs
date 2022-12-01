@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace MarketPlace;
 public class User
 {
@@ -15,5 +17,18 @@ public class User
         Password = password;
         Balance = balance;
         
+    }
+
+    public static async Task<string> ToJSON(User user)
+    {
+        return JsonSerializer.Serialize(user);
+    }
+}
+
+public static class StaticUser
+{
+    public static async Task<string> ToJSON(this User user)
+    {
+        return JsonSerializer.Serialize(user);
     }
 }
