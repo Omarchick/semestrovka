@@ -14,6 +14,7 @@ client.DefaultRequestHeaders.UserAgent.ParseAdd(
 listener.Prefixes.Add("http://localhost:1111/");
 listener.Start();
 SqlConnection connection = new(@"Data source= LAPTOP-QHM9MDKR;Initial Catalog=MyDataBase; Integrated Security=True");
+int c = 0;
 while (listener.IsListening)
 {
     try
@@ -108,6 +109,11 @@ while (listener.IsListening)
                         break;
                     case "/addProductCount":
                         await WebHelper.AddProductCount(context);
+                        isUsingShowStatic = false;
+                        break;
+                    case "/deleteUserProduct":
+                        await WebHelper.DeleteUserProduct(context);
+                        isUsingShowStatic = false;
                         break;
                     default:
                         break;
@@ -121,6 +127,7 @@ while (listener.IsListening)
                     case "/products":
                     case "/myProducts":
                     case "/addProductCount":
+                    case "/deleteUserProduct":
                         //case"/notFound": //Addings
                         await WebHelper.NotFound(context);
                         break;

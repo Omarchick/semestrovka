@@ -1,4 +1,4 @@
-async function addProductItem(realId, name, information, id, rating, count) {
+async function addProductItem(id, name, information, rating, count, realId, price) {
     let productItem = document.getElementById("productItemCollector");
     let item = document.createElement("div");
     /*    item.setAttribute('id', "productItem");*/
@@ -33,11 +33,13 @@ async function addProductItem(realId, name, information, id, rating, count) {
                 </div>
             </div>
                 <textarea title="${information}" class="productInfo" maxlength="250" readonly>${information}</textarea>
-                <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(${realId},-1, ${id})">-</button>
-                <button title="Add into cart." class="addBtn" onclick="changeProductCount(${realId},1, ${id})">+</button>
+                <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
+                <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
                 <button title="Make a review to this product." class="makeReview">
                     <img class="btnImg" src="/pictures/message.png" alt="reviewImage"/>
                 </button>
+        </strong>
+        <div class="productPrice">${price}</div>   
         </div>
     `;
     /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">
@@ -60,7 +62,7 @@ async function addProductItem(realId, name, information, id, rating, count) {
             </strong>
         </div>*/
     productsId.push(id);
-    productsOnPage.push(new Product(realId, id, name, information, rating, count));
+    productsOnPage.push(new Product(id, name, information, rating, count, realId));
     productItem.appendChild(item);
 }
 
@@ -88,52 +90,77 @@ function getCount() {
 async function moveUpElements(deletedId) {
     for (let i = deletedId + 1; i < productsId.length; i++) {
         let product = document.getElementById(i + "product");
-        document.getElementById(i + "product").setAttribute("id",
+        product.setAttribute("id",
             (Number(product.id.replace("product", "")) - 1) + "product");
+        
+/*        let deleteBtn = product.querySelector('.deleteBtn');
+        let addBtn = product.querySelector('.addBtn');*/
+/*        deleteBtn.onclick.replace(', ' + deletedId + ',', ', ' + Number(deletedId) - 1 + ',')
+        addBtn.onclick.replace(', ' + deletedId + ',', ', ' + Number(deletedId) - 1 + ',')*/
+/*        console.log(addBtn.onclick.toString());
+        console.log(deletedId);
+        let replacedString =  (addBtn.onclick.toString()).replace(', ' + i + ',', ', ' + (Number(i) - 1) + ',');
+        let elem = document.createElement('div');
+        elem.innerHTML = `
+            <button title="Add into cart." class="addBtn" onclick="${replacedString}">+</button>`;
+        addBtn = elem;
+        addBtn.onclick;
+        console.log(replacedString);
+        console.log(product.id + " Новый");
+        console.log("Спускаем");*/
         product.setAttribute("style", "top:" + (Number(product.id.replace("product", "")) * 70 + 35 + "vh"));
         //document.querySelector('#reg').style.top = '10vh';
         //document.getElementById("2").style.top = '10vh';
     }
 }
 
-async function addProductItemWithIndex(realId, name, information, rating, count) {
-    await addProductItem(realId, name, information, productsId.length, rating, count);
+async function addProductItemWithIndex(name, information, rating, count, realId, price) {
+    await addProductItem(productsId.length, name, information, rating, count, realId, price);
 }
 
 async function getProductsFromDB() {
     let result = await (await fetch('/getUserProducts')).text();
     productsOnDB = JSON.parse(result);
     for (let i = 0; i < productsOnDB.length; i++) {
-        await addProductItemWithIndex(productsOnDB[i].Id, productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count);
+        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count, productsOnDB[i].Id, productsOnDB[i].Price);
     }
 }
 
-function Product(realId, id, name, information, rating, count) {
-    this.RealId = realId;
+function Product(id, name, information, rating, count, realId) {
     this.Id = id;
     this.Name = name;
     this.Information = information;
     this.Rating = rating;
     this.Count = count;
+    this.RealId = realId;
 }
 
-async function changeProductCount(productId, count, id) {
-    let response = await fetch("/addProductCount",
-        { method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
-    if (response.status == 200){
-        let element = document.getElementById(id + "product");
-        let countElement = element.querySelector('.productCount');
-        countElement.title = Number(countElement.title) + count;
-        countElement.textContent = Number(countElement.textContent) + count;
-    }
-    else if (response.status == 205){
-        console.log(response.status);
+async function changeProductCount(count, id, productId) {
+    let element = document.getElementById(id + "product");
+    let countElement = element.querySelector('.productCount');
+    let productCount = Number(countElement.textContent);
+    let balance = Number(document.querySelector('#UserBalance').textContent.
+    replace('Balance: ', '').replace('⚡', ''));
+    let price = Number(element.querySelector('.productPrice'.textContent));
+    if (count < 0 && productCount <= 0){
         await removeProduct(id);
+        await fetch("/deleteUserProduct",
+            {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+        return;
     }
-    else {
-        let errorBlock = document.getElementById('errorBlock');
-        errorBlock.innerText = "Error!";
-        setTimeout(TurnOffErrorText, 3000);
+    if (productCount >= 0 && balance >= price) {
+        let response = await fetch("/addProductCount",
+            {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+        if (response.status === 200) {
+            countElement.title = Number(countElement.title) + count;
+            countElement.textContent = Number(countElement.textContent) + count;
+        } else if (response.status === 205) {
+            await removeProduct(id);
+        } else {
+            let errorBlock = document.getElementById('errorBlock');
+            errorBlock.innerText = "Error!";
+            setTimeout(TurnOffErrorText, 3000);
+        }
     }
 
 }
@@ -144,8 +171,38 @@ async function TurnOffErrorText() {
 }
 
 
-function UserProduct(userId, productId, productCount){
+function UserProduct(userId, productId, productCount, price){
     this.UserId = userId;
     this.ProductId = productId;
     this.ProductCount = productCount;
+    this.Price = price;
+}
+
+async function changeProductCount(count, id, productId) {
+    let element = document.getElementById(id + "product");
+    let countElement = element.querySelector('.productCount');
+    let productCount = Number(countElement.textContent);
+    let balance = Number(document.querySelector('#UserBalance').textContent.
+    replace('Balance: ', '').replace('⚡', ''));
+    let price = Number(element.querySelector('.productPrice'.textContent));
+    if (count < 0 && productCount <= 0){
+        await removeProduct(id);
+        await fetch("/deleteUserProduct",
+            {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+        return;
+    }
+    if (productCount >= 0 && balance >= price) {
+        let response = await fetch("/addProductCount",
+            {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+        if (response.status === 200) {
+            countElement.title = Number(countElement.title) + count;
+            countElement.textContent = Number(countElement.textContent) + count;
+        } else if (response.status === 205) {
+            await removeProduct(id);
+        } else {
+            let errorBlock = document.getElementById('errorBlock');
+            errorBlock.innerText = "Error!";
+            setTimeout(TurnOffErrorText, 3000);
+        }
+    }
 }

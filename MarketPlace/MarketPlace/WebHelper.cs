@@ -56,6 +56,22 @@ namespace MarketPlace
             }
         }
 
+        public static async Task DeleteUserProduct(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            var userProduct = JsonSerializer.Deserialize<UserProductDTO>(content);
+            var userId = await context.GetUserId();
+            if (userProduct is not null)
+            {
+                await UserProductRepository.DeleteUserProduct(userId, userProduct.ProductId);
+            }
+            context.Response.StatusCode = 200;
+            context.Response.OutputStream.Close();
+
+        }
+        
         public static async Task AddProductCount(HttpListenerContext context)
         {
             await using var inputStream = context.Request.InputStream;
@@ -64,9 +80,8 @@ namespace MarketPlace
             var userProduct = JsonSerializer.Deserialize<UserProductDTO>(content);
             var userId = await context.GetUserId();
             var resultOfUpdatingDB =
-                await UserProductRepository.UpdateUserProductWithStatusCodes(userId, userProduct.ProductId,
-                    userProduct.ProductCount);
-            Console.WriteLine(resultOfUpdatingDB);
+                UserProductRepository.UpdateUserProductWithStatusCodes(userId, userProduct.ProductId,
+                    userProduct.ProductCount).Result;
             if (userId is not -1 && userProduct is not null)
             {
                 if (resultOfUpdatingDB == -205)
@@ -84,14 +99,12 @@ namespace MarketPlace
                     context.Response.StatusCode = 418;
                     context.Response.OutputStream.Close();
                 }
-
             }
             else
             {
                 context.Response.StatusCode = 418;
                 context.Response.OutputStream.Close();
             }
-
         }
         
         public static async Task Register(HttpListenerContext context)

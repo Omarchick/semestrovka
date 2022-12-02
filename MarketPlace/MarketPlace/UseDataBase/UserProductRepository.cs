@@ -14,9 +14,6 @@ public class UserProductRepository
     {
         if (userProduct is null || await UserRepository.GetUser(userProduct.UserId) is null || await ProductRepository.GetProduct(userProduct.ProductId) is null)
         {
-            Console.WriteLine(userProduct is null);
-            Console.WriteLine(await UserRepository.GetUser(userProduct.UserId) is null);
-            Console.WriteLine(await ProductRepository.GetProduct(userProduct.ProductId) is null);
             return -1;
         }
         var product = await GetUserProduct(userProduct.UserId, userProduct.ProductId);
@@ -75,7 +72,7 @@ public class UserProductRepository
     
     public static async Task<int> UpdateUserProductWithStatusCodes(int userId, int productId, long productCount)
     {
-        var product = await GetUserProduct(userId, productId);
+        var product = GetUserProduct(userId, productId).Result;
         if (product is null)
         {
             if (productCount >= 1)
@@ -84,7 +81,6 @@ public class UserProductRepository
             }
             return -1;
         }
-        
         if (product.ProductCount <= -productCount)
         {
             await DeleteUserProduct(userId, productId);
@@ -93,7 +89,8 @@ public class UserProductRepository
         await using var db = new NpgsqlConnection(_connString);
         const string sqlQuery = @"UPDATE public.user_products SET product_count = product_count + @productCount 
                             WHERE user_id = @userId and product_id = @productId RETURNING user_id";
-        return await db.QueryFirstAsync<int>(sqlQuery, new { @userId, @productId, productCount});
+        var a = await db.QueryFirstAsync<int>(sqlQuery, new { @userId, @productId, productCount });
+        return a;
     }
     
 

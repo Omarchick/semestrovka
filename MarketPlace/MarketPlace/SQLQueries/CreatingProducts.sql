@@ -4,6 +4,7 @@ CREATE TABLE public.products
     name character varying(50) NOT NULL,
     information text,
     rating real default -1,
+    price real not null,
     PRIMARY KEY (id)
 );
 
