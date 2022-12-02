@@ -18,8 +18,7 @@
     <script async src="https://cookie-widget.ru/widget.js"></script>
 <!--    <script src="https://apps.elfsight.com/p/platform.js" defer></script>-->
 </head>
-<!--onload="GetPersonInformation()"-->
-<body  style="background-color: cornsilk">
+<body onload="GetPersonInformation()" style="background-color: cornsilk">
     <h1 class="mainTitle" style="cursor: url('../pictures/darkCursor.cur') 0 0, pointer;">Freedom</h1>
     <button class="products" onclick="redirectProductsNotRegister()">Products</button>
     <div class="dropdown">
@@ -41,16 +40,7 @@
             <li><a class="dropdown-item" style="font-size: 3vh;" href="">Others</a></li>
         </ul>
     </div>
-    <div class="personInformation" id="personInformation">
-        <form>
-            <p class="userData">
-                <strong title="Name" class="userInfo" id="userName">${user.Name}</strong>
-                <text title="CountMoney" class="userInfo" id="UserBalance">Balance: ${user.Balance}⚡</text>
-                <button class="settingsBtn" onclick="changeBalance()" id="changeBalance">Put Money</button>
-                <button class="settingsBtn" onclick="configure()" id="settings">Settings</button>
-            </p>
-        </form>
-    </div>
+    <div class="personInformation" id="personInformation"></div>
     <text id="errorBlock"></text>
     
 <!--    <div class="elfsight-app-5a022ceb-7a45-486e-9541-5ad68e5da4d2"></div>-->

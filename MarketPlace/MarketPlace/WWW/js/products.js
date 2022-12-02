@@ -117,9 +117,9 @@ function Product(realId, id, name, information, rating, count) {
     this.Count = count;
 }
 
-async function changeProductCount(realId, count, id) {
+async function changeProductCount(productId, count, id) {
     let response = await fetch("/addProductCount",
-        { method: "POST", body: JSON.stringify(new UserProduct(realId, count))});
+        { method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
     if (response.ok){
         let element = document.getElementById(id + "product");
         let countElement = element.querySelector('.productCount');
@@ -127,13 +127,20 @@ async function changeProductCount(realId, count, id) {
         countElement.textContent = Number(countElement.textContent) + count;
     }
     else {
-        let errorBlock = document.getElementById('.errorBlock');
+        let errorBlock = document.getElementById('errorBlock');
         errorBlock.innerText = "Error!";
+        setTimeout(TurnOffErrorText, 3000);
     }
-    
+
 }
 
-function UserProduct(productId, count){
+async function TurnOffErrorText() {
+    let errorBlock = document.getElementById('errorBlock');
+    errorBlock.innerText = "";
+}
+
+function UserProduct(userId, productId, productCount){
+    this.UserId = userId;
     this.ProductId = productId;
-    this.Count = count;
+    this.ProductCount = productCount;
 }

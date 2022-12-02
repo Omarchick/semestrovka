@@ -61,8 +61,37 @@ namespace MarketPlace
             await using var inputStream = context.Request.InputStream;
             using var reader = new StreamReader(inputStream);
             var content = await reader.ReadToEndAsync();
-            var userProduct = JsonSerializer.Deserialize<UserProduct>(content);
-            await UserProductRepository.UpdateUserProduct(await context.GetUserId(), userProduct.ProductId, userProduct.ProductCount);
+            var userProduct = JsonSerializer.Deserialize<UserProductDTO>(content);
+            var userId = await context.GetUserId();
+            var resultOfUpdatingDB =
+                await UserProductRepository.UpdateUserProductWithStatusCodes(userId, userProduct.ProductId,
+                    userProduct.ProductCount);
+            Console.WriteLine(resultOfUpdatingDB);
+            if (userId is not -1 && userProduct is not null)
+            {
+                if (resultOfUpdatingDB == -205)
+                {
+                    context.Response.StatusCode = 205;
+                    context.Response.OutputStream.Close();
+                }
+                else if (resultOfUpdatingDB != -1)
+                {
+                    context.Response.StatusCode = 200;
+                    context.Response.OutputStream.Close();
+                }
+                else
+                {
+                    context.Response.StatusCode = 418;
+                    context.Response.OutputStream.Close();
+                }
+
+            }
+            else
+            {
+                context.Response.StatusCode = 418;
+                context.Response.OutputStream.Close();
+            }
+
         }
         
         public static async Task Register(HttpListenerContext context)
@@ -118,7 +147,7 @@ namespace MarketPlace
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
             await context.Response.OutputStream.WriteAsync(
-                JsonSerializer.Serialize(await ProductRepositoryWithCount.GetProductFromDB()).GetBytes());
+                JsonSerializer.Serialize(await ProductRepositoryWithCount.GetAllProductFromDB(await context.GetUserId())).GetBytes());
         }
         
         public static async Task GetUserProducts(HttpListenerContext context)

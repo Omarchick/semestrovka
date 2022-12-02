@@ -18,6 +18,12 @@ while (listener.IsListening)
 {
     try
     {
+        /*var content = JsonSerializer.Serialize(new UserProduct(-1, 2, 1));
+        Console.WriteLine(content);
+        var userProduct = JsonSerializer.Deserialize<UserProductDTO>(content);
+        Console.WriteLine(userProduct.ProductCount);*/
+        
+
         //Console.WriteLine(await UserRepository.AddUser("123asdf", "22we34Ff34f3@@4f43f3f43f"));
         //Console.WriteLine(await UserRepository.AddUser(new(5,"123asdf", "22we34Ff34f3@@4f43f3f43f", 5)));
         //Console.WriteLine(await UserRepository.GetUser("123asdf", "22we34Ff34f3@@4f43f3f43f"));

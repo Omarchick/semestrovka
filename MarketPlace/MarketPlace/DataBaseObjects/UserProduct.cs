@@ -13,3 +13,10 @@ public class UserProduct
         ProductCount = product_count;
     }
 }
+public class UserProductDTO
+{
+    public  int UserId { get; set; }
+    public int ProductId { get; set; }
+    public  long ProductCount { get; set; }
+    
+}
