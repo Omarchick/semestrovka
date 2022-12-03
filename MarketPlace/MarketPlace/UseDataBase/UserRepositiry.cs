@@ -83,9 +83,15 @@ public static class UserRepository
 
     public static async Task<int> GetUserBalance(int userId)
     {
-        await using var db = new NpgsqlConnection(_connString);
-        const string sqlQuery = @"SELECT * FROM public.users WHERE id = @userId";
-        return await db.QueryFirstOrDefaultAsync<int>(sqlQuery, new { userId });
+       var user = GetUser(userId).Result;
+       if (user?.Balance is not null)
+       {
+           await using var db = new NpgsqlConnection(_connString);
+           const string sqlQuery = @"SELECT balance FROM public.users WHERE id = @userId";
+           return await db.QueryFirstOrDefaultAsync<int>(sqlQuery, new { userId });
+       }
+
+       return -1;
     }
     
     public static async Task<int> UpdateUser(string name, string password, string? newname, string? newpassword)
@@ -112,6 +118,23 @@ public static class UserRepository
         }
         return user?.Id ?? -1 ;
         //await db.CloseAsync();
+    }
+
+    public static async Task<int> UpdateUserBalance(int id, decimal addingBalance)
+    {
+        var user = GetUser(id).Result;
+        var balance = user.Balance;
+        Console.WriteLine("Тут");
+        Console.WriteLine(addingBalance + " " +balance);
+        if (balance + addingBalance < 0)
+        {
+            Console.WriteLine("Тут");
+            return -1;
+        }
+        await using var db = new NpgsqlConnection(_connString);
+        const string sqlQuery = @"UPDATE users SET balance = users.balance + @addingBalance
+                                WHERE id = @id RETURNING id";
+        return await db.QueryFirstAsync<int>(sqlQuery, new { @id, @addingBalance});
     }
 
     public static async Task DeleteUser(int id)

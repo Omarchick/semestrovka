@@ -6,7 +6,6 @@
         errorBlock.innerText = "The password must contain 8 characters or more!";
     }
     else {
-        console.log(nameEl.value)
         let response = await fetch("/register", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
         if (responseText == "All done!") {
@@ -29,10 +28,8 @@ async function signIn() {
         errorBlock.innerText = "The password must contain 8 characters or more!";
     }
     else {
-        console.log(nameEl.value)
         let response = await fetch("/signIn", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
-        console.log(responseText + "RT");
         if (responseText == "All done!") {
             errorBlock.innerText = "You have successfully entered!";
             document.location.href ="http://localhost:1111/products";

@@ -14,15 +14,16 @@ namespace MarketPlace
         public List<Review>? Reviews { get; set; }
         public decimal Rating { get; set; }
         public long Count { get; set; }
+        public decimal Price { get; set; }
 
-
-        public UserProductWithCount(int id, string name, string information,decimal rating , long count)
+        public UserProductWithCount(int id, string name, string information,decimal rating , long count, decimal price)
         {
             Id = id;
             Name = name;
             Information = information;
             Rating = rating;
             Count = count;
+            Price = price;
         }
     }
 }

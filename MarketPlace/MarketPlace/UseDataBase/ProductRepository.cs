@@ -93,7 +93,9 @@ public class ProductRepository
             Product product = new(
                 reader.GetInt32(0),
                 reader.GetString(1),
-                reader.GetString(2));
+                reader.GetString(2),
+                reader.GetDecimal(3),
+                reader.GetDecimal(4));
                 return product;
         }
 

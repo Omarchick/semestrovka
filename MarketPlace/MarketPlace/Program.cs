@@ -47,8 +47,8 @@ while (listener.IsListening)
         //Console.WriteLine(await UserProductRepository.AddUserProduct(new UserProduct(1,1, 57)));
         //Console.WriteLine(UserProductRepository.GetProductsByUserId(1).Result[0].Information);
 
-        //Console.WriteLine((await ProductRepositoryWithCount.GetProductFromDB(1))[0].Name);
-
+        //Console.WriteLine((await ProductRepositoryWithCount.GetAllProductFromDB(1))[0].Name);
+        
 
         var context = await listener.GetContextAsync();
         var request = context.Request;

@@ -117,24 +117,3 @@ line-height: inherit;*/
     background-color: #0adfff;
     border-radius: 1vh
 }
-
-.productPrice {
-    z-index: 2;
-    -webkit-text-stroke: 0.05vh snow;
-    padding-left: 0.35vw;
-    align-items: center;
-    justify-content: center;
-    top: -78vh;
-    right: 5vw;
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    margin-left: -10vw;
-    position: absolute;
-    height: 7vh;
-    width: 10vw;
-    font-size: 4vh;
-    border: 0.5vh solid #00ff1e;
-    background-color: #ff7e00;
-    border-radius: 4vh
-}

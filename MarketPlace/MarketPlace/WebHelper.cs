@@ -67,7 +67,12 @@ namespace MarketPlace
             {
                 await UserProductRepository.DeleteUserProduct(userId, userProduct.ProductId);
             }
-            context.Response.StatusCode = 200;
+            context.Response.StatusCode = 418;
+            await context.Response.OutputStream.WriteAsync(
+                Encoding.UTF8.GetBytes(
+                    JsonSerializer.Serialize(
+                        new ProductCountUserBalanceDTO {ProductCount = 0, 
+                            Balance = UserRepository.GetUser(userId).Result.Balance})));
             context.Response.OutputStream.Close();
 
         }
@@ -79,32 +84,38 @@ namespace MarketPlace
             var content = await reader.ReadToEndAsync();
             var userProduct = JsonSerializer.Deserialize<UserProductDTO>(content);
             var userId = await context.GetUserId();
+            var userProductFromDB = UserProductRepository.GetUserProduct(userId, userProduct.ProductId).Result;
             var resultOfUpdatingDB =
                 UserProductRepository.UpdateUserProductWithStatusCodes(userId, userProduct.ProductId,
-                    userProduct.ProductCount).Result;
+                    userProduct.ProductCount, userProductFromDB).Result;
             if (userId is not -1 && userProduct is not null)
             {
                 if (resultOfUpdatingDB == -205)
                 {
-                    context.Response.StatusCode = 205;
-                    context.Response.OutputStream.Close();
+                    context.Response.StatusCode = 201;
+                    await context.Response.OutputStream.WriteAsync(
+                        Encoding.UTF8.GetBytes(JsonSerializer.Serialize(
+                            new ProductCountUserBalanceDTO {ProductCount = 0,
+                                Balance = UserRepository.GetUser(userId).Result.Balance})));
                 }
                 else if (resultOfUpdatingDB != -1)
                 {
                     context.Response.StatusCode = 200;
-                    context.Response.OutputStream.Close();
+                    await context.Response.OutputStream.WriteAsync(
+                        Encoding.UTF8.GetBytes(
+                        JsonSerializer.Serialize(
+                        new ProductCountUserBalanceDTO {ProductCount = UserProductRepository.GetUserProduct(userId, userProduct.ProductId).Result.ProductCount, Balance = UserRepository.GetUser(userId).Result.Balance})));
                 }
                 else
                 {
                     context.Response.StatusCode = 418;
-                    context.Response.OutputStream.Close();
                 }
             }
             else
             {
                 context.Response.StatusCode = 418;
-                context.Response.OutputStream.Close();
             }
+            context.Response.OutputStream.Close();
         }
         
         public static async Task Register(HttpListenerContext context)

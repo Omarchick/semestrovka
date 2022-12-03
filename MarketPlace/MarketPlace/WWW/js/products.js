@@ -103,18 +103,40 @@ async function changeProductCount(count, id, productId) {
     let productCount = Number(countElement.textContent);
     let balance = Number(document.querySelector('#UserBalance').textContent.
     replace('Balance: ', '').replace('⚡', ''));
-    let price = Number(element.querySelector('.productPrice'.textContent));
-    if (count < 0 && productCount <= 0){
-        await fetch("/deleteUserProduct",
+    let price = Number(element.querySelector('.productPrice').textContent);
+/*    if (count < 0 && productCount <= 0){
+        let response = await fetch("/deleteUserProduct",
             {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+        document.querySelector('#UserBalance').textContent = "Balance: " + JSON.parse(await response.text()).Balance + "⚡";
         return;
-    }
-    if (productCount >= 0 && balance >= price){
+    }*/
+    if (productCount >= 0){
         let response = await fetch("/addProductCount",
             { method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
         if (response.ok){
-            countElement.title = Number(countElement.title) + count;
-            countElement.textContent = Number(countElement.textContent) + count;
+            let dbData = JSON.parse(await response.text());
+            if (count > 0 && balance >= count * price)
+            {
+                console.log(1221);
+                console.log(dbData);
+                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
+                countElement.title = dbData.ProductCount;
+                countElement.textContent = dbData.ProductCount;
+                /*                document.querySelector('#UserBalance').textContent = "Balance: " + String(balance - price * count) + "⚡";*/
+/*                countElement.title = Number(countElement.title) + count;
+                countElement.textContent = Number(countElement.textContent) + count;*/
+            }
+            else if (count < 0)
+            {
+                console.log(dbData);
+                console.log(2121);
+                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
+                countElement.title = dbData.ProductCount;
+                countElement.textContent = dbData.ProductCount;
+/*                document.querySelector('#UserBalance').textContent = "Balance: " + String(balance - price * count) + "⚡";*/
+/*                countElement.title = Number(countElement.title) + count;
+                countElement.textContent = Number(countElement.textContent) + count;*/
+            }
         }
         else {
             let errorBlock = document.getElementById('errorBlock');
