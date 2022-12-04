@@ -34,7 +34,8 @@ body {
     background-color: #7bff71;
     position: absolute;
     top: 25vh;
-    left: 100vw;
+    left: 10vw;
+/*    left: 10vw;*/
     font-size: 7vh;
 /* text-align: center;*/
 }

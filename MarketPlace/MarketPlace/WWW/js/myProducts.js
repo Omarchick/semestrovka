@@ -11,9 +11,15 @@ async function addProductItem(id, name, information, rating, count, realId, pric
         starRating+= "★";
     }
     item.innerHTML = `
-    <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 10vw">
-        <strong title="${name}" style="display: flex; flex-direction: column; 
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}
+    <div class="productItem" id="${id}product" style="top: calc(${getCount()} * (1vmin + 1vmax))">
+        <strong title="${name}" style="
+        flex-direction: column;
+        white-space: nowrap;
+        /* overflow: hidden; */
+        text-overflow: ellipsis;
+        position: absolute;
+        font-size: calc(2 * (1vmin + 1vmax));
+        ">${name}
             <div class="form_item">
                 <div class="rating rating_set">
                     <div class="rating_body">
@@ -28,7 +34,6 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                         </div>
                     </div>
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
-                    <div title="${count}" class="productCount">${count}</div>
 
                 </div>
             </div>
@@ -36,10 +41,11 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                 <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
                 <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
                 <button title="Make a review to this product." class="makeReview">
-                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none"/>
+                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none;"/>
                 </button>
         </strong>
-        <div class="productPrice">${price}<text style="font-size: 3vh; margin-top: 0.4vh">⚡</text></div>   
+        <div title="${count}" class="productCount">${count}</div>
+        <div title="${price}" class="productPrice">${price}<text style=" font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>   
         </div>
     `;
     /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">
@@ -70,7 +76,7 @@ async function removeProduct(id) {
     if (id < productsId.length) {
         document.getElementById(String(id) + "product").remove();
         await moveUpElements(id);
-        count -= 70;
+        count -= 20;
         productsId.pop();
         //productsOnPage.slice(id, id);
         for (let i = id; i < productsOnPage.length - 1; i++){
@@ -85,13 +91,13 @@ let isSending = false;
 var productsOnPage = [];
 var productsId = [];
 var productsOnDB = [];
-var count = -35;
+var count = -5;
 
 let balanceElement;
 let balance;
 
 function getCount() {
-    count += 70;
+    count += 20;
     return count;
 }
 
@@ -116,7 +122,7 @@ async function moveUpElements(deletedId) {
         console.log(replacedString);
         console.log(product.id + " Новый");
         console.log("Спускаем");*/
-        product.setAttribute("style", "top:" + (Number(product.id.replace("product", "")) * 70 + 35 + "vh"));
+        product.setAttribute("style", "top:" + 'calc(' + Number(product.id.replace("product", "") * 20 + 15) + ' * (1vmin + 1vmax))');
         //document.querySelector('#reg').style.top = '10vh';
         //document.getElementById("2").style.top = '10vh';
     }

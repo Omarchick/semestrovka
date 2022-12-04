@@ -11,7 +11,7 @@ async function addProductItem(id, name, information, rating, count, realId, pric
         starRating+= "★";
     }
     item.innerHTML = `
-    <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 10vw">
+    <div class="productItem" id="${id}product" style="top: calc(${getCount()} * (1vmin + 1vmax))">
         <strong title="${name}" style="
         flex-direction: column;
         white-space: nowrap;
@@ -76,7 +76,7 @@ let isSending = false;
 var productsOnPage = [];
 var productsId = [];
 var productsOnDB = [];
-var count = -35;
+var count = -5;
 
 let balanceElement;
 let balance;
@@ -90,7 +90,7 @@ replace('Balance: ', '').replace('⚡', ''));
 let price = Number(element.querySelector('.productPrice').textContent);*/
 
 function getCount() {
-    count += 70;
+    count += 20;
     return count;
 }
 

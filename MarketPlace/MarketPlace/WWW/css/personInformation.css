@@ -7,11 +7,9 @@ body {
 }
 
 .enter {
+    line-height: inherit;
     position: fixed;
     color: black;
-    right:  calc(5vw + 5vmax);
-    margin-right: calc(-3 *(1vmin + 1vmax));
-    top: calc(1vmin + 1vmax);
     /*    display: inline;*/
     white-space:pre;
     /*    width: 5vw;
@@ -22,8 +20,11 @@ body {
     /*-webkit-text-stroke:0.1vw darkkhaki;*/
     /*    -webkit-text-fill-color:transparent;*/
     /*    font-family: Righteous, cursive;*/
-    font-size: calc(1vmin + 1vmax);
-    line-height: 3vh; !important;
+    right: -1vw;
+    padding-right: 50vw;
+    margin-right: -45vw;
+    top: 1vh;
+    font-size: 2vh;
 
 }
 .enter > .enterBtn {
