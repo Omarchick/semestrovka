@@ -9,7 +9,8 @@ body {
 .enter {
     position: fixed;
     color: black;
-    right: 2vw;
+    right: 4vw;
+    margin-right: -3vw;
     top: 2vh;
     /*    display: inline;*/
     white-space:pre;
@@ -32,13 +33,14 @@ body {
 
 
 #errorBlock {
+
     top: 5vh;
     right: 16vw;
     overflow: hidden;
     text-align: left;
     word-break: break-all;
     position: absolute;
-    font-size: 2vh;
+    font-size: calc(2vmin/4 + 2vmax/8);;
     color: #ff0002;
     -webkit-text-stroke-width: 0.05vh;
     -webkit-text-stroke-color: black;
@@ -52,7 +54,9 @@ body {
 .userData {
     position: fixed;
     color: black;
-    left: 83vw;
+    right: 0;
+    padding-right: 50vw;
+    margin-right: -40vw;
     top: 2vh;
     white-space:pre;
     font-size: 2vh;
@@ -65,7 +69,7 @@ body {
 }
 
 #userName {
-    font-size: 1.8vw;
+    font-size: calc(9vmin/4 + 9vmax/4);
     color: #9cf5ff;
     font-family: 'cursive';
     margin-top: 3vh !important;
@@ -75,14 +79,14 @@ body {
 #UserBalance {
     position: relative;
     color: #ff4b52;
-    top: 0.5vh;
+    top: calc(0.5 * 1vmin/2 + 1vmax/8);
     font-family: "Comic Sans MS", monospace;
-    font-size: 1.2vw;
+    font-size: calc(3vmin+ 2vmax);
     text-decoration: underline rgba(255,143,0,0.62) dashed;
 }
 
 #changeBalance {
-    margin-top: 2vh !important;
+    margin-top: calc( 2 * 1vmin/2 + 1vmax/8) !important;
     font-family: Righteous, cursive;
 }
 
@@ -92,13 +96,6 @@ body {
     font-size: inherit;
     font-family: Righteous, cursive;
 }
-
-/*
-margin: 0;
-font-family: inherit;
-font-size: inherit;
-line-height: inherit;*/
-
 
 .productCount {
     -webkit-text-stroke: 0.1vh #0036ff;

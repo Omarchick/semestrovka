@@ -39,7 +39,7 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                     <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none"/>
                 </button>
         </strong>
-        <div class="productPrice">${price}<text style="font-size: 3vh; margin-top: 0.4vh">⚡</text></div>   
+        <div title="${price}" class="productPrice">${price}<text style="font-size: 1vw; margin-top: 0.4vh">⚡</text></div>   
         </div>
     `;
     /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">

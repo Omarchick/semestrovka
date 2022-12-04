@@ -12,101 +12,25 @@ body {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-/*.enterElements{
-    white-space:revert;
-}
-
-.enter {
-    position: absolute;
-    color: black;
-    right: 2vw;
-    top: 2vh;
-    !*    display: inline;*!
-    white-space:pre;
-    !*    width: 5vw;
-        height: 5vh;*!
-    !*background-color: black;*!
-    !*outline-color: black;*!
-    !*    text-outline: black 50px 50px;*!
-    !*-webkit-text-stroke:0.1vw darkkhaki;*!
-    !*    -webkit-text-fill-color:transparent;*!
-!*    font-family: Righteous, cursive;*!
-    font-size: 2vh;
-    line-height: 3vh; !important;
-    
-}
-.enter > .enterBtn {
-!*    margin-top: 1vh;*!
-    margin-right: 2vw;
-}
-
-
-#errorBlock {
-    top: 5vh;
-    right: 16vw;
-    overflow: hidden;
-    text-align: left;
-    word-break: break-all;
-    position: absolute;
-    font-size: 2vh;
-    color: #ff0002;
-    -webkit-text-stroke-width: 0.05vh;
-    -webkit-text-stroke-color: black;
-!*    white-space:break-spaces;
-    text-shadow: #00ff1e;
-    border:0.5vh solid #ff1733;
-    margin:20px auto;*!
-!*    padding:10px;*!
-!*    padding-right: -3px;
-    padding-bottom: 10px;*!
-}*/
-
-/*.dropdown {
-    border: none;
-    position: relative;
-    max-height: fit-content;
-    min-height: fit-content;
-    left: 0vw;
-    top: 0vh;
-    !*line-height: 10vh;*!
-}*/
-
-/*.mainTitle:visited
-{
-    color: chocolate;
-}*/
 .mainTitle:hover
 {
     color: #fbff00;
-    /*color: olive; !important;*/
 }
-.mainTitle:active
-{
-/*    color: black;*/
-}
+
 .mainTitle {
     position: absolute;
     color: gold;
-    right: 37.5vw;
+    left: calc(50vw - 22vmax);
     top: 10vh;
     text-decoration: none;
-/*    width: 5vw;
-    height: 5vh;*/
-    /*background-color: black;*/
-    /*outline-color: black;*/
-/*    text-outline: black 50px 50px;*/
     -webkit-text-stroke:0.05vw black;
-/*    -webkit-text-fill-color:transparent;*/
     text-shadow: 0.25vh 0 0.25vw #000,
     0 0.25vh 0.5vw #000,
     -0.25vh 0 0.5vw #000,
     0 -0.25vw 0.25vw #000;
-    /*outline: blue outset 3px;*/
     font-family: Georgia, serif;
-    font-size: 15vh;
+    font-size: calc(15vmin/2 + 15vmax/8);;
     line-height: 10vh;
-    /*text-align: end;*/
-    /*margin: 10vh 50vw;*/
 }
 
 .products {
