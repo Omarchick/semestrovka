@@ -12,8 +12,14 @@ async function addProductItem(id, name, information, rating, count, realId, pric
     }
     item.innerHTML = `
     <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 10vw">
-        <strong title="${name}" style="flex-direction: column; 
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; font-size: calc(2 * (1vmin + 1vmax));">${name}
+        <strong title="${name}" style="
+        flex-direction: column;
+        white-space: nowrap;
+        /* overflow: hidden; */
+        text-overflow: ellipsis;
+        position: absolute;
+        font-size: calc(2 * (1vmin + 1vmax));
+        ">${name}
             <div class="form_item">
                 <div class="rating rating_set">
                     <div class="rating_body">

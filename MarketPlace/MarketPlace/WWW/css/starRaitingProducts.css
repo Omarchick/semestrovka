@@ -3,7 +3,7 @@
     margin-top: calc(1vmax + 1vmin);
     display: flex; /**/
     align-items: flex-end; /**/
-    font-size: calc(1 * (1vmax + 1vmin));
+    font-size: calc(2 * (1vmax + 1vmin));
     line-height: 0.75;
 }
 
@@ -57,5 +57,5 @@
     font-size: 50%;
     line-height: 1;
     padding: 0 0 0 1vw;
-    -webkit-text-stroke: 0.15vh gold;
+    -webkit-text-stroke: 0.1vh gold;
 }

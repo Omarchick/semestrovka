@@ -9,7 +9,7 @@ body {
 .enter {
     position: fixed;
     color: black;
-    right: 4vw;
+    right:  calc(5vw + 5vmax);
     margin-right: calc(-3 *(1vmin + 1vmax));
     top: calc(1vmin + 1vmax);
     /*    display: inline;*/
@@ -112,9 +112,14 @@ body {
     margin-left: -10vw;
     position: absolute;
     height: 7vh;
-    width: 10vw;
+    width: 8vw;
     font-size: calc((1vw + 2vh));
     border: 0.5vh solid #00ff1e;
     background-color: #0adfff;
     border-radius: 4vh;
+    min-width: 5vh;
+    min-height: 0.7vw;
+    max-height: 4vh;
+    margin-top: 3vh;
+
 }
