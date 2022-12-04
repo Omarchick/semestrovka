@@ -28,6 +28,8 @@ button:hover {
 }
 .mainTitle {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     color: gold;
     left: 17vw;
     top: 10vh;

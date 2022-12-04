@@ -11,9 +11,9 @@ async function addProductItem(id, name, information, rating, count, realId, pric
         starRating+= "★";
     }
     item.innerHTML = `
-    <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 30vw">
-        <strong title="${name}" style="display: flex; flex-direction: column; 
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}
+    <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 10vw">
+        <strong title="${name}" style="flex-direction: column; 
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; font-size: calc(2 * (1vmin + 1vmax));">${name}
             <div class="form_item">
                 <div class="rating rating_set">
                     <div class="rating_body">
@@ -35,7 +35,7 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                 <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
                 <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
                 <button title="Make a review to this product." class="makeReview">
-                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none;position: absolute; top: calc((1vw/ 2 + 1vh/ 4)"/>
+                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none;"/>
                 </button>
         </strong>
         <div title="${count}" class="productCount">${count}</div>
@@ -164,11 +164,9 @@ async function changeProductCount(count, id, productId) {
                 countElement.textContent = dbData.ProductCount;*/
                 balance = balance - count * price;
                 balanceElement.textContent = "Balance: " + balance + "⚡";
-                console.log(balanceElement);
                 element.Count = Number(countElement.textContent) + count
                 countElement.title = element.Count;
                 countElement.textContent = element.Count;
-                console.log(balance + " after " + count * price);
                 await AddSendingData(productId, count);
                 
 /*                countElement.title = Number(countElement.title) + count;
@@ -179,9 +177,6 @@ async function changeProductCount(count, id, productId) {
             console.log("count < 0")
         if (count > 0 && balance - count * price >= 0)
         {
-            console.log(count + " count " + price + "  price")
-            console.log(balance + " before " + count * price);
-
             /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
                             countElement.title = dbData.ProductCount;
                             countElement.textContent = dbData.ProductCount;*/

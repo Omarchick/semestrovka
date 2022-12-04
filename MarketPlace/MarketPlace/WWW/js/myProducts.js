@@ -11,7 +11,7 @@ async function addProductItem(id, name, information, rating, count, realId, pric
         starRating+= "★";
     }
     item.innerHTML = `
-    <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 30vw">
+    <div class="productItem" id="${id}product" style="top: ${getCount()}vh; left: 10vw">
         <strong title="${name}" style="display: flex; flex-direction: column; 
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">${name}
             <div class="form_item">

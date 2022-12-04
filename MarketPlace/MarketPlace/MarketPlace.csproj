@@ -94,9 +94,6 @@
     <None Update="WWW\js\myProducts.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="WWW\css\myProducts.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="WWW\html\starRaitingproducts.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
