@@ -28,7 +28,6 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                         </div>
                     </div>
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
-                    <div title="${count}" class="productCount">${count}</div>
 
                 </div>
             </div>
@@ -36,10 +35,11 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                 <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
                 <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
                 <button title="Make a review to this product." class="makeReview">
-                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none"/>
+                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none;position: absolute; top: calc((1vw/ 2 + 1vh/ 4)"/>
                 </button>
         </strong>
-        <div title="${price}" class="productPrice">${price}<text style="font-size: 1vw; margin-top: 0.4vh">⚡</text></div>   
+        <div title="${count}" class="productCount">${count}</div>
+        <div title="${price}" class="productPrice">${price}<text style=" font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>   
         </div>
     `;
     /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">

@@ -6,7 +6,6 @@ body {
 .mainTitle:hover
 {
     color: #fbff00;
-    /*color: olive; !important;*/
 }
 .mainTitle:active
 {
@@ -15,30 +14,21 @@ body {
 .mainTitle {
     position: absolute;
     color: gold;
-    right: 45vw;
-    top: 10vh;
+    left: calc(50vw - 22vmax);
+    top: 6vh;
     text-decoration: none;
-    /*    width: 5vw;
-        height: 5vh;*/
-    /*background-color: black;*/
-    /*outline-color: black;*/
-    /*    text-outline: black 50px 50px;*/
     -webkit-text-stroke:0.05vw black;
-    /*    -webkit-text-fill-color:transparent;*/
     text-shadow: 0.25vh 0 0.25vw #000,
     0 0.25vh 0.5vw #000,
     -0.25vh 0 0.5vw #000,
     0 -0.25vw 0.25vw #000;
-    /*outline: blue outset 3px;*/
     font-family: Georgia, serif;
-    font-size: 10vh;
+    font-size: calc(15vmin/2 + 15vmax/8);;
     line-height: 10vh;
-    /*text-align: end;*/
-    /*margin: 10vh 50vw;*/
 }
 .productItem{
-    height: 58vh;
-    width: 38vw;
+    height: calc(25vmin + 25vmax);
+    width: calc(32vmin + 32vmax);
     border-radius: 1vh;
     border: 0.5vh solid #00ff1e;
     background-color: #7bff71;
@@ -52,12 +42,12 @@ body {
     margin-top: 1vh;
     border-radius: 1.5vh;
     border: 0.5vh solid black;
-    font-size: 3.2vh;
+    font-size: calc(2vmin + 2vmax);
     text-align: left;
     position: sticky;
     resize: none;
-    height: 30vh;
-    width: 33.5vw;
+    height: calc(10vh + (24vmin + 23vmax) * 0.5);
+    width: calc((32vmin + 32vmax) * 0.8);
     vertical-align: top;
     left: 3.5vh;
 }
@@ -148,7 +138,7 @@ body {
 
 .productPrice {
     z-index: 2;
-    -webkit-text-stroke: 0.05vh snow;
+    -webkit-text-stroke: 0.01vw crimson;
     padding-left: 0.35vw;
     align-items: center;
     justify-content: center;
@@ -161,7 +151,7 @@ body {
     position: absolute;
     height: 7vh;
     width: 10vw;
-    font-size: 4.5vh;
+    font-size: calc((1vw + 2vh));
     border: 0.5vh solid #00ff1e;
     background-color: #ff7e00;
     border-radius: 4vh

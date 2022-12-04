@@ -11,6 +11,7 @@ async function GetPersonInformation() {
                 <text title="CountMoney" class="userInfo" id="UserBalance">Balance: ${user.Balance}⚡</text>
                 <button class="settingsBtn" onclick="changeBalance()" id="changeBalance">Put Money</button>
                 <button class="settingsBtn" onclick="configure()" id="settings">Settings</button>
+                <button class="settingsBtn" onclick="buyProducts()" id="buyProdcut">Buy Products</button>
             </p>      
         </form>
     `;
@@ -30,4 +31,8 @@ async function configure() {
     
 }
 async function changeBalance() {
+}
+
+async function buyProducts() {
+    
 }

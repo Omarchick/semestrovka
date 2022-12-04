@@ -10,8 +10,8 @@ body {
     position: fixed;
     color: black;
     right: 4vw;
-    margin-right: -3vw;
-    top: 2vh;
+    margin-right: calc(-3 *(1vmin + 1vmax));
+    top: calc(1vmin + 1vmax);
     /*    display: inline;*/
     white-space:pre;
     /*    width: 5vw;
@@ -22,7 +22,7 @@ body {
     /*-webkit-text-stroke:0.1vw darkkhaki;*/
     /*    -webkit-text-fill-color:transparent;*/
     /*    font-family: Righteous, cursive;*/
-    font-size: 2vh;
+    font-size: calc(1vmin + 1vmax);
     line-height: 3vh; !important;
 
 }
@@ -34,13 +34,13 @@ body {
 
 #errorBlock {
 
-    top: 5vh;
-    right: 16vw;
+    top: calc(1vmin + 1vmax);
+    right: calc(10 *(1vmin + 1vmax));;
     overflow: hidden;
     text-align: left;
     word-break: break-all;
     position: absolute;
-    font-size: calc(2vmin/4 + 2vmax/8);;
+    font-size: calc(2vmin + 1vmax/ 2);;
     color: #ff0002;
     -webkit-text-stroke-width: 0.05vh;
     -webkit-text-stroke-color: black;
@@ -90,6 +90,7 @@ body {
     font-family: Righteous, cursive;
 }
 
+
 .settingsBtn {
     margin: 0;
     line-height: inherit;
@@ -98,19 +99,22 @@ body {
 }
 
 .productCount {
+    z-index: 2;
     -webkit-text-stroke: 0.1vh #0036ff;
-    padding-left: 0.35vw;
+    padding-left: 0.60vw;
     align-items: center;
-    top: -6.5vh;
-    right: -8vw;
+    justify-content: center;
+    top: -8vh;
+    left: 20vw;
     display: flex;
     flex-direction: row;
-    text-align: left;
+    text-align: center;
     margin-left: -10vw;
-    position: relative;
-    height: 4vh;
-    width: 100vw;
-    font-size: 3vh;
+    position: absolute;
+    height: 7vh;
+    width: 10vw;
+    font-size: calc((1vw + 2vh));
+    border: 0.5vh solid #00ff1e;
     background-color: #0adfff;
-    border-radius: 1vh
+    border-radius: 4vh;
 }
