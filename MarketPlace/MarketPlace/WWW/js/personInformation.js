@@ -1,10 +1,10 @@
 async function GetPersonInformation() {
     let parentItem = document.getElementById("personInformation");
     let item = document.createElement("div");
-    let response = await fetch('/getPersonInfo');
-    if (response.ok){
-        let user = JSON.parse(await response.text());
-        item.innerHTML = `
+        let response = await fetch('/getPersonInfo').catch();
+        if (response.ok) {
+            let user = JSON.parse(await response.text());
+            item.innerHTML = `
         <form>
             <p class="userData">
                 <strong title="Name" class="userInfo" id="userName">${user.Name}</strong>
@@ -14,9 +14,8 @@ async function GetPersonInformation() {
             </p>      
         </form>
     `;
-    }
-    else {
-        item.innerHTML = `
+        } else {
+            item.innerHTML = `
         <p class="enter">
             <input class="input_data" id="inputName" placeholder="Name">
             <input class="input_data" id="inputPassword" placeholder="Password"  type="password">
@@ -24,8 +23,8 @@ async function GetPersonInformation() {
             <button class="enterBtn" onclick="signIn()" id="singIn">Sign in</button>
         </p>
     `;
-    }
-    parentItem.appendChild(item);
+        }
+        parentItem.appendChild(item);
 }
 async function configure() {
     

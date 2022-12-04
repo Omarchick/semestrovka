@@ -36,6 +36,13 @@ public class UserProductRepository
         const string sqlQuery = @"SELECT * FROM public.user_products WHERE user_id = @userId and product_id = @productId";
         return await db.QueryFirstOrDefaultAsync<UserProduct>(sqlQuery, new { userId, productId });
     }
+    
+    public static async Task<ProductIDCountDTO[]> GetAllUserProductsWithBalance(int userId) 
+    {
+        await using var db = new NpgsqlConnection(_connString);
+        const string sqlQuery = @"SELECT product_id, product_count FROM public.user_products WHERE user_id = @userId";
+        return (await db.QueryAsync<ProductIDCountDTO>(sqlQuery, new { userId })).ToArray();
+    }
 
     public static async Task<Product[]> GetProductsByUserId(int userId)
     {
@@ -72,6 +79,45 @@ public class UserProductRepository
     
     public static async Task<int> UpdateUserProductWithStatusCodes(int userId, int productId, long productCount, UserProduct userProduct = null)
     {
+        userProduct = GetUserProduct(userId, productId).Result;
+        var product = ProductRepository.GetProduct(productId).Result;
+        var balance = UserRepository.GetUserBalance(userId).Result;
+        Console.WriteLine(product.Price);
+        if (product.Price * productCount <= balance && product.Price >= 0)
+        {
+            if (userProduct is null)
+            {
+                if (productCount > 0)
+                {
+                    await UserRepository.UpdateUserBalance(userId,-productCount * product.Price);
+                    var a = await new NpgsqlConnection("Server=localhost;Port=5432;User Id=omr;Password=1234;Database=marketplace").
+                        QuerySingleAsync<int>("Insert Into public.user_products " +
+                                              "(user_id, product_id, product_count) Values " +
+                                              @"(@userId, @productId, @productCount) RETURNING user_id", new { userId, productId, productCount});;
+                    return a;
+                }
+                return -1;
+            }
+            if (userProduct.ProductCount <= -productCount)
+            {
+                await UserRepository.UpdateUserBalance(userId, -productCount * product.Price);
+                await DeleteUserProduct(userId, productId);
+                return -205;
+            }
+            
+            await UserRepository.UpdateUserBalance(userId,-productCount * product.Price);
+            
+            await using var db = new NpgsqlConnection(_connString);
+            const string sqlQuery = @"UPDATE public.user_products SET product_count = product_count + @productCount 
+                            WHERE user_id = @userId and product_id = @productId RETURNING user_id";
+            return await db.QueryFirstAsync<int>(sqlQuery, new { @userId, @productId, productCount });
+        }
+        
+        return -1;
+    }
+    
+    public static async Task<int> UpdateUserProducts(int userId, int productId, long productCount, UserProduct userProduct = null)
+    {
         Console.WriteLine(0);
         userProduct = GetUserProduct(userId, productId).Result;
         var product = ProductRepository.GetProduct(productId).Result;
@@ -82,42 +128,34 @@ public class UserProductRepository
             Console.WriteLine(2);
             if (userProduct is null)
             {
-                Console.WriteLine("NLL");
                 if (productCount > 0)
                 {
-                    Console.WriteLine("here");
                     await UserRepository.UpdateUserBalance(userId,-productCount * product.Price);
                     var a = await new NpgsqlConnection("Server=localhost;Port=5432;User Id=omr;Password=1234;Database=marketplace").
                         QuerySingleAsync<int>("Insert Into public.user_products " +
                                               "(user_id, product_id, product_count) Values " +
                                               @"(@userId, @productId, @productCount) RETURNING user_id", new { userId, productId, productCount});;
-                    Console.WriteLine(a);
                     return a;
                 }
-                Console.WriteLine(-1);
                 return -1;
             }
             if (userProduct.ProductCount <= -productCount)
             {
-                Console.WriteLine(22323);
                 await UserRepository.UpdateUserBalance(userId, -productCount * product.Price);
                 await DeleteUserProduct(userId, productId);
                 return -205;
             }
-
-            Console.WriteLine(")");
-            Console.WriteLine(await UserRepository.UpdateUserBalance(userId,-productCount * product.Price) + "add ");
+            
+            await UserRepository.UpdateUserBalance(userId,-productCount * product.Price);
             
             await using var db = new NpgsqlConnection(_connString);
             const string sqlQuery = @"UPDATE public.user_products SET product_count = product_count + @productCount 
                             WHERE user_id = @userId and product_id = @productId RETURNING user_id";
             return await db.QueryFirstAsync<int>(sqlQuery, new { @userId, @productId, productCount });
         }
-
-        Console.WriteLine("fin");
+        
         return -1;
     }
-    
 
     public static async Task DeleteUserProduct(int userId, int productId)
     {

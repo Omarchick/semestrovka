@@ -115,6 +115,10 @@ while (listener.IsListening)
                         await WebHelper.DeleteUserProduct(context);
                         isUsingShowStatic = false;
                         break;
+                    case "/addProducts":
+                        await WebHelper.AddProducts(context);
+                        isUsingShowStatic = false;
+                        break;
                     default:
                         break;
                 }

@@ -20,3 +20,14 @@ public class UserProductDTO
     public  long ProductCount { get; set; }
     
 }
+public class ProductIDCountDTO
+{
+    public int ProductId { get; set; }
+    public  long ProductCount { get; set; }
+}
+
+public class ProductIDCountBalanceDTO
+{
+    public ProductIDCountDTO[] Products { get; set; }
+    public long Balance { get; set; }
+}
