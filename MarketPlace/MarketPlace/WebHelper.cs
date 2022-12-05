@@ -33,6 +33,11 @@ namespace MarketPlace
             await context.Response.ShowFile("WWW/html/myProducts.html");
         }
 
+        public static async Task SetBalacePage(HttpListenerContext context)
+        {
+            await context.Response.ShowFile("WWW/html/updBalance.html");
+        }
+
         public static async Task ProductsNotRegistered(HttpListenerContext context)
         {
             await context.Response.ShowFile("WWW/html/productsNotRegistered.html");
@@ -42,7 +47,14 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/notFound.html");
         }
-
+        
+        public static void IncorrectSession(HttpListenerContext context)
+        {
+            context.RemoveSession();
+            context.Response.StatusCode = 300;
+            context.Response.OutputStream.WriteAsync(null);
+        }
+        
         public static async Task GetUser(HttpListenerContext context)
         {
             await using var stream = context.Response.OutputStream;
@@ -57,6 +69,13 @@ namespace MarketPlace
                 context.Response.StatusCode = 418;
             }
         }
+    
+        public static async Task addBalance(HttpListenerContext context)
+        {
+            UserRepository.UpdateUserBalance(context.GetUserId().Result, 1);
+            context.Response.StatusCode = 200;
+        }
+        
 
         public static async Task DeleteUserProduct(HttpListenerContext context)
         {
@@ -183,7 +202,7 @@ namespace MarketPlace
             context.Response.OutputStream.Close();
         }
 
-        public static async Task Register(HttpListenerContext context)
+        public static async Task<int> Register(HttpListenerContext context)
         {
             await using (var inputStream = context.Request.InputStream)
             {
@@ -197,12 +216,15 @@ namespace MarketPlace
                     context.Response.StatusCode = 201;
                     await Session.SetSession(user, context);
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
+                    Console.WriteLine("allDone");
+                    return user.Id;
                 }
                 else
                 {
                     var succsessOperation = Encoding.ASCII.GetBytes("Error");
                     context.Response.StatusCode = 208;
                     await context.Response.OutputStream.WriteAsync(succsessOperation);
+                    return -1;
                 }
             }
         }

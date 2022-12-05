@@ -14,7 +14,13 @@ client.DefaultRequestHeaders.UserAgent.ParseAdd(
 listener.Prefixes.Add("http://localhost:1111/");
 listener.Start();
 SqlConnection connection = new(@"Data source= LAPTOP-QHM9MDKR;Initial Catalog=MyDataBase; Integrated Security=True");
-int c = 0;
+var userBalancesInUpdate = new Dictionary<int, bool>();
+
+var usersIds = await UserRepository.GetUsersId();
+foreach (var id in usersIds)
+{
+    userBalancesInUpdate.Add(id, false);
+}
 while (listener.IsListening)
 {
     try
@@ -67,7 +73,11 @@ while (listener.IsListening)
                     break;
                 //Actions
                 case "/register":
-                    await WebHelper.Register(context);
+                    var userId = await WebHelper.Register(context);
+                    if (userId != -1)
+                    {
+                        userBalancesInUpdate.Add(userId, false);
+                    }
                     break;
                 case "/signIn":
                     await WebHelper.SignIn(context);
@@ -86,41 +96,65 @@ while (listener.IsListening)
             
             if (context.Request.Cookies["sessionId"] is not null)
             {
-                var enteredUserId = await context.GetCookieInformation();
-                var enteredUser = await UserRepository.GetUser(Convert.ToInt32(enteredUserId));
-                if (enteredUser != null)
+                var enteredUserId = context.GetCookieInformation().Result;
+                if (Int32.TryParse(enteredUserId, out var intUserId))
                 {
-                    await Session.SetSession(enteredUser, context);
+                    var enteredUser = await UserRepository.GetUser(intUserId);
+                    if (enteredUser != null)
+                    {
+                        await Session.SetSession(enteredUser, context);
+                        
+                        switch (request.Url?.LocalPath)
+                        {
+                            //Pages
+                            case "/products":
+                                await WebHelper.Products(context);
+                                break;
+                            case "/myProducts":
+                                await WebHelper.GetMyProducts(context);
+                                break;
+                            case "/balancePage":
+                                await WebHelper.SetBalacePage(context);
+                                break;
+                                ;
+                            //Actions
+                            case "/getUserProducts":
+                                await WebHelper.GetUserProducts(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/addProductCount":
+                                await WebHelper.AddProductCount(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/deleteUserProduct":
+                                await WebHelper.DeleteUserProduct(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/addProducts":
+                                await WebHelper.AddProducts(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/updBalance":
+                                if (!userBalancesInUpdate[await context.GetUserId()])
+                                {
+                                    await WebHelper.addBalance(context);
+                                    userBalancesInUpdate[await context.GetUserId()] = false;
+                                    isUsingShowStatic = false;
+                                }
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        WebHelper.IncorrectSession(context);
+                    }
                 }
-                
-                switch (request.Url?.LocalPath)
+                else
                 {
-                    //Pages
-                    case "/products":
-                        await WebHelper.Products(context);
-                        break;
-                    case "/myProducts":
-                        await WebHelper.GetMyProducts(context);
-                        break;;
-                    //Actions
-                    case "/getUserProducts":
-                        await WebHelper.GetUserProducts(context);
-                        isUsingShowStatic = false;
-                        break;
-                    case "/addProductCount":
-                        await WebHelper.AddProductCount(context);
-                        isUsingShowStatic = false;
-                        break;
-                    case "/deleteUserProduct":
-                        await WebHelper.DeleteUserProduct(context);
-                        isUsingShowStatic = false;
-                        break;
-                    case "/addProducts":
-                        await WebHelper.AddProducts(context);
-                        isUsingShowStatic = false;
-                        break;
-                    default:
-                        break;
+                    WebHelper.IncorrectSession(context);
                 }
             }
             else

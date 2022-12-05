@@ -55,13 +55,13 @@ body {
 .userData {
     position: fixed;
     color: black;
-    right: 0;
+    left: calc(100vw - 25vmax);
     padding-right: 50vw;
     margin-right: -40vw;
     top: 2vh;
     white-space:pre;
     font-size: 2vh;
-    line-height: 3vh; !important;
+    line-height: 3vh !important;
 }
 
 .userInfo {
@@ -70,7 +70,7 @@ body {
 }
 
 #userName {
-    font-size: calc(9vmin/4 + 9vmax/4);
+    font-size: calc(2vmin + 2vmax);
     color: #9cf5ff;
     font-family: 'cursive';
     margin-top: 3vh !important;
@@ -82,7 +82,7 @@ body {
     color: #ff4b52;
     top: calc(0.5 * 1vmin/2 + 1vmax/8);
     font-family: "Comic Sans MS", monospace;
-    font-size: calc(3vmin+ 2vmax);
+    font-size: calc(1vmin + 1vmax);
     text-decoration: underline rgba(255,143,0,0.62) dashed;
 }
 

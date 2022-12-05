@@ -35,21 +35,14 @@ window.addEventListener('load', () => {
 
         function setRating(rating) {
             let ratingItems = rating.querySelectorAll('.rating_item');
-            let ratingItemsParent = rating.querySelector('.rating_items');
             for (let index = 0; index < ratingItems.length; index++) {
                 const ratingItem = ratingItems[index];
                 ratingItem.addEventListener("mouseenter", function(e) {
                     initRatingVars(rating);
-                    ratingItemsParent.title = makeStars(index);
                     setRatingActiveWidth(ratingItem.value);
-                    let resultTitle = "";
-                    resultTitle += makeStars(ratingValue.innerHTML) +'\n\n' + makeStars(index) + ' - Picked.'
-                    ratingItemsParent.title = resultTitle;
                 });
                 ratingItem.addEventListener("mouseleave", function (e) {
                     setRatingActiveWidth(ratingValue.innerHTML); //Can change to 0 if u need to set rating 0 ( on reviews page)
-
-                    ratingItemsParent.title = makeStars(index);
                 });
                 ratingItem.addEventListener("click", function(e) {
                     initRatingVars(rating);
@@ -60,8 +53,6 @@ window.addEventListener('load', () => {
                                 else {*/
                     //show this mark
                     ratingValue.innerHTML = index; //+1 if 5 statrs
-                    ratingValue.title = 'Рейтинг - ' + index;
-                    ratingItemsParent.title = makeStars(index);
                     setRatingActiveWidth();
                     //}
                 })
@@ -98,14 +89,3 @@ window.addEventListener('load', () => {
 
     },100)
 })
-
-function makeStars(rating) {
-    let starRating ="";
-    if (rating < 1){
-        starRating = "No rating!";
-    }
-    for (let i = 0; i < Math.floor(rating); i++){
-        starRating+= "★";
-    }
-    return starRating;
-}

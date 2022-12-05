@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Products</title>
+    <title>Balance</title>
     <meta charset="UTF-8">
     <link rel="icon" href="/pictures/banan.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="../css/products.css">
-    <link rel="stylesheet" type="text/css" href="../css/starRaitingProducts.css">
     <link rel="stylesheet" type="text/css" href="../css/personInformation.css">
     <script src="../js/personInformation.js"></script>
-    <script src="../js/products.js"></script>
-    <script src="../js/starRaitingProducts.js"></script>
+    <script src="../js/updBalance.js"></script>
     
 <!--<script src="../js/showingRating.js"></script>-->
 </head>
 <!--onload="addProductItem('really', 'work', 0)"-->
-<body onload='getProductsFromDB(); GetPersonInformation();' style="background-color: cornsilk">
+<body onload='getProducts(); GetPersonInformation()' style="background-color: cornsilk">
 <div class="personInformation" id="personInformation"></div>
 <text id="errorBlock"></text>
 <a class="mainTitle" href="/">Freedom</a>
-<div class="productItemCollector" id="productItemCollector"></div>
-
+<button onclick="updBalance()" id="addBal">Add Balance</button>
 <!--<div class="productItem" id="${id}product" style="top: 35vh; left: 30vw">
     <strong style="display: flex; flex-direction: column;">${name}
         <b class="productRating" style="display: flex; flex-direction: column; text-align: left">{rating}</b>

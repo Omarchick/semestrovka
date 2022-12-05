@@ -93,6 +93,13 @@ public static class UserRepository
 
        return -1;
     }
+
+    public static async Task<int[]> GetUsersId()
+    {
+        await using var db = new NpgsqlConnection(_connString);
+        const string sqlQuery = @"SELECT id FROM users";
+        return (await db.QueryAsync<int>(sqlQuery)).ToArray();
+    }
     
     public static async Task<int> UpdateUser(string name, string password, string? newname, string? newpassword)
     {
@@ -126,9 +133,11 @@ public static class UserRepository
         var balance = user.Balance;
         Console.WriteLine("Тут");
         Console.WriteLine(addingBalance + " " +balance);
+        Console.WriteLine(balance + addingBalance);
+        Console.WriteLine(balance + addingBalance < 0);
         if (balance + addingBalance < 0)
         {
-            Console.WriteLine("Тут");
+            Console.WriteLine("Тут1");
             return -1;
         }
         await using var db = new NpgsqlConnection(_connString);
@@ -146,19 +155,26 @@ public static class UserRepository
 
     private static async Task<User> GetUserFromReader(DbDataReader reader)
     {
-        while (await reader.ReadAsync())
+        try
         {
-            User user = new(
-                reader.GetInt32(0),
-                reader.GetString(1),
-                reader.GetString(2),
-                reader.GetInt32(3));
-            return user;
+            while (await reader.ReadAsync())
+            {
+                User user = new(
+                    reader.GetInt32(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.GetInt32(3));
+                return user;
+            }
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Не удалось преобразовать пользователя из БД");
+            return null!;
         }
 
         return null!;
     }
-
     //const string _connString = "Host=localhost;User Id=omr;Password=1234;Database=marketplace";
     /*var connString = "Host=myserver;Username=mylogin;Password=mypass;Database=mydatabase";
 

@@ -3,15 +3,10 @@ async function addProductItem(id, name, information, rating, count, realId, pric
     let item = document.createElement("div");
     /*    item.setAttribute('id', "productItem");*/
     //<b title="${rating}" class="productRating" style="display: flex; flex-direction: column; text-align: left">${rating}
-    let starRating = "";
-    if (rating < 1){
-        starRating = "No rating!";
-    }
-    for (let i = 0; i < Math.floor(rating); i++){
-        starRating+= "★";
-    }
+    let starRating = makeStars(rating);
+
     item.innerHTML = `
-    <div class="productItem" id="${id}product" style="top: calc(${getCount()} * (1vmin + 1vmax))">
+    <div class="productItem" id="${id}product" style="top: calc(${getCount()} * calc(3vh / 2 + 1vmax - 1vmin))">
         <strong title="${name}" style="
         flex-direction: column;
         white-space: nowrap;
@@ -76,7 +71,7 @@ let isSending = false;
 var productsOnPage = [];
 var productsId = [];
 var productsOnDB = [];
-var count = -5;
+var count = -10;
 
 let balanceElement;
 let balance;
@@ -90,7 +85,7 @@ replace('Balance: ', '').replace('⚡', ''));
 let price = Number(element.querySelector('.productPrice').textContent);*/
 
 function getCount() {
-    count += 20;
+    count += 23;
     return count;
 }
 
@@ -256,7 +251,18 @@ function UserProduct(userId, productId, productCount){
     this.ProductId = productId;
     this.ProductCount = productCount;
 }
-window.addEventListener('beforeunload', (evt) => alert(1));
+
+function makeStars(rating) {
+    let starRating ="";
+    if (rating < 1){
+        starRating = "No rating!";
+    }
+    for (let i = 0; i < Math.floor(rating); i++){
+        starRating+= "★";
+    }
+    return starRating;
+}
+//window.addEventListener('beforeunload', (evt) => alert(1));
 /*
 window.onload = alert(1);
 window.onbeforeunload = alert(1);

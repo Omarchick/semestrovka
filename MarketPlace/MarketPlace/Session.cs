@@ -35,7 +35,7 @@ namespace MarketPlace
         {
             return JsonSerializer.Serialize(new User(_id, _name, _password, _balance));
         }*/
-        public static async Task SetSession(User user, HttpListenerContext context)
+        public static async Task SetSession(this User user, HttpListenerContext context)
         {
             var randomBytes = new byte[32];
             new Random().NextBytes(randomBytes);
@@ -50,11 +50,31 @@ namespace MarketPlace
                 });
             }
         }
+        
+        public static void RemoveSession( this HttpListenerContext context)
+        {
+            context.Response.Cookies.Add(new Cookie("sessionId", "delete")
+            {
+                Expires = DateTime.UtcNow.AddMinutes(-1),
+                Path = "/"
+            });
+            Console.WriteLine(context.Request.Cookies["sessionId"]);
+        }
 
         public static async Task<string> GetCookieInformation(this HttpListenerContext context)
         {
-            return context.Request.Cookies["sessionId"]?.Value is null ? null :
-                (await RedisStore.RedisCashe.StringGetAsync(context.Request.Cookies["sessionId"]?.Value)).ToString();
+            var cookieValue = context.Request.Cookies["sessionId"]?.Value;
+            if (cookieValue is null)
+            {
+                return null!;
+            }
+            var resultOfGettingRedis = await RedisStore.RedisCashe.StringGetAsync(cookieValue);
+            if (!resultOfGettingRedis.HasValue)
+            {
+                return null!;
+            }
+            
+            return resultOfGettingRedis.ToString();
         }
 
         public static async Task<int> GetUserId(this HttpListenerContext context)

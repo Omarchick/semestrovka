@@ -4,18 +4,24 @@
     let errorBlock = document.getElementById("errorBlock");
     if (passwordEl.value.length < 8) {
         errorBlock.innerText = "The password must contain 8 characters or more!";
+        setTimeout(() => {
+            errorBlock.innerText.value = "";
+        }, 3000);
     }
     else {
         let response = await fetch("/register", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
         if (responseText == "All done!") {
             errorBlock.innerText = "You have successfully registered!";
-           document.location.href = "http://localhost:1111/products";
+            document.location.href = "http://localhost:1111/products";
         }
         else {
             errorBlock.innerText = "Invalid user name or such user name already exists. \n" +
                 "The length of the name must be 2 or more. \n" +
                 "The password should be more complicated.";
+            setTimeout(() => {
+                errorBlock.innerText.value = "";
+            }, 3000);
         }
     }
 }
@@ -26,6 +32,9 @@ async function signIn() {
     let errorBlock = document.getElementById("errorBlock");
     if (passwordEl.value.length < 8) {
         errorBlock.innerText = "The password must contain 8 characters or more!";
+        setTimeout(() => {
+            errorBlock.innerText.value = "";
+        }, 3000);
     }
     else {
         let response = await fetch("/signIn", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
@@ -36,6 +45,9 @@ async function signIn() {
         }
         else{
             errorBlock.innerText = "Incorrect data!";
+            setTimeout(() => {
+                errorBlock.innerText.value = "";
+            }, 3000);
         }
     }
 }
