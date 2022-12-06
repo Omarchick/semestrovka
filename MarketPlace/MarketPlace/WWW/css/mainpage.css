@@ -20,7 +20,7 @@ body {
 .mainTitle {
     position: absolute;
     color: gold;
-    left: calc(50vw - 22vmax);
+    left: calc(66vw - 28vmax);
     top: 6vh;
     text-decoration: none;
     -webkit-text-stroke:0.05vw black;

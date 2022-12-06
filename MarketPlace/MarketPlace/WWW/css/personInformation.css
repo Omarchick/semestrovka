@@ -7,7 +7,7 @@ body {
 }
 
 .enter {
-    z-index: 1000;
+    z-index: 100;
     line-height: inherit;
     position: fixed;
     color: black;
@@ -21,11 +21,13 @@ body {
     /*-webkit-text-stroke:0.1vw darkkhaki;*/
     /*    -webkit-text-fill-color:transparent;*/
     /*    font-family: Righteous, cursive;*/
-    right: -4vw;
+    left: calc(100vw - 28vmax);
     padding-right: 50vw;
-    margin-right: -45vw;
-    top: 1vh;
+    margin-right: -40vw;
+    top: 2vh;
     font-size: 2vh;
+    height: 90%;
+    width: 90%;
 
 }
 .enter > .enterBtn {
@@ -49,6 +51,7 @@ body {
 }
 
 .input_data {
+    width: calc(4vw + 3vmin + 8vmax + 2vh);
     margin-bottom: 0.3vh;
 }
 

@@ -39,8 +39,8 @@ async function addProductItem(id, name, information, rating, count, realId, pric
             </div>
                 <textarea title="${information}" class="productInfo" maxlength="250" readonly>${information}</textarea>
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
-                    <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
-                    <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
+                    <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
+                    <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
                     <button title="Make a review to this product." class="makeReview">
                         <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none; height: 75%; width: auto;"/>
                     </button>
@@ -114,6 +114,7 @@ async function getProductsFromDB() {
             console.log(balance);
         }
     }, 500)
+    await showRatingAfterLoad();
 }
 
 function Product(id, name, information, rating, count, realId, price){

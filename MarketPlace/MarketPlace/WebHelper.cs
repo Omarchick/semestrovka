@@ -72,8 +72,20 @@ namespace MarketPlace
     
         public static async Task addBalance(HttpListenerContext context)
         {
-            UserRepository.UpdateUserBalance(context.GetUserId().Result, 1);
-            context.Response.StatusCode = 200;
+            await Task.Delay(4000);
+            try
+            {
+                await using var inputStream = context.Request.InputStream;
+                using var reader = new StreamReader(inputStream);
+                var content = await reader.ReadToEndAsync();
+                var count = JsonSerializer.Deserialize<long>(content);
+                UserRepository.UpdateUserBalance(context.GetUserId().Result, count);
+                context.Response.StatusCode = 200;
+            }
+            catch (Exception)
+            {
+                context.Response.StatusCode = 400;
+            }
         }
         
 

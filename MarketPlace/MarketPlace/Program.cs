@@ -137,6 +137,7 @@ while (listener.IsListening)
                             case "/updBalance":
                                 if (!userBalancesInUpdate[await context.GetUserId()])
                                 {
+                                    userBalancesInUpdate[intUserId] = true;
                                     await WebHelper.addBalance(context);
                                     userBalancesInUpdate[await context.GetUserId()] = false;
                                     isUsingShowStatic = false;
