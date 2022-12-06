@@ -1,22 +1,21 @@
 ﻿let isSending = false;
 async function updBalance() {
     if (!isSending){
-        let response = await fetch('/updBalance');
-        if (response.ok) {
-            isSending = true;
-            balanceElement = document.querySelector('#UserBalance');
-            let balance = Number(balanceElement.textContent.
-            replace('Balance: ', '').replace('⚡', ''));
-            setTimeout(() => {
+        isSending = true;
+        balanceElement = document.querySelector('#UserBalance');
+        let balance = Number(balanceElement.textContent.
+        replace('Balance: ', '').replace('⚡', ''));
+        setTimeout(() => {
+        let response = fetch('/updBalance').then(() =>{
                 if (balanceElement != null){
                     balanceElement.textContent = "Balance: " + (balance + 1) + "⚡";
                     document.querySelector("#addBal").disabled = false;
                     isSending = false;
                 }
-            }, 5000)
-            document.querySelector('#UserBalance').textContent = "Balance: LOADING...";
-            document.querySelector("#addBal").disabled = true;
-        }
+        })
+        }, 5000)
+        document.querySelector('#UserBalance').textContent = "Balance: LOADING...";
+        document.querySelector("#addBal").disabled = true;
     }
 }
 

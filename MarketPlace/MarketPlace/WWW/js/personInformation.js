@@ -7,23 +7,23 @@ async function GetPersonInformation() {
             item.innerHTML = `
             <p class="userData">
                 <strong title="Name" class="userInfo" id="userName">${user.Name}</strong>
-                <strong title="CountMoney" class="userInfo" id="UserBalance">Balance: ${user.Balance}⚡</strong>
+                <text title="CountMoney" class="userInfo" id="UserBalance">Balance: ${user.Balance}⚡</text>
                 <button class="settingsBtn" onclick="changeBalance()" id="changeBalance">Put Money</button>
                 <button class="settingsBtn" onclick="configure()" id="settings">Settings</button>
                 <button class="settingsBtn" onclick="buyProducts()" id="buyProdcut">Buy Products</button>
-            </p>      
+            </p>
     `;
         } else 
         {
             item.innerHTML = `
-    <form>
+    <!--<form>-->
         <p class="enter">
             <input class="input_data" id="inputName" placeholder="Name">
             <input class="input_data" id="inputPassword" placeholder="Password"  type="password">
             <button class="enterBtn" onclick="register()" id="reg">Register</button>
             <button class="enterBtn" onclick="signIn()" id="singIn">Sign in</button>
         </p>
-    </form>
+<!--    </form>-->
     `;
         }
         parentItem.appendChild(item);

@@ -4,16 +4,21 @@ async function addProductItem(id, name, information, rating, count, realId, pric
     /*    item.setAttribute('id', "productItem");*/
     //<b title="${rating}" class="productRating" style="display: flex; flex-direction: column; text-align: left">${rating}
     let starRating = makeStars(rating);
-
+    //calc(${getCount()} * (3vh / 2 + 1vmax - 1vmin));
     item.innerHTML = `
-    <div class="productItem" id="${id}product" style="top: calc(${getCount()} * calc(3vh / 2 + 1vmax - 1vmin))">
+    <div class="productItem" id="${id}product" style="top: calc(${getCount()} * (1vmin + 1vmax));">
         <strong title="${name}" style="
         flex-direction: column;
+        text-align: center;
         white-space: nowrap;
+        top: 2%;
+        -webkit-text-stroke: calc(0.01 * (1vw + 2vh)) #ddcd02;
+        font-family: Luminari, fantasy;
         /* overflow: hidden; */
         text-overflow: ellipsis;
         position: absolute;
         font-size: calc(2 * (1vmin + 1vmax));
+/*        text-outline: #ff6a00 calc(0.0001 * (1vmin + 1vmax));*/
         ">${name}
             <div class="form_item">
                 <div class="rating rating_set">
@@ -33,11 +38,13 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                 </div>
             </div>
                 <textarea title="${information}" class="productInfo" maxlength="250" readonly>${information}</textarea>
-                <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
-                <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
-                <button title="Make a review to this product." class="makeReview">
-                    <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none;"/>
-                </button>
+                <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
+                    <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
+                    <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
+                    <button title="Make a review to this product." class="makeReview">
+                        <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none; height: 75%; width: auto;"/>
+                    </button>
+                </div>
         </strong>
         <div title="${count}" class="productCount">${count}</div>
         <div title="${price}" class="productPrice">${price}<text style=" font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>   
@@ -71,7 +78,7 @@ let isSending = false;
 var productsOnPage = [];
 var productsId = [];
 var productsOnDB = [];
-var count = -10;
+var count = -14;
 
 let balanceElement;
 let balance;
@@ -85,7 +92,7 @@ replace('Balance: ', '').replace('⚡', ''));
 let price = Number(element.querySelector('.productPrice').textContent);*/
 
 function getCount() {
-    count += 23;
+    count += 21;
     return count;
 }
 

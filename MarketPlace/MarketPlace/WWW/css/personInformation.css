@@ -7,6 +7,7 @@ body {
 }
 
 .enter {
+    z-index: 1000;
     line-height: inherit;
     position: fixed;
     color: black;
@@ -20,7 +21,7 @@ body {
     /*-webkit-text-stroke:0.1vw darkkhaki;*/
     /*    -webkit-text-fill-color:transparent;*/
     /*    font-family: Righteous, cursive;*/
-    right: -1vw;
+    right: -4vw;
     padding-right: 50vw;
     margin-right: -45vw;
     top: 1vh;
@@ -101,7 +102,7 @@ body {
 
 .productCount {
     z-index: 2;
-    -webkit-text-stroke: 0.1vh #0036ff;
+    -webkit-text-stroke: 0.07vh #0036ff;
     padding-left: 0.60vw;
     align-items: center;
     justify-content: center;
@@ -112,15 +113,15 @@ body {
     text-align: center;
     margin-left: -10vw;
     position: absolute;
-    height: 7vh;
+    height: calc(2 * (1vh + 1vw));
     width: 8vw;
     font-size: calc((1vw + 2vh));
     border: 0.5vh solid #00ff1e;
     background-color: #0adfff;
     border-radius: 4vh;
     min-width: 5vh;
-    min-height: 0.7vw;
-    max-height: 4vh;
-    margin-top: 3vh;
+    /* min-height: 0.7vw; */
+    /* max-height: calc(3vh + 5vw); */
+    margin-top: calc(1 * (-2.5vmax + 2.2vmin + 5vh))
 
 }

@@ -5,22 +5,25 @@
     if (passwordEl.value.length < 8) {
         errorBlock.innerText = "The password must contain 8 characters or more!";
         setTimeout(() => {
-            errorBlock.innerText.value = "";
+            errorBlock.innerText = "";
         }, 3000);
     }
     else {
         let response = await fetch("/register", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
-        if (responseText == "All done!") {
+        if (responseText === "All done!") {
+            setTimeout(() => {
+                errorBlock.innerText = "";
+                document.location.href = "http://localhost:1111/products";
+            }, 500);
             errorBlock.innerText = "You have successfully registered!";
-            document.location.href = "http://localhost:1111/products";
         }
         else {
             errorBlock.innerText = "Invalid user name or such user name already exists. \n" +
                 "The length of the name must be 2 or more. \n" +
                 "The password should be more complicated.";
             setTimeout(() => {
-                errorBlock.innerText.value = "";
+                errorBlock.innerText = "";
             }, 3000);
         }
     }
@@ -33,20 +36,20 @@ async function signIn() {
     if (passwordEl.value.length < 8) {
         errorBlock.innerText = "The password must contain 8 characters or more!";
         setTimeout(() => {
-            errorBlock.innerText.value = "";
+            errorBlock.innerText = "";
         }, 3000);
     }
     else {
         let response = await fetch("/signIn", { method: "POST", body: JSON.stringify(new User(0,nameEl.value, passwordEl.value))});
         let responseText = await response.text();
-        if (responseText == "All done!") {
+        if (responseText === "All done!") {
             errorBlock.innerText = "You have successfully entered!";
             document.location.href ="http://localhost:1111/products";
         }
         else{
             errorBlock.innerText = "Incorrect data!";
             setTimeout(() => {
-                errorBlock.innerText.value = "";
+                errorBlock.innerText = "";
             }, 3000);
         }
     }
