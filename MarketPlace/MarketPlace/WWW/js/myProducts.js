@@ -90,6 +90,7 @@ async function removeProduct(id) {
             productsOnPage[i] = productsOnPage[i + 1];
             productsOnPage[i].id--;
         }
+        productsOnDB.pop();
         //document.removeChild(document.getElementById("1"));
     }
 }
@@ -196,99 +197,105 @@ function Product(id, name, information, rating, count, realId, price){
 
 let timeout = 1000;
 async function changeProductCount(count, id, productId) {
-    if (sendingUserProducts.length > timeout / 1000 * 100)
-    {
-        sendingUserProducts = [];
-        await reloadPage();
-    }
-    let element = productsOnPage[id];
-    let productCount = element.Count;
-    let price = element.Price
-
-    let countElement = document.getElementById(id + "product").querySelector('.productCount');
-
-    /*    if (count < 0 && productCount <= 0){
-            let response = await fetch("/deleteUserProduct",
-                {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
-            document.querySelector('#UserBalance').textContent = "Balance: " + JSON.parse(await response.text()).Balance + "⚡";
-            return;
-        }*/
-    //if ProductCount On Page > 0
-    if (productCount > 0){
-        console.log(productCount + " Count");
-        /*        let response = await fetch("/addProductCount",
-                    { method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
-                if (response.ok){*/
-        //let dbData = JSON.parse(await response.text());
-        //if we wonna add product CHECK balance
-        if (count > 0 && balance - count * price >= 0)
+    try {
+        if (sendingUserProducts.length > timeout / 1000 * 100)
         {
-
-            /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
-                            countElement.title = dbData.ProductCount;
-                            countElement.textContent = dbData.ProductCount;*/
-            balance = balance - price * count;
-            balanceElement.textContent = "Balance: " + balance + "⚡";
-            countElement.title = Number(countElement.title) + count;
-            countElement.textContent = Number(countElement.textContent) + count;
-            await AddSendingData(productId, count);
+            sendingUserProducts = [];
+            await reloadPage();
         }
-        else if (count < 0)
-        {
-            /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
-                            countElement.title = dbData.ProductCount;
-                            countElement.textContent = dbData.ProductCount;*/
-            balance = balance - count * price;
-            balanceElement.textContent = "Balance: " + balance + "⚡";
-            console.log(balanceElement);
-            element.Count = Number(countElement.textContent) + count
-            countElement.title = element.Count;
-            countElement.textContent = element.Count;
-            console.log(balance + " after " + count * price);
-            await AddSendingData(productId, count);
+        let element = productsOnPage[id];
+        let productCount = element.Count;
+        let price = element.Price
 
-            /*                countElement.title = Number(countElement.title) + count;
-                            countElement.textContent = Number(countElement.textContent) + count;*/
-        }
-    }
-    else {
-        console.log("PrCount < 0")
-        if (count > 0 && balance - count * price >= 0)
-        {
-            console.log(count + " count " + price + "  price")
-            console.log(balance + " before " + count * price);
+        let countElement = document.getElementById(id + "product").querySelector('.productCount');
 
-            /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
-                            countElement.title = dbData.ProductCount;
-                            countElement.textContent = dbData.ProductCount;*/
-            balance = balance - count * price;
-            balanceElement.textContent = "Balance: " + balance + "⚡";
-            element.Count = Number(countElement.textContent) + count
-            countElement.title = element.Count;
-            countElement.textContent = element.Count;
-            console.log(balance + " after " + count * price);
-            await AddSendingData(productId, count);
+        /*    if (count < 0 && productCount <= 0){
+                let response = await fetch("/deleteUserProduct",
+                    {method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+                document.querySelector('#UserBalance').textContent = "Balance: " + JSON.parse(await response.text()).Balance + "⚡";
+                return;
+            }*/
+        //if ProductCount On Page > 0
+        if (productCount > 0){
+            console.log(productCount + " Count");
+            /*        let response = await fetch("/addProductCount",
+                        { method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
+                    if (response.ok){*/
+            //let dbData = JSON.parse(await response.text());
+            //if we wonna add product CHECK balance
+            if (count > 0 && balance - count * price >= 0)
+            {
 
-            /*            countElement.title = Number(countElement.title) + count;
-                        countElement.textContent = Number(countElement.textContent) + count;*/
-        }
-    }
-    if (count < 0 && countElement.textContent <= 0){
-        console.log("rem");
-        await removeProduct(id);
-    }
-    /*        else {
-                let errorBlock = document.getElementById('errorBlock');
-                errorBlock.innerText = "Error!";
-                setTimeout(TurnOffErrorText, 3000);
+                /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
+                                countElement.title = dbData.ProductCount;
+                                countElement.textContent = dbData.ProductCount;*/
+                balance = balance - price * count;
+                balanceElement.textContent = "Balance: " + balance + "⚡";
+                countElement.title = Number(countElement.title) + count;
+                countElement.textContent = Number(countElement.textContent) + count;
+                await AddSendingData(productId, count, id);
             }
-        }*/
+            else if (count < 0)
+            {
+                /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
+                                countElement.title = dbData.ProductCount;
+                                countElement.textContent = dbData.ProductCount;*/
+                balance = balance - count * price;
+                balanceElement.textContent = "Balance: " + balance + "⚡";
+                console.log(balanceElement);
+                element.Count = Number(countElement.textContent) + count
+                countElement.title = element.Count;
+                countElement.textContent = element.Count;
+                console.log(balance + " after " + count * price);
+                await AddSendingData(productId, count, id);
+
+                /*                countElement.title = Number(countElement.title) + count;
+                                countElement.textContent = Number(countElement.textContent) + count;*/
+            }
+        }
+        else {
+            console.log("PrCount < 0")
+            if (count > 0 && balance - count * price >= 0)
+            {
+                console.log(count + " count " + price + "  price")
+                console.log(balance + " before " + count * price);
+
+                /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";
+                                countElement.title = dbData.ProductCount;
+                                countElement.textContent = dbData.ProductCount;*/
+                balance = balance - count * price;
+                balanceElement.textContent = "Balance: " + balance + "⚡";
+                element.Count = Number(countElement.textContent) + count
+                countElement.title = element.Count;
+                countElement.textContent = element.Count;
+                console.log(balance + " after " + count * price);
+                await AddSendingData(productId, count, id);
+
+                /*            countElement.title = Number(countElement.title) + count;
+                            countElement.textContent = Number(countElement.textContent) + count;*/
+            }
+        }
+        if (count < 0 && countElement.textContent <= 0){
+            console.log("rem");
+            await removeProduct(id);
+        }
+        /*        else {
+                    let errorBlock = document.getElementById('errorBlock');
+                    errorBlock.innerText = "Error!";
+                    setTimeout(TurnOffErrorText, 3000);
+                }
+            }*/
+    }
+    catch (exception) {
+        reloadPage()
+    }
 }
 
 
 
 let sendingUserProducts = [];
-async function AddSendingData(productId, productCount) {
+async function AddSendingData(productId, productCount, id) {
+    productsOnDB[id].Count += count;
     sendingUserProducts.push(new UserProduct(-1, productId, productCount));
     console.log(isSending);
     if (!isSending){
@@ -368,3 +375,30 @@ async function changeProductCountTwo(count, id, productId) {
         }
     }
 }*/
+
+setInterval(() => {
+    try {
+        if (!isSending && sendingUserProducts.length === 0) {
+            setTimeout(() =>  {
+                if (!isSending && sendingUserProducts.length === 0) {
+                    fetch('/getUserProducts').then(response => response.json()).then(products => {
+                        if (!isSending && sendingUserProducts.length === 0) {
+                            if (products.length !== productsOnDB.length) {
+                                location.reload();
+                            }
+                            let productsString = JSON.stringify(products);
+                            for (let i = 0; i < products.length; i++) {
+                                if (!productsString.includes(JSON.stringify(productsOnDB[i]))) {
+                                    reloadPage();
+                                }
+                            }
+                        }
+                    })
+                }
+            }, 2 * 1000);
+        }
+    }
+    catch (exception) {
+        reloadPage();
+    }
+}, 60 * 1000);

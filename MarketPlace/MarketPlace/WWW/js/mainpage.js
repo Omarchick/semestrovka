@@ -69,22 +69,23 @@ async function redirectProductsNotRegister(){
     document.location.href="http://localhost:1111/productsNotRegistered"};
 
 async function updateBalanceOnPage() {
-    let balanceElement = document.querySelector('#UserBalance');
-    balance = Number(balanceElement.textContent.
-    replace('Balance: ', '').replace('⚡', ''));
-    let response = await fetch('/getPersonInfo').catch();
-    if (response.ok) {
-        let user = JSON.parse(await response.text());
-        if (balanceElement != null  && user.Balance != balance){
-            balanceElement.textContent = 'Balance: ' + user.Balance + '⚡';
+    try {
+        let balanceElement = document.querySelector('#UserBalance');
+        balance = Number(balanceElement.textContent.
+        replace('Balance: ', '').replace('⚡', ''));
+        let response = await fetch('/getPersonInfo').catch();
+        if (response.ok) {
+            let user = JSON.parse(await response.text());
+            if (balanceElement != null  && user.Balance != balance){
+                balanceElement.textContent = 'Balance: ' + user.Balance + '⚡';
+            }
         }
     }
-}
-    
+    catch (exception) {
+        location.reload();
+    }
 
-setInterval(() => {
-    updateBalanceOnPage();
-}, 10000);
+}
 
 
 

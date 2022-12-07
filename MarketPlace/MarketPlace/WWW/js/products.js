@@ -163,7 +163,7 @@ async function changeProductCount(count, id, productId) {
                 balanceElement.textContent = "Balance: " + balance + "⚡";
                 countElement.title = Number(countElement.title) + count;
                 countElement.textContent = Number(countElement.textContent) + count;
-                await AddSendingData(productId, count);
+                await AddSendingData(productId, count, id);
             }
             else if (count < 0)
             {
@@ -175,7 +175,7 @@ async function changeProductCount(count, id, productId) {
                 element.Count = Number(countElement.textContent) + count
                 countElement.title = element.Count;
                 countElement.textContent = element.Count;
-                await AddSendingData(productId, count);
+                await AddSendingData(productId, count, id);
                 
 /*                countElement.title = Number(countElement.title) + count;
                 countElement.textContent = Number(countElement.textContent) + count;*/
@@ -194,7 +194,7 @@ async function changeProductCount(count, id, productId) {
             countElement.title = element.Count;
             countElement.textContent = element.Count;
             console.log(balance + " after " + count * price);
-            await AddSendingData(productId, count);
+            await AddSendingData(productId, count, id);
             
 /*            countElement.title = Number(countElement.title) + count;
             countElement.textContent = Number(countElement.textContent) + count;*/
@@ -209,7 +209,8 @@ async function changeProductCount(count, id, productId) {
 }
 
 let sendingUserProducts = [];
-async function AddSendingData(productId, productCount) { 
+async function AddSendingData(productId, productCount, id) { 
+    productsOnDB[id].Count += productCount;
     sendingUserProducts.push(new UserProduct(-1, productId, productCount));
     console.log(isSending);
     if (!isSending){
@@ -271,21 +272,33 @@ function makeStars(rating) {
 
 setInterval(() => {
     try {
-        
+        if (!isSending && sendingUserProducts.length === 0) {
+            setTimeout(() =>  {
+                if (!isSending && sendingUserProducts.length === 0) {
+                    fetch('/getProductsFromDB').then(response => response.json()).then(products => {
+                        if (!isSending && sendingUserProducts.length === 0) {
+                            if (products.length !== productsOnDB.length) {
+                                location.reload();
+                            }
+                            let productsString = JSON.stringify(products);
+                            for (let i = 0; i < products.length; i++) {
+                                if (!productsString.includes(JSON.stringify(productsOnDB[i]))) {
+                                    reloadPage();
+                                }
+                            }
+                        }
+                    })
+                }
+            }, 2 * 1000);
+        }
     }
-    catch (exeption) {
+    catch (exception) {
         reloadPage();
     }
-    let result = fetch('/getProductsFromDB').then(response => response.text()).then(products => {
-            if  (products === JSON.stringify(productsOnDB)) {
-                console.log(1);
-                console.log(products);
-                console.log(productsOnDB);
-                console.log(2);
-                //reloadPage();
-            }
-    });
-}, 1 * 1000);
+}, 60 * 1000);
+
+
+
 //window.addEventListener('beforeunload', (evt) => alert(1));
 /*
 window.onload = alert(1);

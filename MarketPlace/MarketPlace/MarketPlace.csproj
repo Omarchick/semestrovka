@@ -187,6 +187,9 @@
     <None Update="WWW\js\starRaitingProductsWithoutEdit.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="WWW\js\updBalanceScript.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

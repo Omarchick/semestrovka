@@ -11,6 +11,7 @@ async function GetPersonInformation() {
                 <button class="settingsBtn" onclick="changeBalance()" id="changeBalance">Put Money</button>
                 <button class="settingsBtn" onclick="configure()" id="settings">Settings</button>
                 <button class="settingsBtn" onclick="buyProducts()" id="buyProdcut">Buy Products</button>
+                <script src="/js/updBalanceScript.js"></script>
             </p>
     `;
         } else 
