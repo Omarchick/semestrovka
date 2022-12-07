@@ -5,7 +5,7 @@ async function updBalance(count, timeSecond) {
         isSending = true;
         balanceElement = document.querySelector('#UserBalance');
         let balance = Number(balanceElement.textContent.replace('Balance: ', '').replace('⚡', ''));
-        setTimeout(() => {
+        //setTimeout(() => {
             let response = fetch('/updBalance', {method: "POST", body: JSON.stringify(count)}).then(() => {
                 if (balanceElement != null) {
                     balanceElement.textContent = "Balance: " + (balance + count) + "⚡";
@@ -13,7 +13,7 @@ async function updBalance(count, timeSecond) {
                     isSending = false;
                 }
             })
-        }, timeSecond * 1000)
+        //}, timeSecond * 1000)
         document.querySelector("#addBal").disabled = true;
         await makeLoading();
     }

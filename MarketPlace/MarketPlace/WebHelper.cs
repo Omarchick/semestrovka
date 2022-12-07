@@ -72,7 +72,7 @@ namespace MarketPlace
     
         public static async Task addBalance(HttpListenerContext context)
         {
-            await Task.Delay(4000);
+            await Task.Delay(5000);
             try
             {
                 await using var inputStream = context.Request.InputStream;

@@ -111,7 +111,6 @@ async function getProductsFromDB() {
         if (balanceElement != null){
             balance = Number(balanceElement.textContent.
             replace('Balance: ', '').replace('⚡', ''));
-            console.log(balance);
         }
     }, 500)
     await showRatingAfterLoad();
@@ -238,10 +237,8 @@ function SendDataToDB() {
                     }
         }*/
             c++;
-            console.log(c + " отправилось");
         isSending = false;
     }, 1000)
-    console.log("efef");
 }
 
 function reloadPage() {
@@ -266,10 +263,29 @@ function makeStars(rating) {
         starRating = "No rating!";
     }
     for (let i = 0; i < Math.floor(rating); i++){
-        starRating+= "★";
+        starRating += "★";
     }
     return starRating;
 }
+
+
+setInterval(() => {
+    try {
+        
+    }
+    catch (exeption) {
+        reloadPage();
+    }
+    let result = fetch('/getProductsFromDB').then(response => response.text()).then(products => {
+            if  (products === JSON.stringify(productsOnDB)) {
+                console.log(1);
+                console.log(products);
+                console.log(productsOnDB);
+                console.log(2);
+                //reloadPage();
+            }
+    });
+}, 1 * 1000);
 //window.addEventListener('beforeunload', (evt) => alert(1));
 /*
 window.onload = alert(1);
