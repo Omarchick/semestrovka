@@ -58,6 +58,11 @@ namespace MarketPlace
             await context.Response.ShowFile("WWW/html/buyProducts.html");
         }
         
+        public static async Task ShowFindPage(HttpListenerContext context)
+        {
+            await context.Response.ShowFile("WWW/html/filter.html");
+        }
+        
         public static async Task LeaveAccount(HttpListenerContext context)
         {
             context.Response.StatusCode = 300;

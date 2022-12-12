@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Finding</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/pictures/banan.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="/css/personInformation.css">
+    <link rel="stylesheet" type="text/css" href="../css/filter.css">
+    <script src="/js/personInformation.js"></script>
+    <script src="/js/filter.js"></script>
+    
+<!--<script src="../js/showingRating.js"></script>-->
+</head>
+<!--onload="addProductItem('really', 'work', 0)"-->
+<body onload='GetPersonInformation()' style="background-color: cornsilk">
+
+<a class="mainTitle" href="/">Freedom</a>
+<div class="personInformation" id="personInformation"></div>
+<div class="findCollector">
+    <div class="findingInfo">
+        <form action="/getFilteredProducts">
+            <input type="search" class="filterCheckBox findSearch" id="searchElement"></input>
+            <div class="filterCheckBox">
+                <input type="checkbox" id="checkBox"></input>
+                <text class="textCheckBox">Order by descending</text>
+            </div>
+        </form>
+        <button onclick="resetFilter()" id="btnReset" class="find">Reset</button>
+    </div>
+</div>
+</body>
+<!--<div class="productItem" id="${id}product" style="top: 35vh; left: 30vw">
+    <strong style="display: flex; flex-direction: column;">${name}
+        <b class="productRating" style="display: flex; flex-direction: column; text-align: left">{rating}</b>
+        <label>
+            <button class="deleteBtn">-</button>
+            <button class="addBtn">+</button>
+            <textarea class="productInfo" maxlength="250" readonly>${information}</textarea>
+        </label>
+    </strong>
+</div>-->
+
+
+
+<!--
+&#45;&#45;bs-btn-padding-x: 4vw;
+&#45;&#45;bs-btn-padding-y: 1vh;
+&#45;&#45;bs-btn-font-family: ;
+&#45;&#45;bs-btn-font-size: 100%;
+&#45;&#45;bs-btn-font-weight: 10%;
+&#45;&#45;bs-btn-line-height: 1.5;-->

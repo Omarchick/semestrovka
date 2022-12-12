@@ -122,6 +122,9 @@ while (listener.IsListening)
                             case "/buyProductsPage":
                                 await WebHelper.ShowBuyProductsPage(context);
                                 break;
+                            case "/filter":
+                                await WebHelper.ShowFindPage(context);
+                                break;
                             //Actions
                             case "/getUserProducts":
                                 await WebHelper.GetUserProducts(context);
