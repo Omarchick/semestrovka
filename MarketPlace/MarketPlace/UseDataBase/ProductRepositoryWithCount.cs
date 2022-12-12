@@ -39,12 +39,13 @@ public class ProductRepositoryWithCount
     public static async Task<UserProductList[]> GetUserProductList(int id = -1)
     {
         await using var db = new NpgsqlConnection(_connString);
-        string sqlQuery = "select p.name, up.product_count as count, p.price from products p LEFT JOIN user_products up ON p.id = up.product_id where up.product_count > 0";
+        string sqlQuery = @"select p.name, up.product_count as count, p.price 
+        from products p LEFT JOIN user_products up ON p.id = up.product_id where up.product_count > 0 ";
         if (id != -1)
         {
             sqlQuery +=  @$"and up.user_id = {id}";
         }
-
+        
         return db.QueryAsync<UserProductList>(sqlQuery).Result.ToArray();
     }
     

@@ -1,9 +1,11 @@
 let userIsEntered = false;
+let firstLoad = true;
 async function GetPersonInformation() {
     let parentItem = document.getElementById("personInformation");
     let item = document.createElement("div");
         let response = await fetch('/getPersonInfo').catch();
         if (response.ok) {
+            console.log("ent")
             userIsEntered = true;
             let user = JSON.parse(await response.text());
             item.innerHTML = `
@@ -15,9 +17,15 @@ async function GetPersonInformation() {
                 <button class="settingsBtn" onclick="buyProducts()" id="buyProdcut">Buy Products</button>
                 <text id="errorBlock"></text>
             </p>
-    `;
+            `;
+            if (userIsEntered) {
+                setInterval(() => {
+                    updateBalanceOnPage();
+                }, 15 * 1000);
+            }
         } else 
         {
+            console.log(11);
             userIsEntered = false;
             item.innerHTML = `
     <!--<form>-->
@@ -29,17 +37,15 @@ async function GetPersonInformation() {
             <text id="errorBlock"></text>
         </p>
 <!--    </form>-->
-    `;
+        `;
         }
-        parentItem.appendChild(item);
-        setTimeout(() => {
-            updateBalanceOnPage();
-        }, 1.5 * 1000);
-    if (userIsEntered) {
-        setInterval(() => {
-            updateBalanceOnPage();
-        }, 15 * 1000);
-    }
+        if (firstLoad) {
+            firstLoad = false;
+            parentItem.appendChild(item);
+            setTimeout(() => {
+                updateBalanceOnPageWithReload(false);
+            }, 1.5 * 1000);
+        }
 }
 async function configure() {
     document.location.href="/settings";
@@ -69,4 +75,23 @@ async function updateBalanceOnPage() {
     catch (exception) {
         location.reload();
     }
+}
+
+async function updateBalanceOnPageWithReload(needReload) {
+    try {
+        let balanceElement = document.querySelector('#UserBalance');
+        balance = Number(balanceElement.textContent.replace('Balance: ', '').replace('⚡', ''));
+        let response = await fetch('/getPersonInfo').catch();
+        if (response.ok) {
+            let user = JSON.parse(await response.text());
+            if (balanceElement != null && user.Balance != balance) {
+                balanceElement.textContent = 'Balance: ' + user.Balance + '⚡';
+            }
+        }
+    } catch (exception) {
+        if (needReload) {
+            location.reload();
+        }
+    }
+
 }

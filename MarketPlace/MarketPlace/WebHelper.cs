@@ -149,16 +149,19 @@ namespace MarketPlace
         
         public static async Task GetUserProductList(HttpListenerContext context)
         {
+            Console.WriteLine("@@  " + context.GetUserId().Result);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
             var products = await ProductRepositoryWithCount.GetUserProductList(context.GetUserId().Result);
             var price = products.Sum(x => x.Price * x.Count);
+            Console.WriteLine("@@!!@@");
             StringBuilder stringBuilder = new StringBuilder();
             foreach (var product in products)
             {
                 stringBuilder.Append($"{product.Name}: {product.Count}pcs - {product.Count * product.Price}⚡\n");
             }
             stringBuilder.Append($"\nSum: {price}⚡");
+            Console.WriteLine(stringBuilder + " " + price);
             await context.Response.OutputStream.WriteAsync(
                 JsonSerializer.Serialize(new {ShoppingList = stringBuilder.ToString(), Price = price}).GetBytes());
         }
