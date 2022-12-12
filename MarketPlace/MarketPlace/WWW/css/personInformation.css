@@ -28,7 +28,6 @@ body {
     font-size: 2vh;
     height: 90%;
     width: 90%;
-
 }
 .enter > .enterBtn {
     /*    margin-top: 1vh;*/
@@ -36,18 +35,32 @@ body {
 }
 
 
-#errorBlock {
+/*#errorBlock {
 
     top: calc(1vmin + 1vmax);
-    right: calc(10 *(1vmin + 1vmax));;
+    right: calc(10 *(1vmin + 1vmax));
     overflow: hidden;
     text-align: left;
     word-break: break-all;
     position: absolute;
-    font-size: calc(2vmin + 1vmax/ 2);;
+    font-size: calc(2vmin + 1vmax/ 2);
     color: #ff0002;
     -webkit-text-stroke-width: 0.05vh;
     -webkit-text-stroke-color: black;
+}*/
+
+#errorBlock {
+    top: calc(45vh);
+    /*right: calc(1 * (1vmin + 1vmax));*/
+    text-align: left;
+    white-space: pre;
+    display: block;
+    padding-right: calc(50 * (2vmin + 1vmax/ 4));
+    position: absolute;
+    font-size: calc(0.6 * (1vmin + 1.5vmax));
+    color: #ff0002;
+    -webkit-text-stroke: 0.05vh white;
+    text-shadow: calc(0.05 * (1vmin + 1vmax)) calc(0.05 * (1vmin + 1vmax)) black;
 }
 
 .input_data {
@@ -126,5 +139,4 @@ body {
     /* min-height: 0.7vw; */
     /* max-height: calc(3vh + 5vw); */
     margin-top: calc(1 * (-2.5vmax + 2.2vmin + 5vh))
-
 }

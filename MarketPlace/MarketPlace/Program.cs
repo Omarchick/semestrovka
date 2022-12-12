@@ -97,7 +97,7 @@ while (listener.IsListening)
             if (context.Request.Cookies["sessionId"] is not null)
             {
                 var enteredUserId = context.GetCookieInformation().Result;
-                if (Int32.TryParse(enteredUserId, out var intUserId))
+                if (int.TryParse(enteredUserId, out var intUserId))
                 {
                     var enteredUser = await UserRepository.GetUser(intUserId);
                     if (enteredUser != null)
@@ -116,10 +116,19 @@ while (listener.IsListening)
                             case "/balancePage":
                                 await WebHelper.SetBalacePage(context);
                                 break;
-                                ;
+                            case "/settings":
+                                await WebHelper.UpdateUserData(context);
+                                break;
+                            case "/buyProductsPage":
+                                await WebHelper.ShowBuyProductsPage(context);
+                                break;
                             //Actions
                             case "/getUserProducts":
                                 await WebHelper.GetUserProducts(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/getUserProductsList":
+                                await WebHelper.GetUserProductList(context);
                                 isUsingShowStatic = false;
                                 break;
                             case "/addProductCount":
@@ -142,7 +151,22 @@ while (listener.IsListening)
                                     userBalancesInUpdate[await context.GetUserId()] = false;
                                     isUsingShowStatic = false;
                                 }
-
+                                break;
+                            case "/updName":
+                                await WebHelper.UpdateUserName(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/updPass":
+                                await WebHelper.UpdateUserPass(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/leaveAccount":
+                                await WebHelper.LeaveAccount(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/buyAllProducts":
+                                await WebHelper.BuyAllProducts(context);
+                                isUsingShowStatic = false;
                                 break;
                             default:
                                 break;
@@ -163,10 +187,13 @@ while (listener.IsListening)
                 switch (request.Url?.LocalPath)
                 {
                     //Pages
+                    case "/buyProductsPage":
                     case "/products":
                     case "/myProducts":
                     case "/addProductCount":
                     case "/deleteUserProduct":
+                    case "/balancePage":
+                    case "/settings":
                         //case"/notFound": //Addings
                         await WebHelper.NotFound(context);
                         break;

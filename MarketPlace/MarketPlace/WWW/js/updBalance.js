@@ -9,12 +9,12 @@ async function updBalance(count, timeSecond) {
             let response = fetch('/updBalance', {method: "POST", body: JSON.stringify(count)}).then(() => {
                 if (balanceElement != null) {
                     balanceElement.textContent = "Balance: " + (balance + count) + "⚡";
-                    document.querySelector("#addBal").disabled = false;
+                    document.querySelector(".addBal").disabled = false;
                     isSending = false;
                 }
             })
         //}, timeSecond * 1000)
-        document.querySelector("#addBal").disabled = true;
+        document.querySelector(".addBal").disabled = true;
         await makeLoading();
     }
 }

@@ -66,7 +66,7 @@ async function redirectProducts(){
     document.location.href("/products");
 }
 async function redirectProductsNotRegister(){
-    document.location.href="http://localhost:1111/productsNotRegistered"};
+    document.location.href="http://localhost:1111/productsNotRegistered"}
 
 async function updateBalanceOnPage() {
     try {
@@ -84,7 +84,6 @@ async function updateBalanceOnPage() {
     catch (exception) {
         location.reload();
     }
-
 }
 
 

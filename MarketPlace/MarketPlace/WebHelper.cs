@@ -48,6 +48,30 @@ namespace MarketPlace
             await context.Response.ShowFile("WWW/html/notFound.html");
         }
         
+        public static async Task UpdateUserData(HttpListenerContext context)
+        {
+            await context.Response.ShowFile("WWW/html/settings.html");
+        }
+        
+        public static async Task ShowBuyProductsPage(HttpListenerContext context)
+        {
+            await context.Response.ShowFile("WWW/html/buyProducts.html");
+        }
+        
+        public static async Task LeaveAccount(HttpListenerContext context)
+        {
+            context.Response.StatusCode = 300;
+            Session.RemoveSession(context);
+            await context.Response.ShowFile("WWW/html/mainpage.html");
+            context.Response.Close();
+        }
+        public static async Task BuyAllProducts(HttpListenerContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = await ProductRepositoryWithCount.BuyAllProducts(context.GetUserId().Result) > 0 ? 200 : 418;
+            context.Response.OutputStream.Close();
+        }
+        
         public static void IncorrectSession(HttpListenerContext context)
         {
             context.RemoveSession();
@@ -79,6 +103,18 @@ namespace MarketPlace
                 using var reader = new StreamReader(inputStream);
                 var content = await reader.ReadToEndAsync();
                 var count = JsonSerializer.Deserialize<long>(content);
+                int delay = 0;
+                if (count == 10)
+                {
+                    delay = 5;
+                }
+
+                if (count == 100)
+                {
+                    delay = 55;
+                }
+
+                await Task.Delay(delay * 1000);
                 UserRepository.UpdateUserBalance(context.GetUserId().Result, count);
                 context.Response.StatusCode = 200;
             }
@@ -87,7 +123,74 @@ namespace MarketPlace
                 context.Response.StatusCode = 400;
             }
         }
+
+        public static async Task UpdateUserName(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            var updNameInfo = JsonSerializer.Deserialize<UpdatingNameDTO>(content);
+            var userId = await context.GetUserId();
+            var user = UserRepository.GetUser(userId).Result;
+            if (updNameInfo is not null && user is not null)
+            {
+                Console.WriteLine(user.Password);
+                Console.WriteLine(updNameInfo.Password);
+                if (BCrypt.Net.BCrypt.Verify(updNameInfo.Password, user.Password))
+                {
+                    context.Response.StatusCode = UserRepository.UpdateUserName(user.Password, user.Name, updNameInfo.Name).Result != -1 ? 200 : 412;
+                    context.Response.Close();
+                }
+            }
+            context.Response.StatusCode = 412;
+            context.Response.Close();
+        }
         
+        public static async Task GetUserProductList(HttpListenerContext context)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 200;
+            var products = await ProductRepositoryWithCount.GetUserProductList(context.GetUserId().Result);
+            var price = products.Sum(x => x.Price * x.Count);
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var product in products)
+            {
+                stringBuilder.Append($"{product.Name}: {product.Count}pcs - {product.Count * product.Price}⚡\n");
+            }
+            stringBuilder.Append($"\nSum: {price}⚡");
+            await context.Response.OutputStream.WriteAsync(
+                JsonSerializer.Serialize(new {ShoppingList = stringBuilder.ToString(), Price = price}).GetBytes());
+        }
+        
+        public static async Task UpdateUserPass(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            Console.WriteLine("cont");
+            var updNameInfo = JsonSerializer.Deserialize<UpdatingPasswordDTO>(content);
+            Console.WriteLine(0);
+            var userId = await context.GetUserId();
+            var user = UserRepository.GetUser(userId).Result;
+            Console.WriteLine(1);
+            if (updNameInfo is not null && user is not null)
+            {
+                Console.WriteLine(2);
+                if (BCrypt.Net.BCrypt.Verify(updNameInfo.LastPassword, user.Password))
+                {
+                    Console.WriteLine(3);
+                    var a = UserRepository.UpdateUserPassword(user.Password, user.Name, updNameInfo.NewPassword).Result;
+                    context.Response.StatusCode = a != -1 ? 200 : 412;
+                    context.Response.Close();
+                }
+                context.Response.StatusCode = 418;
+                context.Response.Close();
+            }
+            context.Response.StatusCode = 412;
+            context.Response.Close();
+        }
 
         public static async Task DeleteUserProduct(HttpListenerContext context)
         {
