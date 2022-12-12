@@ -30,6 +30,7 @@ namespace MarketPlace
                 ".png" => "image/png",
                 ".cur" => "image/cur",
                 ".ani" => "image/ani",
+                ".gif" => "image/gif",
                 _ => throw new NotImplementedException()
             };
             response.StatusCode = 200;

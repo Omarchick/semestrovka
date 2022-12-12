@@ -52,7 +52,7 @@ public class ProductRepositoryWithCount
     public static async Task<int> BuyAllProducts(int id = -1)
     {
         await using var db = new NpgsqlConnection(_connString);
-        var sqlQuery = @$"select sum(up.product_count * p.price) from products p LEFT JOIN user_products up ON p.id = up.product_id where up.product_count > 0 and up.user_id = {id}";
+        /*var sqlQuery = @$"select sum(up.product_count * p.price) from products p LEFT JOIN user_products up ON p.id = up.product_id where up.product_count > 0 and up.user_id = {id}";
         var price =  await db.QueryFirstAsync<int>(sqlQuery);
         var balance = await UserRepository.GetUserBalance(id);
         if (price > balance)
@@ -60,12 +60,11 @@ public class ProductRepositoryWithCount
             return -1;
         }
         else
-        {
-            sqlQuery = @$"delete from user_products up where up.user_id = {id}"; ;
+        {*/
+            var sqlQuery = @$"delete from user_products up where up.user_id = {id}"; ;
             await db.ExecuteAsync(sqlQuery);
-            Console.WriteLine(price);
-            await UserRepository.UpdateUserBalance(id, -price);
+            //await UserRepository.UpdateUserBalance(id, -price);
             return id;
-        }
+        //}
     }
 }

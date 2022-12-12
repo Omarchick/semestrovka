@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,6 +19,24 @@ namespace MarketPlace
             return Encoding.UTF8.GetBytes(convertingString);
         }
 
+        public static Tuple<string, string> GetTupleFromArray(this string[] strArr)
+        {
+            return new Tuple<string, string>(strArr[0], strArr[1]);
+        }
+
+        public static async Task<Dictionary<string, string>> GetFormInfo(this HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            if (content is not null)
+            {
+                return content.Split("&").ToDictionary(x =>x.Split("=")[0], x => x.Split("=")[1]);
+            }
+
+            return null!;
+        }
+        
         public static async Task Home(HttpListenerContext context)
         {
             await context.Response.ShowFile("WWW/html/mainpage.html");
@@ -64,10 +83,26 @@ namespace MarketPlace
         }
         public static async Task ShowFilteredProducts(HttpListenerContext context)
         {
-            await using var inputStream = context.Request.InputStream;
-            using var reader = new StreamReader(inputStream);
-            var content = await reader.ReadToEndAsync();
-            Console.WriteLine(content);
+            var checkRating = false;
+            var checkPrice = false;
+            var checkDes = false;
+            var content = await context.GetFormInfo();
+            var searchName = content["searchName"];
+            if (content.TryGetValue("checkRating", out var isRating) && isRating == "on")
+            {
+                checkPrice = true;
+            }
+            
+            if (content.TryGetValue("checkPrice", out var isPrice) && isPrice == "on")
+            {
+                checkPrice = true;
+            }
+            
+            if (content["checkDes"] == "on")
+            {
+                checkDes = true;
+            }
+            
             await context.Response.ShowFile("WWW/html/products.html");
         }
         

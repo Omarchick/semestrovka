@@ -21,12 +21,14 @@ async function addProducts(information) {
     `;
     productItem.appendChild(item);
 }
-let price = 0;
+//let price = 0;
 async function getProductList() {
+    let loadingElement = document.querySelector("#loadingElement");
     setTimeout(() => {
+        loadingElement.remove();
         fetch('/getUserProductsList').then(result => result.json()).then(products => {
         addProducts(products.ShoppingList);
-        price = products.Price;
+        //price = products.Price;
     });
     }, 1000)
 }
@@ -41,20 +43,18 @@ async function buyAllProducts() {
     let errorBlock = document.getElementById("errorBlock");
     let response = await fetch("/buyAllProducts");
     if (response.ok) {
-        console.log(productInfo);
         
         productInfo.value = "THANKS FOR BUYING!"
-        let balanceElement = document.querySelector('#UserBalance');
+/*        let balanceElement = document.querySelector('#UserBalance');
         if (balanceElement != null){
             balance = Number(balanceElement.textContent.
             replace('Balance: ', '').replace('⚡', ''));
         }
-        balanceElement.textContent = "Balance: " + (balance - price) + "⚡";
+        balanceElement.textContent = "Balance: " + (balance - price) + "⚡";*/
         setTimeout(() => {
             location.reload();
         }, 5000)
     } else {
-        console.log(11);
         errorBlock.innerText = "You don't have enough money!"
         setTimeout(() => {
             errorBlock.innerText = "";

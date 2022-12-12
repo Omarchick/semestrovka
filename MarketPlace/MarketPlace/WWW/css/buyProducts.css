@@ -97,3 +97,11 @@ body {
             0 1px 1px 1px rgba(255,255,255,.4),
             0 -1px 1px 1px rgba(0,0,0,.1);
 }
+
+#loadingElement {
+    position: absolute;
+    top: calc(15 * (3vh / 2 + 1vmax - 1vmin));
+    left: calc(1.2 * (50vw - 20vmax));
+    height: calc(10 * (1vh + 1vw));
+    width: calc(10 * (1vh + 1vw));
+}

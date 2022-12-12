@@ -21,17 +21,20 @@
 <div class="findCollector">
     <div class="findingInfo">
         <form action="/getFilteredProducts" method="post">
-            <input type="search" class="filterCheckBox findSearch" id="searchElement" placeholder="Product name"></input>
+            <input type="search" class="filterCheckBox findSearch" id="searchElement" placeholder="Product name" name="searchName"></input>
             <div class="filterCheckBox">
                 <div class="collectorCheckBox">
-                    <input type="checkbox" onclick="check(0)" class="checkBox" id="checkBoxRating">
-                        <text style="flex-direction: row; " class="textCheckBox">By rating</text>
+                    <label for="checkBoxRating"></label>
+                    <input type="checkbox" onclick="check(0)" class="checkBox" id="checkBoxRating" name="checkRating">
+                        <text style="flex-direction: row;" class="textCheckBox">By rating</text>
                     </input>
-                    <input type="checkbox" onclick="check(1)" class="checkBox" id="checkBoxPrice">
+                    <label for="checkBoxPrice"></label>
+                    <input type="checkbox" onclick="check(1)" class="checkBox" id="checkBoxPrice" name="checkPrice">
                         <text style="flex-direction: row; " class="textCheckBox">By price</text>
                     </input>
                     <div>
-                        <input type="checkbox" class="checkBox" id="checkBoxDes">
+                        <label for="checkBoxDes"></label>
+                        <input type="checkbox" class="checkBox" id="checkBoxDes" name="checkDes">
                             <text style="flex-direction: row; " class="textCheckBox">Order by descending</text>
                         </input>
                     </div>
