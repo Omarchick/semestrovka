@@ -125,6 +125,9 @@ while (listener.IsListening)
                             case "/filter":
                                 await WebHelper.ShowFindPage(context);
                                 break;
+                            case "/getFilteredProducts":
+                                await WebHelper.ShowFilteredProducts(context);
+                                break;
                             //Actions
                             case "/getUserProducts":
                                 await WebHelper.GetUserProducts(context);
@@ -197,6 +200,7 @@ while (listener.IsListening)
                     case "/deleteUserProduct":
                     case "/balancePage":
                     case "/settings":
+                    case "/filter":
                         //case"/notFound": //Addings
                         await WebHelper.NotFound(context);
                         break;

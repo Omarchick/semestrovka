@@ -1,14 +1,22 @@
 ﻿firstIsChecked = true;
-async function check() {
-    let firstCheckBox = document.querySelector("#checkBox1");
-    let secondCheckBox = document.querySelector("#checkBox2");
-    firstCheckBox.ariaChecked = !firstCheckBox.ariaChecked;
-    secondCheckBox.ariaChecked = !secondCheckBox.ariaChecked;
+
+async function check(number) {
+    console.log(number);
+    let firstCheckBox = document.querySelector("#checkBoxRating");
+    let secondCheckBox = document.querySelector("#checkBoxPrice");
+    if (firstCheckBox.checked && number === 0) {
+        secondCheckBox.checked = false;
+    }
+    if (secondCheckBox.checked && number === 1) {
+        firstCheckBox.checked = false;
+    }
 }
 
 async function resetFilter() {
-    let checkBoxDes = document.querySelector("#checkBox");
+    let checkBox = document.querySelectorAll(".checkBox");
     let findElement = document.querySelector("#searchElement");
-    checkBoxDes.checked = false;
+    for (let i = 0; i < checkBox.length; i++) {
+        checkBox[i].checked = false;
+    }
     findElement.value = null;
 }

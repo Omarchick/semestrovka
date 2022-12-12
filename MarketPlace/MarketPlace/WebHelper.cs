@@ -62,6 +62,15 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/filter.html");
         }
+        public static async Task ShowFilteredProducts(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            await context.Response.ShowFile("WWW/html/products.html");
+        }
+        
         
         public static async Task LeaveAccount(HttpListenerContext context)
         {

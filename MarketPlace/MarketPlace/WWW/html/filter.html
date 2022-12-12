@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <link rel="icon" href="/pictures/banan.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="/css/personInformation.css">
+    <link rel="stylesheet" type="text/css" href="/css/products.css">
     <link rel="stylesheet" type="text/css" href="../css/filter.css">
+    <script src="/js/filteredProducts.js"></script>
     <script src="/js/personInformation.js"></script>
     <script src="/js/filter.js"></script>
     
@@ -18,12 +20,24 @@
 <div class="personInformation" id="personInformation"></div>
 <div class="findCollector">
     <div class="findingInfo">
-        <form action="/getFilteredProducts">
-            <input type="search" class="filterCheckBox findSearch" id="searchElement"></input>
+        <form action="/getFilteredProducts" method="post">
+            <input type="search" class="filterCheckBox findSearch" id="searchElement" placeholder="Product name"></input>
             <div class="filterCheckBox">
-                <input type="checkbox" id="checkBox"></input>
-                <text class="textCheckBox">Order by descending</text>
+                <div class="collectorCheckBox">
+                    <input type="checkbox" onclick="check(0)" class="checkBox" id="checkBoxRating">
+                        <text style="flex-direction: row; " class="textCheckBox">By rating</text>
+                    </input>
+                    <input type="checkbox" onclick="check(1)" class="checkBox" id="checkBoxPrice">
+                        <text style="flex-direction: row; " class="textCheckBox">By price</text>
+                    </input>
+                    <div>
+                        <input type="checkbox" class="checkBox" id="checkBoxDes">
+                            <text style="flex-direction: row; " class="textCheckBox">Order by descending</text>
+                        </input>
+                    </div>
+                </div>
             </div>
+            <button id="sendFormBtn" class="find btnFind">Send</button>
         </form>
         <button onclick="resetFilter()" id="btnReset" class="find">Reset</button>
     </div>
