@@ -103,9 +103,12 @@ namespace MarketPlace
                 checkDes = true;
             }
             
+        }
+
+        public static async Task ShowFilteredPage(HttpListenerContext context)
+        {
             await context.Response.ShowFile("WWW/html/products.html");
         }
-        
         
         public static async Task LeaveAccount(HttpListenerContext context)
         {
