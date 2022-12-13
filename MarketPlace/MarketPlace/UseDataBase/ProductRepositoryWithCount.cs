@@ -67,4 +67,24 @@ public class ProductRepositoryWithCount
             return id;
         //}
     }
+    
+    public static async Task<UserProductWithCount[]> GetSortedProductFromDB(bool inRating, bool inPrice, bool inDes, int id = -1)
+    {
+        await using var db = new NpgsqlConnection(_connString);
+        string sqlQuery = "select p.id, p.name, information, " +
+                          "Round((select avg(r.rating) from  reviews r where p.id = r.product_id and r.rating != -1), 1) as rating, " +
+                          "up.product_count as count, p.price from products p LEFT JOIN user_products up ON p.id = up.product_id ";
+        
+        if (inRating)
+        {
+            
+        }
+        
+        if (id != -1)
+        {
+            sqlQuery +=  @$"and up.user_id = {id}";
+        }
+
+        return (await db.QueryAsync<UserProductWithCount>(sqlQuery)).ToArray();
+    }
 }

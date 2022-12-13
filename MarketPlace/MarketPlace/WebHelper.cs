@@ -29,6 +29,7 @@ namespace MarketPlace
             await using var inputStream = context.Request.InputStream;
             using var reader = new StreamReader(inputStream);
             var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
             if (content is not null)
             {
                 return content.Split("&").ToDictionary(x =>x.Split("=")[0], x => x.Split("=")[1]);
@@ -87,6 +88,7 @@ namespace MarketPlace
             var checkPrice = false;
             var checkDes = false;
             var content = await context.GetFormInfo();
+            Console.WriteLine(content);
             var searchName = content["searchName"];
             if (content.TryGetValue("checkRating", out var isRating) && isRating == "on")
             {
@@ -107,7 +109,19 @@ namespace MarketPlace
 
         public static async Task ShowFilteredPage(HttpListenerContext context)
         {
-            await context.Response.ShowFile("WWW/html/products.html");
+            var personInfo = await context.GetFormInfo();
+            if (personInfo is null)
+            {
+                return;
+            }
+            foreach (var info in personInfo)
+            {
+                context.Response.Headers.Add(info.Key,info.Value);
+            }
+            context.Response.
+
+            context.Response.Headers.Add("LLLLLLLLLOOOOOOOLLLL", "!!!!!!!!!!!!!!!!");
+            await context.Response.ShowFile("WWW/html/filteredProducts.html");
         }
         
         public static async Task LeaveAccount(HttpListenerContext context)

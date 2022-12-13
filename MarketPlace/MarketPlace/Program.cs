@@ -125,6 +125,9 @@ while (listener.IsListening)
                             case "/filter":
                                 await WebHelper.ShowFindPage(context);
                                 break;
+                            case "/ShowFilteredPage":
+                                await WebHelper.ShowFilteredPage(context);
+                                break;
                             case "/getFilteredProducts":
                                 await WebHelper.ShowFilteredProducts(context);
                                 break;

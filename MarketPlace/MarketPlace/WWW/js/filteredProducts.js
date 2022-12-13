@@ -101,6 +101,16 @@ async function addProductItemWithIndex(name, information, rating, count, realId,
 }
 
 async function GetFilteredProducts() {
+    console.log(1);
+    let req = new XMLHttpRequest;
+    req.open('GET', document.location, false);
+    req.send(null);
+    let headers = req.getAllResponseHeaders();
+    console.log(headers);
+    
+}
+
+async function GetFilteredProduct() {
     let result = await (await fetch('/getFilteredProducts')).text();
     productsOnDB = JSON.parse(result);
     for (let i = 0; i < productsOnDB.length; i++) {
