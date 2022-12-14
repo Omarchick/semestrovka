@@ -1,10 +1,7 @@
 async function addProductItem(id, name, information, rating, count, realId, price) {
     let productItem = document.getElementById("productItemCollector");
     let item = document.createElement("div");
-    /*    item.setAttribute('id', "productItem");*/
-    //<b title="${rating}" class="productRating" style="display: flex; flex-direction: column; text-align: left">${rating}
     let starRating = makeStars(rating);
-    //calc(${getCount()} * (3vh / 2 + 1vmax - 1vmin));
     item.innerHTML = `
     <div class="productItem" id="${id}product" style="top: calc(${getCount()} * (1vmin + 1vmax));">
         <strong title="${name}" style="
@@ -14,11 +11,9 @@ async function addProductItem(id, name, information, rating, count, realId, pric
         top: 2%;
         -webkit-text-stroke: calc(0.01 * (1vw + 2vh)) #ddcd02;
         font-family: Luminari, fantasy;
-        /* overflow: hidden; */
         text-overflow: ellipsis;
         position: absolute;
         font-size: calc(2 * (1vmin + 1vmax));
-/*        text-outline: #ff6a00 calc(0.0001 * (1vmin + 1vmax));*/
         ">${name}
             <div class="form_item">
                 <div class="rating rating_set">
@@ -50,25 +45,6 @@ async function addProductItem(id, name, information, rating, count, realId, pric
         <div title="${price}" class="productPrice">${price}<text style=" font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>   
         </div>
     `;
-    /*    <div class="productItem" id="classNameproduct" style="top: 35vh; left: 30vw">
-            <strong style="display: flex; flex-direction: column;">${name}
-                <b class="productRating" stclassNamedisplay: flex; flex-direction: column; text-align: left">{rating}</b>
-            <label>
-                <button class="deleteBtn">-
-                </butclassName
-                <button class="addBtn">+</buttonclassName         <textarea class="productInfo" maxlclassName="250" readonlymaxLengthation}<readOnlya>
-        </label>
-    </strong>
-    </div>*/
-
-    /*    <div class="productItem" id="classNameproduct" style="top: ${getCount()}vh; left: 30vw">
-            <strong style="display: flex; flex-direction: column">${name}
-                <label>
-                <textarea class="productInfo" maxlength="250" readonly>${information}</textarea>
-                    <readOnlya>
-                </label>
-            </strong>
-        </div>*/
     productsId.push(id);
     productsOnPage.push(new Product(id, name, information, rating, count, realId, price));
     productItem.appendChild(item);
@@ -83,30 +59,40 @@ var count = -14;
 let balanceElement;
 let balance;
 
-
-/*let element = document.getElementById(id + "product");
-let countElement = element.querySelector('.productCount');
-let productCount = Number(countElement.textContent);
-let balance = Number(document.querySelector('#UserBalance').textContent.
-replace('Balance: ', '').replace('⚡', ''));
-let price = Number(element.querySelector('.productPrice').textContent);*/
-
 function getCount() {
     count += 21;
     return count;
 }
 
+ async function filterProducts() {
+    console.log(112);
+    let form = document.querySelector("#filterForm");
+    let searchEl = form.querySelector("#searchElement");
+    let inRating = form.querySelector("checkBoxRating");
+    let inPrice = form.querySelector("checkBoxPrice");
+    console.log(form.value)
+ }
+ 
 async function addProductItemWithIndex(name, information, rating, count, realId, price) {
     await addProductItem(productsId.length, name, information, rating, count, realId, price);
 }
 
+/*    $(".btnFind").click(function(event) {
+    event.preventDefault();
+    alert("Форма не отправилась");
+    });*/
+
+
+
+
 async function GetFilteredProducts() {
-    console.log(1);
+    console.log(location.href);
+/*    console.log(1);
     let req = new XMLHttpRequest;
     req.open('GET', document.location, false);
     req.send(null);
     let headers = req.getAllResponseHeaders();
-    console.log(headers);
+    console.log(headers);*/
     
 }
 

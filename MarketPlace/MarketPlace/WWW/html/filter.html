@@ -20,7 +20,7 @@
 <div class="personInformation" id="personInformation"></div>
 <div class="findCollector">
     <div class="findingInfo">
-        <form action="/ShowFilteredPage" method="post">
+        <form action="/ShowFilteredPage" method="post" id="filterForm" onsubmit="event.preventDefault()">
             <input type="search" class="filterCheckBox findSearch" id="searchElement" placeholder="Product name" name="searchName"></input>
             <div class="filterCheckBox">
                 <div class="collectorCheckBox">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <button id="sendFormBtn" class="find btnFind">Send</button>
+            <button onclick="filterProducts()" id="sendFormBtn" class="find btnFind">Send</button>
         </form>
         <button onclick="resetFilter()" id="btnReset" class="find">Reset</button>
     </div>

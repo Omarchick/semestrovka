@@ -109,7 +109,7 @@ namespace MarketPlace
 
         public static async Task ShowFilteredPage(HttpListenerContext context)
         {
-            var personInfo = await context.GetFormInfo();
+            /*var personInfo = await context.GetFormInfo();
             if (personInfo is null)
             {
                 return;
@@ -117,11 +117,15 @@ namespace MarketPlace
             foreach (var info in personInfo)
             {
                 context.Response.Headers.Add(info.Key,info.Value);
-            }
-            context.Response.
-
-            context.Response.Headers.Add("LLLLLLLLLOOOOOOOLLLL", "!!!!!!!!!!!!!!!!");
+            }*/
+            //var content = await context.GetFormInfo();
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine("content");
+            Console.WriteLine(content);
             await context.Response.ShowFile("WWW/html/filteredProducts.html");
+            //context.Response.OutputStream.WriteAsync(@$"div id='infoFilter' class='{content}'></div>".GetBytes());
         }
         
         public static async Task LeaveAccount(HttpListenerContext context)
