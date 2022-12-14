@@ -14,7 +14,7 @@ public class ProductRepositoryWithCount
         await using var db = new NpgsqlConnection(_connString);
         string sqlQuery = "select p.id, p.name, information, " +
                                 "Round((select avg(r.rating) from  reviews r where p.id = r.product_id and r.rating != -1), 1) as rating, " +
-                                "up.product_count as count,  p.price from products p INNER JOIN user_products up ON p.id = up.product_id ";
+                                "up.product_count as count,  p.price from products p INNER JOIN user_products up ON p.id = up.product_id and p.id < p.id ";
         if (id != -1)
         {
             sqlQuery +=  @$"and up.user_id = {id}";
@@ -27,7 +27,7 @@ public class ProductRepositoryWithCount
         await using var db = new NpgsqlConnection(_connString);
         string sqlQuery = "select p.id, p.name, information, " +
                           "Round((select avg(r.rating) from  reviews r where p.id = r.product_id and r.rating != -1), 1) as rating, " +
-                          "up.product_count as count, p.price from products p LEFT JOIN user_products up ON p.id = up.product_id ";
+                          "up.product_count as count, p.price from products p LEFT JOIN user_products up ON p.id = up.product_id and p.id < p.id ";
         if (id != -1)
         {
             sqlQuery +=  @$"and up.user_id = {id}";
@@ -68,7 +68,7 @@ public class ProductRepositoryWithCount
         //}
     }
     
-    public static async Task<UserProductWithCount[]> GetSortedProductFromDB(bool inRating, bool inPrice, bool inDes, int id = -1)
+    /*public static async Task<UserProductWithCount[]> GetSortedProductFromDB(bool inRating, bool inPrice, bool inDes, int id = -1)
     {
         await using var db = new NpgsqlConnection(_connString);
         string sqlQuery = "select p.id, p.name, information, " +
@@ -86,5 +86,48 @@ public class ProductRepositoryWithCount
         }
 
         return (await db.QueryAsync<UserProductWithCount>(sqlQuery)).ToArray();
+    }*/
+    
+    public static async Task<UserProductWithCount[]> GetFilteredProducts(ProductParams productParams, int id = -1)
+    {
+        if (productParams is not null)
+        {
+            using var db = new NpgsqlConnection(_connString);
+            string sqlQuery = "select p.id, p.name, information, " +
+                              "Round((select avg(r.rating) from  reviews r where p.id = r.product_id and r.rating != -1), 1) as rating, " +
+                              "up.product_count as count, p.price from products p LEFT JOIN user_products up ON p.id = up.product_id and p.id < p.id ";
+            if (productParams.SearchedName.Length > 0)
+            {
+                Console.WriteLine(productParams.SearchedName + " name");
+                Console.WriteLine(productParams.SearchedName.Length);
+                sqlQuery += @$"where lower(p.name) Like lower('{productParams.SearchedName}%') ";
+            }
+            if (productParams.InRating)
+            {
+                Console.WriteLine("RATE");
+                sqlQuery += "order by rating ";
+                Console.WriteLine(sqlQuery);
+                if (productParams.InDes)
+                {
+                    Console.WriteLine("DESS");
+                    sqlQuery += "desc ";
+                }
+            }
+            else// if (productParams.InPrice)
+            {
+                Console.WriteLine("else");
+                sqlQuery += "order by p.price ";
+                if (productParams.InDes)
+                {
+                    sqlQuery += "desc ";
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(sqlQuery);
+            Console.WriteLine();
+            return (await db.QueryAsync<UserProductWithCount>(sqlQuery)).ToArray();
+        }
+        return null!;
     }
 }

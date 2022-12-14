@@ -125,12 +125,9 @@ while (listener.IsListening)
                             case "/filter":
                                 await WebHelper.ShowFindPage(context);
                                 break;
-                            case "/ShowFilteredPage":
-                                await WebHelper.ShowFilteredPage(context);
-                                break;
-                            case "/getFilteredProducts":
+                            /*case "/getFilteredProducts":
                                 await WebHelper.ShowFilteredProducts(context);
-                                break;
+                                break;*/
                             //Actions
                             case "/getUserProducts":
                                 await WebHelper.GetUserProducts(context);
@@ -175,6 +172,10 @@ while (listener.IsListening)
                                 break;
                             case "/buyAllProducts":
                                 await WebHelper.BuyAllProducts(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/getFilteredProducts":
+                                await WebHelper.GetFilteredProducts(context);
                                 isUsingShowStatic = false;
                                 break;
                             default:

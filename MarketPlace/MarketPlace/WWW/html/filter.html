@@ -7,8 +7,10 @@
     <link rel="stylesheet" type="text/css" href="/css/personInformation.css">
     <link rel="stylesheet" type="text/css" href="/css/products.css">
     <link rel="stylesheet" type="text/css" href="../css/filter.css">
+    <link rel="stylesheet" type="text/css" href="../css/starRaitingProducts.css">
+    <script src="../js/personInformation.js"></script>
+    <script src="../js/starRaitingProducts.js"></script>
     <script src="/js/filteredProducts.js"></script>
-    <script src="/js/personInformation.js"></script>
     <script src="/js/filter.js"></script>
     
 <!--<script src="../js/showingRating.js"></script>-->
@@ -18,6 +20,7 @@
 
 <a class="mainTitle" href="/">Freedom</a>
 <div class="personInformation" id="personInformation"></div>
+<div class="productItemCollector" id="productItemCollector"></div>
 <div class="findCollector">
     <div class="findingInfo">
         <form action="/ShowFilteredPage" method="post" id="filterForm" onsubmit="event.preventDefault()">
@@ -40,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <button onclick="filterProducts()" id="sendFormBtn" class="find btnFind">Send</button>
+            <button onclick="GetFilteredProducts()" id="sendFormBtn" class="find btnFind">Send</button>
         </form>
         <button onclick="resetFilter()" id="btnReset" class="find">Reset</button>
     </div>

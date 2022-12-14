@@ -107,7 +107,25 @@ namespace MarketPlace
             
         }
 
-        public static async Task ShowFilteredPage(HttpListenerContext context)
+
+        public static async Task GetFilteredProducts(HttpListenerContext context)
+        {
+            Console.WriteLine(1);
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            var productParams = JsonSerializer.Deserialize<ProductParams>(content);
+            Console.WriteLine(productParams.SearchedName);
+            var a = await ProductRepositoryWithCount.GetFilteredProducts(productParams!, context.GetUserId().Result);
+            Console.WriteLine(a[0].Name);
+            await context.Response.OutputStream.WriteAsync(
+                JsonSerializer
+                    .Serialize(a)
+                    .GetBytes());
+        }
+        
+        /*public static async Task ShowFilteredPage(HttpListenerContext context)
         {
             /*var personInfo = await context.GetFormInfo();
             if (personInfo is null)
@@ -117,16 +135,16 @@ namespace MarketPlace
             foreach (var info in personInfo)
             {
                 context.Response.Headers.Add(info.Key,info.Value);
-            }*/
+            }#1#
             //var content = await context.GetFormInfo();
-            await using var inputStream = context.Request.InputStream;
+            /*await using var inputStream = context.Request.InputStream;
             using var reader = new StreamReader(inputStream);
             var content = await reader.ReadToEndAsync();
             Console.WriteLine("content");
-            Console.WriteLine(content);
+            Console.WriteLine(content);#1#
             await context.Response.ShowFile("WWW/html/filteredProducts.html");
             //context.Response.OutputStream.WriteAsync(@$"div id='infoFilter' class='{content}'></div>".GetBytes());
-        }
+        }*/
         
         public static async Task LeaveAccount(HttpListenerContext context)
         {

@@ -66,11 +66,15 @@ function getCount() {
 
  async function filterProducts() {
     console.log(112);
-    let form = document.querySelector("#filterForm");
-    let searchEl = form.querySelector("#searchElement");
-    let inRating = form.querySelector("checkBoxRating");
-    let inPrice = form.querySelector("checkBoxPrice");
-    console.log(form.value)
+     let form = document.querySelector("#filterForm");
+     let searchName = form.querySelector("#searchElement").value;
+     let inRating = form.querySelector("#checkBoxRating").value;
+     let inPrice = form.querySelector("#checkBoxPrice").value;
+     let inDes = form.querySelector('#checkBoxDes').value;
+     console.log(searchName);
+     console.log(inRating);
+     console.log(inPrice);
+     console.log(inDes);
  }
  
 async function addProductItemWithIndex(name, information, rating, count, realId, price) {
@@ -85,7 +89,7 @@ async function addProductItemWithIndex(name, information, rating, count, realId,
 
 
 
-async function GetFilteredProducts() {
+async function GetFilteredProduct() {
     console.log(location.href);
 /*    console.log(1);
     let req = new XMLHttpRequest;
@@ -93,23 +97,52 @@ async function GetFilteredProducts() {
     req.send(null);
     let headers = req.getAllResponseHeaders();
     console.log(headers);*/
+    let form = document.querySelector("#filterForm");
+    let searchName = form.querySelector("#searchElement").value;
+    let inRating = form.querySelector("#checkBoxRating").value;
+    let inPrice = form.querySelector("#checkBoxPrice").value;
+    let inDes = form.querySelector('#checkBoxDes').value;
+    console.log(searchName);
+    console.log(inRating);
+    console.log(inPrice);
     
 }
 
-async function GetFilteredProduct() {
-    let result = await (await fetch('/getFilteredProducts')).text();
-    productsOnDB = JSON.parse(result);
-    for (let i = 0; i < productsOnDB.length; i++) {
-        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count, productsOnDB[i].Id, productsOnDB[i].Price);
-    }
-    setTimeout(() => {
-        balanceElement = document.querySelector('#UserBalance');
-        if (balanceElement != null){
-            balance = Number(balanceElement.textContent.
-            replace('Balance: ', '').replace('⚡', ''));
+async function GetFilteredProducts() {
+    try {
+        let form = document.querySelector("#filterForm");
+        let searchedName = form.querySelector("#searchElement").value;
+        let inRating = form.querySelector("#checkBoxRating").checked;
+        let inPrice = form.querySelector("#checkBoxPrice").checked;
+        let inDes = form.querySelector('#checkBoxDes').checked;
+        document.querySelector(".findCollector").remove();
+        console.log(form.querySelector("#searchElement"));
+/*        inRating = getCheckBoxBoolValue(inRating);
+        inPrice = getCheckBoxBoolValue(inPrice);
+        inDes = getCheckBoxBoolValue(inDes);*/
+        let result = await fetch('/getFilteredProducts', { method: "POST", body: JSON.stringify(new ProductParams(searchedName, inRating, inPrice, inDes))});
+        let resultText = await result.text();
+        productsOnDB = JSON.parse(resultText);
+        console.log(productsOnDB)
+        for (let i = 0; i < productsOnDB.length; i++) {
+            await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count, productsOnDB[i].Id, productsOnDB[i].Price);
         }
-    }, 500)
-    await showRatingAfterLoad();
+        setTimeout(() => {
+            balanceElement = document.querySelector('#UserBalance');
+            if (balanceElement != null){
+                balance = Number(balanceElement.textContent.
+                replace('Balance: ', '').replace('⚡', ''));
+            }
+        }, 500)
+        await showRatingAfterLoad();
+    }
+    catch (exception) {
+        //alert("Incorrect data");
+    }
+}
+
+function getCheckBoxBoolValue(str) {
+    return str === "on";
 }
 
 function Product(id, name, information, rating, count, realId, price){
@@ -247,6 +280,12 @@ async function TurnOffErrorText() {
     errorBlock.innerText = "";
 }
 
+function ProductParams(searchName,inRating, inPrice, inDes) {
+    this.SearchedName = searchName;
+    this.InRating = inRating;
+    this.InPrice = inPrice;
+    this.InDes = inDes;
+}
 
 function UserProduct(userId, productId, productCount){
     this.UserId = userId;
@@ -254,50 +293,4 @@ function UserProduct(userId, productId, productCount){
     this.ProductCount = productCount;
 }
 
-function makeStars(rating) {
-    let starRating ="";
-    if (rating < 1){
-        starRating = "No rating!";
-    }
-    for (let i = 0; i < Math.floor(rating); i++){
-        starRating += "★";
-    }
-    return starRating;
-}
 
-
-setInterval(() => {
-    try {
-        if (!isSending && sendingUserProducts.length === 0) {
-            setTimeout(() =>  {
-                if (!isSending && sendingUserProducts.length === 0) {
-                    fetch('/getProductsFromDB').then(response => response.json()).then(products => {
-                        if (!isSending && sendingUserProducts.length === 0) {
-                            if (products.length !== productsOnDB.length) {
-                                location.reload();
-                            }
-                            let productsString = JSON.stringify(products);
-                            for (let i = 0; i < products.length; i++) {
-                                if (!productsString.includes(JSON.stringify(productsOnDB[i]))) {
-                                    reloadPage();
-                                }
-                            }
-                        }
-                    })
-                }
-            }, 2 * 1000);
-        }
-    }
-    catch (exception) {
-        reloadPage();
-    }
-}, 60 * 1000);
-
-
-
-//window.addEventListener('beforeunload', (evt) => alert(1));
-/*
-window.onload = alert(1);
-window.onbeforeunload = alert(1);
-window.onunload = alert(1);
-window.onclose = alert(1);*/
