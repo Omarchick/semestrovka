@@ -381,6 +381,48 @@ namespace MarketPlace
             context.Response.StatusCode = 200;
             context.Response.Close();
         }
+        
+        
+        public static async Task AddReviews(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            var userId = await context.GetUserId();
+            var userProducts = JsonSerializer.Deserialize<UserProductDTO[]>(content);
+            if (userProducts != null)
+            {
+                Dictionary<int, long> products = new();
+                    //Enumerable.Repeat(new ProductIDCountDTO {ProductId = -1 ,ProductCount = 0},userProducts.Length).ToArray();
+                Console.WriteLine(userProducts.Length);
+                foreach (var userProduct in userProducts)
+                {
+                    if (products.TryGetValue(userProduct.ProductId, out _))
+                        {
+                            products[userProduct.ProductId] += userProduct.ProductCount;
+                        }
+                        if (!products.TryGetValue(userProduct.ProductId, out _))
+                        {
+                            products[userProduct.ProductId] = userProduct.ProductCount;
+                        }
+                }
+                
+                foreach (var product in products)
+                {
+                    AddProductToDB(new ProductIDCountDTO() { ProductId = product.Key, ProductCount = product.Value }, userId);
+                }
+            }
+            
+            /*var userBalance = UserRepository.GetUserBalance(userId).Result;
+            var productsCount = UserProductRepository.GetAllUserProductsWithBalance(userId).Result;
+            context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes(
+                JsonSerializer.Serialize(new ProductIDCountBalanceDTO(){ Products = productsCount, Balance = userBalance})));
+            Console.WriteLine(JsonSerializer.Serialize(new ProductIDCountBalanceDTO(){ Products = productsCount, Balance = userBalance}));*/
+            context.Response.StatusCode = 200;
+            context.Response.Close();
+        }
+        
 
         public static async Task AddProductToDB(ProductIDCountDTO userProduct, int userId)
         {
@@ -511,6 +553,40 @@ namespace MarketPlace
             context.Response.StatusCode = 200;
             await context.Response.OutputStream.WriteAsync(
                 JsonSerializer.Serialize(await ProductRepositoryWithCount.GetProductFromDB(await context.GetUserId()))
+                    .GetBytes());
+        }
+        
+        public static async Task GetUserReviews(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            Console.WriteLine();
+            var productId = -1;
+            int.TryParse(content.Replace(@"""", ""), out productId);
+            Console.WriteLine(productId);
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 200;
+            await context.Response.OutputStream.WriteAsync(
+                JsonSerializer.Serialize(await UserReviewRepository.GetReviewsFromDB(productId, await context.GetUserId()))
+                    .GetBytes());
+        }
+        
+        public static async Task GetUserReviewsCanEdit(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            Console.WriteLine();
+            var productId = -1;
+            int.TryParse(content.Replace(@"""", ""), out productId);
+            Console.WriteLine(productId);
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = 200;
+            await context.Response.OutputStream.WriteAsync(
+                JsonSerializer.Serialize(await UserReviewRepository.GetUsersReviewsFromDB(productId, await context.GetUserId()))
                     .GetBytes());
         }
     }

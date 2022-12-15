@@ -205,7 +205,7 @@ async function changeProductCount(count, id, productId) {
         }
         let element = productsOnPage[id];
         let productCount = element.Count;
-        let price = element.Price
+        let price = element.Price;
 
         let countElement = document.getElementById(id + "product").querySelector('.productCount');
 
@@ -216,7 +216,7 @@ async function changeProductCount(count, id, productId) {
                 return;
             }*/
         //if ProductCount On Page > 0
-        if (productCount > 0){
+        if (productCount > 0) {
             console.log(productCount + " Count");
             /*        let response = await fetch("/addProductCount",
                         { method: "POST", body: JSON.stringify(new UserProduct(-1, productId, count))});
@@ -257,7 +257,7 @@ async function changeProductCount(count, id, productId) {
             console.log("PrCount < 0")
             if (count > 0 && balance - count * price >= 0)
             {
-                console.log(count + " count " + price + "  price")
+                console.log(count + " count " + price + " price")
                 console.log(balance + " before " + count * price);
 
                 /*                document.querySelector('#UserBalance').textContent = "Balance: " + dbData.Balance + "⚡";

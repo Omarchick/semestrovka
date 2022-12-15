@@ -139,6 +139,14 @@ while (listener.IsListening)
                                 await WebHelper.GetUserProducts(context);
                                 isUsingShowStatic = false;
                                 break;
+                            case "/getUserReviews":
+                                await WebHelper.GetUserReviews(context);
+                                isUsingShowStatic = false; 
+                                break;
+                            case "/getUserReviewsCanEdit":
+                                await WebHelper.GetUserReviewsCanEdit(context);
+                                isUsingShowStatic = false;
+                                break;
                             case "/getUserProductsList":
                                 await WebHelper.GetUserProductList(context);
                                 isUsingShowStatic = false;
@@ -153,6 +161,10 @@ while (listener.IsListening)
                                 break;
                             case "/addProducts":
                                 await WebHelper.AddProducts(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/addReviews":
+                                await WebHelper.AddReviews(context);
                                 isUsingShowStatic = false;
                                 break;
                             case "/updBalance":

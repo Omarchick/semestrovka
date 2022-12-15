@@ -26,21 +26,21 @@ body {
     font-size: calc(15vmin/2 + 15vmax/8);;
     line-height: 10vh;
 }
-.productItem{
+.reviewItem {
     height: calc(17 * (1vmin + 1vmax));
     width: calc(12 * (1vw + 1vmin + 1vmax));
     border-radius: calc(1vh + 1vw);
     border: 0.5vh solid #df0010;
-    background-color: #ff4000;
+    background-color: #ff2800;
     margin-top: calc(8vh);
     position: absolute;
     top: calc(10 * (3vh / 2 + 1vmax - 1vmin));
     left: calc(50vw - 20vmax);
-/*    left: 10vw;*/
+    /*    left: 10vw;*/
     font-size: 7vh;
-/* text-align: center;*/
+    /* text-align: center;*/
 }
-.productInfo{
+.reviewInfo {
     margin-top: 1vh;
     border-radius: 1.5vh;
     border: 0.5vh solid black;
@@ -58,90 +58,90 @@ body {
     font-family: monospace;
 }
 
-.deleteBtn{
-align-items: center;
-justify-content: center;
-display: flex;
-white-space: nowrap;
-text-align: center;
-font-size: calc(2 * (1vw + 1vh));
-position:  absolute;
-margin-left: 3vw;
-margin-right: 3vw;
-width: calc(2 * (1vw + 1vh));
-height: calc(2 * (1vw + 1vh));
-top: 0;
-right: 0;
-background: #ff1300;
-cursor: pointer;
-border-radius: 50%;
-border-width: 0.25vw;
-box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
-inset 0 0.2vw 0 rgba(255,255,255,.6),
-0 0.2vw 0 rgba(0,0,0,.1),
-inset 0 0 0.2vw rgba(0,0,0,.1);
+.deleteBtn {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    white-space: nowrap;
+    text-align: center;
+    font-size: calc(2 * (1vw + 1vh));
+    position:  absolute;
+    margin-left: 3vw;
+    margin-right: 3vw;
+    width: calc(2 * (1vw + 1vh));
+    height: calc(2 * (1vw + 1vh));
+    top: 0;
+    right: 0;
+    background: #ff1300;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
 }
 
 .addBtn{
-align-items: center;
-justify-content: center;
-display: flex;
-white-space: nowrap;
-text-align: center;
-font-size: calc(2 * (1vw + 1vh));
-position:  absolute;
-margin-left: 30vw;
-width: calc(2 * (1vw + 1vh));
-height: calc(2 * (1vw + 1vh));
-top: 0;
-right: 30%;
-background: #004fe2;
-cursor: pointer;
-border-radius: 50%;
-border-width: 0.25vw;
-box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
-inset 0 0.2vw 0 rgba(255,255,255,.6),
-0 0.2vw 0 rgba(0,0,0,.1),
-inset 0 0 0.2vw rgba(0,0,0,.1);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    white-space: nowrap;
+    text-align: center;
+    font-size: calc(2 * (1vw + 1vh));
+    position:  absolute;
+    margin-left: 30vw;
+    width: calc(2 * (1vw + 1vh));
+    height: calc(2 * (1vw + 1vh));
+    top: 0;
+    right: 30%;
+    background: #004fe2;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
 }
-.makeReview{
-align-items: center;
-justify-content: center;
-display: flex;
-white-space: nowrap;
-text-align: center;
-font-size: calc(2 * (1vw + 1vh));
-size: calc(2 * (1vw + 1vh));
-position:  absolute;
-margin-left: 3vw;
-width: calc(5 * 0.7 * (1vw + 1vh));
-height: calc(3 * 0.7 * (1vw + 1vh));
-top: 0;
-left: 0;
-background: #e2cd00;
-cursor: pointer;
-border-radius: 35%;
-border-width: 0.25vw;
-box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
-inset 0 0.2vw 0 rgba(255,255,255,.6),
-0 0.2vw 0 rgba(0,0,0,.1),
-inset 0 0 0.2vw rgba(0,0,0,.1);
-}
-
-.PlusBtn{
-width: 1.5vw;
-z-index: 1;
+.makeReview {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    white-space: nowrap;
+    text-align: center;
+    font-size: calc(2 * (1vw + 1vh));
+    size: calc(2 * (1vw + 1vh));
+    position:  absolute;
+    margin-left: 3vw;
+    width: calc(5 * 0.7 * (1vw + 1vh));
+    height: calc(3 * 0.7 * (1vw + 1vh));
+    top: 0;
+    left: 0;
+    background: #e2cd00;
+    cursor: pointer;
+    border-radius: 35%;
+    border-width: 0.25vw;
+    box-shadow: 0 0.3vw 2vw rgba(0,0,0,.25),
+    inset 0 0.2vw 0 rgba(255,255,255,.6),
+    0 0.2vw 0 rgba(0,0,0,.1),
+    inset 0 0 0.2vw rgba(0,0,0,.1);
 }
 
-
-.MinusBtn{
-width: 1.5vw;
-z-index: 1;
+.PlusBtn {
+    width: 1.5vw;
+    z-index: 1;
 }
 
-.btnImg{
-width: 1.5vw;
-z-index: 1;
+
+.MinusBtn {
+    width: 1.5vw;
+    z-index: 1;
+}
+
+.btnImg {
+    width: 1.5vw;
+    z-index: 1;
 }
 
 .productPrice {
@@ -165,8 +165,8 @@ z-index: 1;
     border-radius: 4vh;
     min-width: 1vh;
     -webkit-text-stroke: 0.07vh white;
-/*    min-height: 0.7vw;
-    max-height: 4vh;*/
+    /*    min-height: 0.7vw;
+        max-height: 4vh;*/
     margin-top: calc(1 * (-2.5vmax + 2.2vmin + 5vh));
 
 }
