@@ -125,6 +125,12 @@ while (listener.IsListening)
                             case "/filter":
                                 await WebHelper.ShowFindPage(context);
                                 break;
+                            case "/reviews":
+                                await WebHelper.ShowReviewPage(context);
+                                break;
+                            case "/getReviews":
+                                await WebHelper.GetReviews(context);
+                                break;
                             /*case "/getFilteredProducts":
                                 await WebHelper.ShowFilteredProducts(context);
                                 break;*/
@@ -153,7 +159,7 @@ while (listener.IsListening)
                                 if (!userBalancesInUpdate[await context.GetUserId()])
                                 {
                                     userBalancesInUpdate[intUserId] = true;
-                                    await WebHelper.addBalance(context);
+                                    await WebHelper.AddBalance(context);
                                     userBalancesInUpdate[await context.GetUserId()] = false;
                                     isUsingShowStatic = false;
                                 }

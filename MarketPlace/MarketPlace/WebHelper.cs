@@ -82,6 +82,19 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/filter.html");
         }
+        
+        public static async Task ShowReviewPage(HttpListenerContext context)
+        {
+            /*await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            var id = JsonSerializer.Deserialize<int>(content);
+            Console.WriteLine(id);
+            Console.WriteLine("Отзывы");
+            context.Response.Headers.Add("id", id.ToString());*/
+            await context.Response.ShowFile("WWW/html/review.html");
+        }
         public static async Task ShowFilteredProducts(HttpListenerContext context)
         {
             var checkRating = false;
@@ -182,7 +195,7 @@ namespace MarketPlace
             }
         }
     
-        public static async Task addBalance(HttpListenerContext context)
+        public static async Task AddBalance(HttpListenerContext context)
         {
             await Task.Delay(5000);
             try
@@ -211,7 +224,29 @@ namespace MarketPlace
                 context.Response.StatusCode = 400;
             }
         }
-
+        
+        public static async Task GetReviews(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            var updNameInfo = JsonSerializer.Deserialize<UpdatingNameDTO>(content);
+            var userId = await context.GetUserId();
+            var user = UserRepository.GetUser(userId).Result;
+            if (updNameInfo is not null && user is not null)
+            {
+                Console.WriteLine(user.Password);
+                Console.WriteLine(updNameInfo.Password);
+                if (BCrypt.Net.BCrypt.Verify(updNameInfo.Password, user.Password))
+                {
+                    context.Response.StatusCode = UserRepository.UpdateUserName(user.Password, user.Name, updNameInfo.Name).Result != -1 ? 200 : 412;
+                    context.Response.Close();
+                }
+            }
+            context.Response.StatusCode = 412;
+            context.Response.Close();
+        }
         public static async Task UpdateUserName(HttpListenerContext context)
         {
             await using var inputStream = context.Request.InputStream;

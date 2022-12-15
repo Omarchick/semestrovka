@@ -26,12 +26,12 @@ body {
     font-size: calc(15vmin/2 + 15vmax/8);;
     line-height: 10vh;
 }
-.reviewItem {
+.productItem{
     height: calc(17 * (1vmin + 1vmax));
     width: calc(12 * (1vw + 1vmin + 1vmax));
     border-radius: calc(1vh + 1vw);
-    border: 0.5vh solid #00ff1e;
-    background-color: #7bff71;
+    border: 0.5vh solid #df0010;
+    background-color: #ff4000;
     margin-top: calc(8vh);
     position: absolute;
     top: calc(10 * (3vh / 2 + 1vmax - 1vmin));
@@ -40,7 +40,7 @@ body {
     font-size: 7vh;
 /* text-align: center;*/
 }
-.reviewInfo {
+.productInfo{
     margin-top: 1vh;
     border-radius: 1.5vh;
     border: 0.5vh solid black;
@@ -58,7 +58,7 @@ body {
     font-family: monospace;
 }
 
-.deleteBtn {
+.deleteBtn{
 align-items: center;
 justify-content: center;
 display: flex;
@@ -104,7 +104,7 @@ inset 0 0.2vw 0 rgba(255,255,255,.6),
 0 0.2vw 0 rgba(0,0,0,.1),
 inset 0 0 0.2vw rgba(0,0,0,.1);
 }
-.makeReview {
+.makeReview{
 align-items: center;
 justify-content: center;
 display: flex;
@@ -128,18 +128,18 @@ inset 0 0.2vw 0 rgba(255,255,255,.6),
 inset 0 0 0.2vw rgba(0,0,0,.1);
 }
 
-.PlusBtn {
+.PlusBtn{
 width: 1.5vw;
 z-index: 1;
 }
 
 
-.MinusBtn {
+.MinusBtn{
 width: 1.5vw;
 z-index: 1;
 }
 
-.btnImg {
+.btnImg{
 width: 1.5vw;
 z-index: 1;
 }

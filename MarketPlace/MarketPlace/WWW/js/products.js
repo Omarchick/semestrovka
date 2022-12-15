@@ -41,9 +41,11 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
                     <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
                     <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
-                    <button title="Make a review to this product." class="makeReview">
-                        <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none; height: 75%; width: auto;"/>
-                    </button>
+                    <form action="/reviews" onsubmit="event.preventDefault()">
+                        <button title="Make a review to this product." class="makeReview" onclick="getProductReviews(${realId})">
+                            <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none; height: 75%; width: auto;"/>
+                        </button>
+                    </form>
                 </div>
         </strong>
         <div title="${count}" class="productCount">${count}</div>
@@ -83,6 +85,36 @@ var count = -14;
 let balanceElement;
 let balance;
 
+async function setCookie(name, value, path, time) {
+    let date = new Date(Date.now() + time * 1e3);
+    date = date.toUTCString();
+    document.cookie = name + "=" + value + ";path=" + path + "; expires=" + date;
+}
+
+async function setReviewProductIdAsync(value) {
+    await setCookie("id", value, "/", 30);
+}
+function setReviewProductId(value) {
+    setCookie("id", value, "/", 30);
+}
+
+async function getProductReviews(id) {
+    setReviewProductId(id);
+    location.href = '/reviews';
+    //let result = await (await fetch('/reviews', { method: "POST", headers: {"id": id}})).text();
+/*    productsOnDB = JSON.parse(result);
+    for (let i = 0; i < productsOnDB.length; i++) {
+        await addProductItemWithIndex(productsOnDB[i].Name, productsOnDB[i].Information, productsOnDB[i].Rating, productsOnDB[i].Count, productsOnDB[i].Id, productsOnDB[i].Price);
+    }
+    setTimeout(() => {
+        balanceElement = document.querySelector('#UserBalance');
+        if (balanceElement != null){
+            balance = Number(balanceElement.textContent.
+            replace('Balance: ', '').replace('⚡', ''));
+        }
+    }, 500)
+    await showRatingAfterLoad();*/
+}
 
 /*let element = document.getElementById(id + "product");
 let countElement = element.querySelector('.productCount');
@@ -125,6 +157,12 @@ function Product(id, name, information, rating, count, realId, price){
     this.RealId = realId;
     this.Price = price;
 }
+
+async function makeReview(count, id, productId) {
+    let response = fetch("/addProducts",
+        { method: "POST", body: JSON.stringify(sendingUserProducts)});
+}
+
 
 let timeout = 1000;
 async function changeProductCount(count, id, productId) {
