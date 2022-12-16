@@ -144,7 +144,7 @@ body {
     z-index: 1;
 }
 
-.productPrice {
+.reviewPrice {
     z-index: 2;
     /*-webkit-text-stroke: 0.01vw crimson;*/
     padding-left: 0.35vw;

@@ -175,9 +175,13 @@ while (listener.IsListening)
                                     userBalancesInUpdate[await context.GetUserId()] = false;
                                     isUsingShowStatic = false;
                                 }
-                                break;
+                                break; 
                             case "/updName":
                                 await WebHelper.UpdateUserName(context);
+                                isUsingShowStatic = false;
+                                break;
+                            case "/getUserProductById":
+                                await WebHelper.GetUserProductById(context);
                                 isUsingShowStatic = false;
                                 break;
                             case "/updPass":

@@ -31,7 +31,7 @@ async function addReviewItem(id, name, information, rating, realId, price) {
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
                 </div>
             </div>                                             
-                <textarea title="${information}" class="reviewInfo" maxlength="250">${information}</textarea>
+                <textarea title="${information}" class="reviewInfo" maxlength="250" readonly>${information}</textarea>
         </strong>
         <div title="${price}" class="reviewPrice">${price}<text style="font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>
     </div>
@@ -40,7 +40,6 @@ async function addReviewItem(id, name, information, rating, realId, price) {
     reviewsOnPage.push(new Review(id, name, information, rating, realId, price));
     reviewItem.appendChild(item);
 }
-
 
 async function addReviewItemCanEdit(id, name, information, rating, realId, price) {
     let reviewItem = document.getElementById("reviewItemCollector");
@@ -75,9 +74,54 @@ async function addReviewItemCanEdit(id, name, information, rating, realId, price
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
                 </div>
             </div>                                             
-                <textarea title="${information}" class="reviewInfo" maxlength="250">${information}</textarea>
+                <textarea title="${information}" class="reviewInfo" maxlength="250" readonly>${information}</textarea>
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
                     <button title="Delete review." class="deleteBtn" onclick="changeReviewCount(-1, Number(this.parentElement.parentElement.parentElement.id.replace('review', '')), ${realId})">-</button>
+                </div>
+        </strong>
+        <div title="${price}" class="reviewPrice">${price}<text style="font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>
+    </div>
+    `;
+    reviewsId.push(id);
+    reviewsOnPage.push(new Review(id, name, information, rating, realId, price));
+    reviewItem.appendChild(item);
+}
+
+async function addReviewItemCanWrite(id, name, information, rating, realId, price) {
+    let reviewItem = document.getElementById("reviewItemCollector");
+    let item = document.createElement("div");
+    let starRating = makeStars(rating);
+    item.innerHTML = `
+    <div class="reviewItem" id="${id}review" style="top: calc(${getCount()} * (1vmin + 1vmax));">
+        <strong title="${name}" style="
+        flex-direction: column;
+        text-align: center;
+        white-space: nowrap;
+        top: 2%;
+        -webkit-text-stroke: calc(0.01 * (1vw + 2vh)) #ddcd02;
+        font-family: Luminari, fantasy;
+        text-overflow: ellipsis;
+        position: absolute;
+        font-size: calc(2 * (1vmin + 1vmax));
+        ">${name}
+            <div class="form_item">
+                <div class="rating rating_set">
+                    <div class="rating_body">
+                        <div class="rating_active" style="width: ${rating * 20}%"></div>
+                        <div title="${starRating}" class="rating_items">
+                            <input type="radio" class="rating_item" value="0" name="rating">
+                            <input type="radio" class="rating_item" value="1" name="rating">
+                            <input type="radio" class="rating_item" value="2" name="rating">
+                            <input type="radio" class="rating_item" value="3" name="rating">
+                            <input type="radio" class="rating_item" value="4" name="rating">
+                            <input type="radio" class="rating_item" value="5" name="rating">
+                        </div>
+                    </div>
+                    <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
+                </div>
+            </div>                                             
+                <textarea title="${information}" class="reviewInfo" maxlength="250" placeholder="Your mind..."></textarea>
+                <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
                     <button title="Add review." class="addBtn" onclick="changeReviewCount(1, Number(this.parentElement.parentElement.parentElement.id.replace('review', '')), ${realId})">+</button>
                 </div>
         </strong>
@@ -91,8 +135,9 @@ async function addReviewItemCanEdit(id, name, information, rating, realId, price
 
 
 
-
-let productId = -1;
+let Name = undefined;
+let Price = undefined;
+let productId = undefined;
 let productRating = 0;
 let isSending = false;
 let reviewsOnPage = [];
@@ -103,11 +148,20 @@ let count = -14;
 let balanceElement;
 let balance;
 
+async function getProductById() {
+    let result = await (await fetch('/getUserProductById', {method: "POST", body: JSON.stringify(productId)})).text();
+    let product = JSON.parse(result);
+    Name = product.Name;
+    Price = product.Price
+    console.log(product)
+}
 
 async function getReviewsFromDB() {
-    getReviewsFromDBCanEdit();
-    console.log("DOE")
-    getReviewsFromDBNotEdit();
+    await getProductId();
+    await getProductById();
+    await addReviewItemCanWrite(reviewsId.length, Name, null, productRating, productId, Price);
+    await getReviewsFromDBCanEdit();
+    await getReviewsFromDBNotEdit();
 }
 
 async function getReviewsFromDBNotEdit() {
@@ -116,14 +170,6 @@ async function getReviewsFromDBNotEdit() {
     for (let i = 0; i < reviewsOnDB.length; i++) {
         await addReviewItemWithIndex(reviewsOnDB[i].Name, reviewsOnDB[i].Message, reviewsOnDB[i].Rating, reviewsOnDB[i].Id, reviewsOnDB[i].Price);
     }
-    setTimeout(() => {
-        balanceElement = document.querySelector('#UserBalance');
-        if (balanceElement != null){
-            balance = Number(balanceElement.textContent.
-            replace('Balance: ', '').replace('⚡', ''));
-            console.log(balance);
-        }
-    }, 500)
 }
 
 async function getReviewsFromDBCanEdit() {

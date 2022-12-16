@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Azure;
+using static System.Int32;
 
 namespace MarketPlace
 {
@@ -62,7 +63,7 @@ namespace MarketPlace
         {
             await context.Response.ShowFile("WWW/html/productsNotRegistered.html");
         }
-
+    
         public static async Task NotFound(HttpListenerContext context)
         {
             await context.Response.ShowFile("WWW/html/notFound.html");
@@ -120,6 +121,14 @@ namespace MarketPlace
             
         }
 
+        public static async Task GetUserProductById(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            TryParse(content.Replace(@"""", ""), out var productId);
+            await context.Response.OutputStream.WriteAsync(JsonSerializer.Serialize(ProductRepository.GetProduct(productId)).GetBytes());
+        }
 
         public static async Task GetFilteredProducts(HttpListenerContext context)
         {
@@ -564,7 +573,7 @@ namespace MarketPlace
             Console.WriteLine(content);
             Console.WriteLine();
             var productId = -1;
-            int.TryParse(content.Replace(@"""", ""), out productId);
+            TryParse(content.Replace(@"""", ""), out productId);
             Console.WriteLine(productId);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
@@ -581,7 +590,7 @@ namespace MarketPlace
             Console.WriteLine(content);
             Console.WriteLine();
             var productId = -1;
-            int.TryParse(content.Replace(@"""", ""), out productId);
+            TryParse(content.Replace(@"""", ""), out productId);
             Console.WriteLine(productId);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 200;
