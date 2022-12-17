@@ -122,7 +122,7 @@ async function addReviewItemCanWrite(id, name, information, rating, realId, pric
             </div>                                             
                 <textarea title="${information}" class="reviewInfo" maxlength="250" placeholder="Your mind..."></textarea>
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
-                    <button title="Add review." class="addBtn" onclick="changeReviewCount(1, Number(this.parentElement.parentElement.parentElement.id.replace('review', '')), ${realId})">+</button>
+                    <button title="Add review." class="addBtn" onclick="addReview(Number(${realId}), this.parentElement.parentElement)">+</button>
                 </div>
         </strong>
         <div title="${price}" class="reviewPrice">${price}<text style="font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>
@@ -256,74 +256,33 @@ function Review(id, name, information, rating, count, realId, price){
 }
                         
 let timeout = 1000;
-async function changeReviewCount(count, id, reviewId) {
-    try { 
-        if (sendingUserReviews.length > timeout / 1000 * 100)
+async function addReview(reviewId, reviewElement) {
+    try {
+        let message = reviewElement.querySelector(".reviewInfo").value;
+        if (sendingUserReviews.length > 3)
         {
             sendingUserReviews = [];
             await reloadPage();
         }
-        let element = reviewsOnPage[id];
-        let reviewsCount = element.Count;
-        let price = element.Price;
-
-        let countElement = document.getElementById(id + "reviews").querySelector('.reviewsCount');
-
-        if (reviewsCount > 0) {
-            console.log(reviewsCount + " Count");
-            if (count > 0 && balance - count * price >= 0)
-            {
-                balance = balance - price * count;
-                balanceElement.textContent = "Balance: " + balance + "⚡";
-                countElement.title = Number(countElement.title) + count;
-                countElement.textContent = Number(countElement.textContent) + count;
-                await AddSendingData(reviewsId, count, id);
-            }
-            else if (count < 0)
-            {
-                balance = balance - count * price;
-                balanceElement.textContent = "Balance: " + balance + "⚡";
-                console.log(balanceElement);
-                element.Count = Number(countElement.textContent) + count
-                countElement.title = element.Count;
-                countElement.textContent = element.Count;
-                console.log(balance + " after " + count * price);
-                await AddSendingData(reviewsId, count, id);
-            }
-        }
-        else {
-            console.log("PrCount < 0")
-            if (count > 0 && balance - count * price >= 0)
-            {
-                balance = balance - count * price;
-                balanceElement.textContent = "Balance: " + balance + "⚡";
-                element.Count = Number(countElement.textContent) + count
-                countElement.title = element.Count;
-                countElement.textContent = element.Count;
-                console.log(balance + " after " + count * price);
-                await AddSendingData(reviewId, count, id);
-            }
-        }
-        if (count < 0 && countElement.textContent <= 0){
-            console.log("rem");
-            await removeReview(id);
-        }
+        await AddSendingData(reviewId, message);
     }
     catch (exception) {
         reloadPage()
     }
 }
 
+function SendingReview(id, message) {
+    this.Id = id;
+    this.Message = message;
+}
+
 let sendingUserReviews = [];  
-async function AddSendingData(reviewId, reviewCount, id) { 
-    reviewsOnDB[id].Count += reviewCount;
-    sendingUserReviews.push(new UserReview(-1, reviewId, reviewCount));
-    console.log(isSending);
+async function AddSendingData(reviewId, message) {
+    sendingUserReviews.push(new SendingReview(reviewId, message));
     if (!isSending){
         SendDataToDB();
     }
 }
-let c = 0;
 function SendDataToDB() {
     isSending = true;
     window.setTimeout(() => {
@@ -333,9 +292,8 @@ function SendDataToDB() {
         response.then(response => {if (!response.ok){
             location.reload();
         }}).catch(() =>  {window.clearTimeout(); reloadPage();});
-            c++;
         isSending = false;
-    }, 1000)
+    }, 5000)
 }
 
 function reloadPage() {

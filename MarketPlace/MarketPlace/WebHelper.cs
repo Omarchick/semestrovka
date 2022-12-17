@@ -127,18 +127,16 @@ namespace MarketPlace
             using var reader = new StreamReader(inputStream);
             var content = await reader.ReadToEndAsync();
             TryParse(content.Replace(@"""", ""), out var productId);
-            await context.Response.OutputStream.WriteAsync(JsonSerializer.Serialize(ProductRepository.GetProduct(productId)).GetBytes());
+            Console.WriteLine(productId + "  ProductId");
+            await context.Response.OutputStream.WriteAsync(JsonSerializer.Serialize(await ProductRepository.GetProduct(productId)).GetBytes());
         }
 
         public static async Task GetFilteredProducts(HttpListenerContext context)
         {
-            Console.WriteLine(1);
             await using var inputStream = context.Request.InputStream;
             using var reader = new StreamReader(inputStream);
             var content = await reader.ReadToEndAsync();
-            Console.WriteLine(content);
             var productParams = JsonSerializer.Deserialize<ProductParams>(content);
-            Console.WriteLine(productParams.SearchedName);
             var a = await ProductRepositoryWithCount.GetFilteredProducts(productParams!, context.GetUserId().Result);
             Console.WriteLine(a[0].Name);
             await context.Response.OutputStream.WriteAsync(
@@ -399,27 +397,21 @@ namespace MarketPlace
             var content = await reader.ReadToEndAsync();
             Console.WriteLine(content);
             var userId = await context.GetUserId();
-            var userProducts = JsonSerializer.Deserialize<UserProductDTO[]>(content);
-            if (userProducts != null)
+            var userReviews = JsonSerializer.Deserialize<UserReviewDTO[]>(content);
+            if (userReviews != null)
             {
-                Dictionary<int, long> products = new();
-                    //Enumerable.Repeat(new ProductIDCountDTO {ProductId = -1 ,ProductCount = 0},userProducts.Length).ToArray();
-                Console.WriteLine(userProducts.Length);
-                foreach (var userProduct in userProducts)
+                try
                 {
-                    if (products.TryGetValue(userProduct.ProductId, out _))
-                        {
-                            products[userProduct.ProductId] += userProduct.ProductCount;
-                        }
-                        if (!products.TryGetValue(userProduct.ProductId, out _))
-                        {
-                            products[userProduct.ProductId] = userProduct.ProductCount;
-                        }
+                    foreach (var review in userReviews)
+                    {
+                        await ReviewRepository.AddReview(new Review(-1, userId, review.ProductId, review.Rating,
+                            review.Message));
+                        context.Response.StatusCode = 200;
+                    }
                 }
-                
-                foreach (var product in products)
+                catch (Exception)
                 {
-                    AddProductToDB(new ProductIDCountDTO() { ProductId = product.Key, ProductCount = product.Value }, userId);
+                    context.Response.StatusCode = 400;
                 }
             }
             
