@@ -16,7 +16,7 @@ async function addReviewItem(id, name, information, rating, realId, price) {
         font-size: calc(2 * (1vmin + 1vmax));
         ">${name}
             <div class="form_item">
-                <div class="rating rating_set">
+                <div class="rating">
                     <div class="rating_body">
                         <div class="rating_active" style="width: ${rating * 20}%"></div>
                         <div title="${starRating}" class="rating_items">
@@ -59,7 +59,7 @@ async function addReviewItemCanEdit(id, name, information, rating, realId, price
         font-size: calc(2 * (1vmin + 1vmax));
         ">${name}
             <div class="form_item">
-                <div class="rating rating_set">
+                <div class="rating">
                     <div class="rating_body">
                         <div class="rating_active" style="width: ${rating * 20}%"></div>
                         <div title="${starRating}" class="rating_items">
@@ -119,8 +119,9 @@ async function addReviewItemCanWrite(id, name, information, rating, realId, pric
                     </div>
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
                 </div>
-            </div>                                             
-                <textarea title="${information}" class="reviewInfo" maxlength="250" placeholder="Your mind..."></textarea>
+            </div>                                         
+                <label for="reviewInfo"/>
+                <textarea typeof="input" title="${information}" id="reviewInfo" class="reviewInfo" name="reviewInfo" maxlength="250" placeholder="Your mind..."></textarea>
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
                     <button title="Add review." class="addBtn" onclick="addReview(Number(${realId}), this.parentElement.parentElement)">+</button>
                 </div>
@@ -128,6 +129,17 @@ async function addReviewItemCanWrite(id, name, information, rating, realId, pric
         <div title="${price}" class="reviewPrice">${price}<text style="font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>
     </div>
     `;
+/*        let area = this.parentElement.parentElement.querySelector('#reviewInfo');
+        if (area.addEventListener) {
+            area.addEventListener('input', function() {
+                area.value = 
+            }, false);
+        } else if (area.attachEvent) {
+            area.attachEvent('onpropertychange', function() {
+                // IE-specific event handling code
+            });
+        }
+    })*/
     reviewsId.push(id);
     reviewsOnPage.push(new Review(id, name, information, rating, realId, price));
     reviewItem.appendChild(item);
@@ -217,6 +229,7 @@ async function getProductData() {
     let data = cookie.split(";");
     for (let i = 0; i < data.length; i++) {
         let info = data[i].split("=");
+        console.log(data);
         if (JSON.stringify(info[0]).replace(" ", "") === JSON.stringify("rating")) {
             productRating = info[1];
         }
@@ -258,27 +271,33 @@ function Review(id, name, information, rating, count, realId, price){
 let timeout = 1000;
 async function addReview(reviewId, reviewElement) {
     try {
-        let message = reviewElement.querySelector(".reviewInfo").value;
-        if (sendingUserReviews.length > 3)
+        let messageText = reviewElement.parentElement.querySelector("#reviewInfo").value;
+        console.log(messageText)
+/*        if (sendingUserReviews.length > 3)
         {
             sendingUserReviews = [];
             await reloadPage();
-        }
-        await AddSendingData(reviewId, message);
+        }*/
+        await AddSendingData(messageText);
     }
     catch (exception) {
         reloadPage()
     }
 }
 
-function SendingReview(id, message) {
-    this.Id = id;
+function SendingReview(id ,reviewerId, productId, rating, message) {
+    this.Id =-1;
+    this.ReviewerId = -1;
+    this.ProductId = productId;
+    this.Rating = rating;
     this.Message = message;
 }
 
 let sendingUserReviews = [];  
-async function AddSendingData(reviewId, message) {
-    sendingUserReviews.push(new SendingReview(reviewId, message));
+async function AddSendingData(message) {
+    console.log(message)
+    console.log("FWE")
+    sendingUserReviews.push(new SendingReview(-1, -1, productId, productRating, message));
     if (!isSending){
         SendDataToDB();
     }
@@ -340,3 +359,4 @@ async function moveUpElements(deletedId) {
         review.setAttribute("style", "top:" + 'calc(' + Number(review.id.replace("product", "") * 21 + 7) + ' * (1vmin + 1vmax))');
     }
 }
+

@@ -65,7 +65,6 @@ function getCount() {
 }
 
  async function filterProducts() {
-    console.log(112);
      let form = document.querySelector("#filterForm");
      let searchName = form.querySelector("#searchElement").value;
      let inRating = form.querySelector("#checkBoxRating").value;

@@ -2,7 +2,6 @@
 async function showRatingAfterLoad() {
     setTimeout(() => {
 
-
         const ratings = document.querySelectorAll('.rating'); /*Mass of ratings on page (mb)*/
         if (ratings.length > 0) {
             initRatings();
