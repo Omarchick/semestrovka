@@ -10,8 +10,7 @@ public static class UserReviewRepository
     public static async Task<ReviewDTO[]> GetReviewsFromDB(int id = -1, int userId = -1)
     {
         await using var db = new NpgsqlConnection(_connString);
-        string sqlQuery = @"select (select name from users where id = r.reviewer_id) as name, r.message, Round((select avg(r.rating) " +
-                          "from  reviews r where p.id = r.product_id and r.rating != -1), 1) as rating," +
+        string sqlQuery = @"select (select name from users where id = r.reviewer_id) as name, r.message, r.rating as rating," +
                           @$" p.id,  p.price from products p INNER JOIN reviews r ON p.id = r.product_id ";
         if (id != -1)
         {
@@ -31,8 +30,8 @@ public static class UserReviewRepository
     public static async Task<ReviewDTO[]> GetUsersReviewsFromDB(int id = -1, int userId = -1)
     {
         await using var db = new NpgsqlConnection(_connString);
-        string sqlQuery = @"select (select name from users where id = r.reviewer_id) as name, r.message, Round((select avg(r.rating) " +
-                          "from  reviews r where p.id = r.product_id and r.rating != -1), 1) as rating," +
+        string sqlQuery = @"select (select name from users where id = r.reviewer_id) as name, r.message, r.rating " +
+                          " as rating," +
                           @$" p.id,  p.price from products p INNER JOIN reviews r ON p.id = r.product_id  ";
         if (id != -1)
         {

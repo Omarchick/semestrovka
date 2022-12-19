@@ -156,7 +156,8 @@ async function deleteReview(id, node, rating, realId) {
         })})
     setTimeout(() => {
         location.reload();
-    }, 2000)
+    }, 5 * 1000)
+    information = node.querySelector("#reviewInfo").value = "Deleting...";
     //await removeReview(Number(id));
 }
 
@@ -192,6 +193,7 @@ async function getReviewsFromDB() {
 async function getReviewsFromDBNotEdit() {
     let result = await (await fetch('/getUserReviews', {method: "POST", body: JSON.stringify(productId)})).text();
     reviewsOnDB = JSON.parse(result);
+    console.log(result);
     for (let i = 0; i < reviewsOnDB.length; i++) {
         await addReviewItemWithIndex(reviewsOnDB[i].Name, reviewsOnDB[i].Message, reviewsOnDB[i].Rating, reviewsOnDB[i].Id, reviewsOnDB[i].Price);
     }
@@ -200,6 +202,7 @@ async function getReviewsFromDBNotEdit() {
 async function getReviewsFromDBCanEdit() {
     let result = await (await fetch('/getUserReviewsCanEdit', {method: "POST", body: JSON.stringify(productId)})).text();
     reviewsOnDB = JSON.parse(result);
+    console.log(result);
     for (let i = 0; i < reviewsOnDB.length; i++) {
         await addReviewItemWithIndexCanEdit(reviewsOnDB[i].Name, reviewsOnDB[i].Message, reviewsOnDB[i].Rating, reviewsOnDB[i].Id, reviewsOnDB[i].Price);
     }
@@ -309,9 +312,9 @@ function SendingReview(id ,reviewerId, productId, rating, message) {
 
 let sendingUserReviews = [];  
 async function AddSendingData(message) {
-    productRating = Number(productRating) * 10;
+    productRating = Math.ceil(Number(productRating));
     console.log(productRating);
-    sendingUserReviews.push(new SendingReview(-1, -1, Number(productId), Number(productRating), message.value));
+    sendingUserReviews.push(new SendingReview(-1, -1, Number(productId), productRating, message.value));
     if (!isSending){
         SendDataToDB();
     }
@@ -319,7 +322,12 @@ async function AddSendingData(message) {
 /*    message.value = "Loading...";
     setTimeout(() => {location.reload()}, 6 * 1000)*/
     await addReviewItemCanEdit(reviewsId.length, userName.innerText, message.value, Number(productRating), Number(productId), Price);
-    message.value = null;
+    setTimeout(() => {
+        if (JSON.stringify(message.value) === JSON.stringify("Loading...")){
+        message.value = null;
+        }
+    }, 5 * 1000)
+    message.value = "Loading...";
 }
 function SendDataToDB() {
     console.log(1)

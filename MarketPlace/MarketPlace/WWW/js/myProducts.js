@@ -46,9 +46,11 @@ async function addProductItem(id, name, information, rating, count, realId, pric
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
                     <button title="Delete from cart." class="deleteBtn" onclick="changeProductCount(-1, Number(this.parentElement.parentElement.parentElement.id.replace('product', '')), ${realId})">-</button>
                     <button title="Add into cart." class="addBtn" onclick="changeProductCount(1, Number(this.parentElement.parentElement.parentElement.id.replace('product', '')), ${realId})">+</button>
-                    <button title="Make a review to this product." class="makeReview">
-                        <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none; height: 75%; width: auto;"/>
-                    </button>
+                    <form action="/reviews" onsubmit="event.preventDefault()">
+                        <button title="Make a review to this product." class="makeReview" onclick="getProductReviews(${realId}, this.parentElement.parentElement.parentElement)">
+                            <img class="btnImg" src="/pictures/message.png" alt="reviewImage" style="pointer-events: none; height: 75%; width: auto;"/>
+                        </button>
+                    </form>
                 </div>
         </strong>
         <div title="${count}" class="productCount">${count}</div>
@@ -77,6 +79,36 @@ async function addProductItem(id, name, information, rating, count, realId, pric
     productsId.push(id);
     productsOnPage.push(new Product(id, name, information, rating, count, realId, price));
     productItem.appendChild(item);
+}
+
+async function getProductReviews(id, ratingElem) {
+    let rating = 0;
+    rating = Number(ratingElem.querySelector(".rating_value").innerText);
+    setReviewCookie(id, rating);
+    location.href = '/reviews';
+}
+
+async function setCookie(name, value, path, time) {
+    let date = new Date(Date.now() + time * 1e3);
+    date = date.toUTCString();
+    document.cookie = name + "=" + value + ";path=" + path + "; expires=" + date;
+}
+
+async function setReviewProductIdAsync(value) {
+    await setCookie("id", value, "/", 30);
+}
+
+function setReviewCookie(id, rating)
+{
+    setReviewProductId(id);
+    setReviewRating(rating);
+}
+function setReviewProductId(value) {
+    setCookie("id", value, "/", 5 * 60);
+}
+
+function setReviewRating(value) {
+    setCookie("rating", value, "/", 5 * 60);
 }
 
 async function removeProduct(id) {
