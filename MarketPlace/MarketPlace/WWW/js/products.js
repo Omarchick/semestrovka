@@ -101,11 +101,11 @@ function setReviewCookie(id, rating)
     setReviewRating(rating);
 }
 function setReviewProductId(value) {
-    setCookie("id", value, "/", 30);
+    setCookie("id", value, "/", 5 * 60);
 }
 
 function setReviewRating(value) {
-    setCookie("rating", value, "/", 30);
+    setCookie("rating", value, "/", 5 * 60);
 }
 
 async function getProductReviews(id, ratingElem) {

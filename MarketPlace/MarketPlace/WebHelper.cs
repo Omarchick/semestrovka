@@ -131,6 +131,17 @@ namespace MarketPlace
             await context.Response.OutputStream.WriteAsync(JsonSerializer.Serialize(await ProductRepository.GetProduct(productId)).GetBytes());
         }
 
+        public static async Task DeleteReview(HttpListenerContext context)
+        {
+            await using var inputStream = context.Request.InputStream;
+            using var reader = new StreamReader(inputStream);
+            var content = await reader.ReadToEndAsync();
+            Console.WriteLine(content);
+            var deletingReview = JsonSerializer.Deserialize<DeletingReview>(content);
+            await DeleteReviewHelper.DeleteReview(deletingReview, context.GetUserId().Result);
+            context.Response.StatusCode = 200;
+        }
+        
         public static async Task GetFilteredProducts(HttpListenerContext context)
         {
             await using var inputStream = context.Request.InputStream;
@@ -397,7 +408,10 @@ namespace MarketPlace
             var content = await reader.ReadToEndAsync();
             Console.WriteLine(content);
             var userId = await context.GetUserId();
+            Console.WriteLine("VEsELO");
             var userReviews = JsonSerializer.Deserialize<UserReviewDTO[]>(content);
+            Console.WriteLine("Кайф");
+            Console.WriteLine(userReviews[0].Rating + " RAT");
             if (userReviews != null)
             {
                 try

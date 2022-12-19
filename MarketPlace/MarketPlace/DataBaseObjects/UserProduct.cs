@@ -18,7 +18,6 @@ public class UserProductDTO
     public  int UserId { get; set; }
     public int ProductId { get; set; }
     public  long ProductCount { get; set; }
-    
 }
 public class ProductIDCountDTO
 {

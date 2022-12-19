@@ -7,5 +7,4 @@ public class UserReviewDTO
     public int ProductId { get; set; }
     public int Rating { get; set; }
     public string Message { get; set; }
-    
 }

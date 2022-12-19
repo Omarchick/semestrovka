@@ -83,7 +83,8 @@ async function removeProduct(id) {
     if (id < productsId.length) {
         document.getElementById(String(id) + "product").remove();
         await moveUpElements(id);
-        count -= 20;
+        count -= 21;
+        console.log(productsOnPage);
         productsId.pop();
         //productsOnPage.slice(id, id);
         for (let i = id; i < productsOnPage.length - 1; i++){
@@ -91,6 +92,7 @@ async function removeProduct(id) {
             productsOnPage[i].id--;
         }
         productsOnDB.pop();
+        console.log(productsOnPage);
         //document.removeChild(document.getElementById("1"));
     }
 }

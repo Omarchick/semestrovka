@@ -200,6 +200,10 @@ while (listener.IsListening)
                                 await WebHelper.GetFilteredProducts(context);
                                 isUsingShowStatic = false;
                                 break;
+                            case "/deleteReview":
+                                await WebHelper.DeleteReview(context);
+                                isUsingShowStatic = false;
+                                break;
                             default:
                                 break;
                         }

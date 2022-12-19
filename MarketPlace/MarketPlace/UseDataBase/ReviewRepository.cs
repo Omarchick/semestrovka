@@ -19,8 +19,8 @@ public class ReviewRepository
         await using var db = new NpgsqlConnection(_connString);
         const string sqlQuery = 
             @"Insert Into public.reviews " +
-            @"(reviewer_id, product_id, message) Values " +
-            @"(@reviewerId, @productId, @message) RETURNING id";
+            @"(reviewer_id, product_id, rating, message) Values " +
+            @"(@reviewerId, @productId, @rating, @message) RETURNING id";
         review.Id = await db.QuerySingleAsync<int>(sqlQuery, review);
         return review.Id;
     }

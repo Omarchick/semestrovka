@@ -74,9 +74,9 @@ async function addReviewItemCanEdit(id, name, information, rating, realId, price
                     <div title="Рейтинг - ${rating}" class="rating_value">${rating}</div>
                 </div>
             </div>                                             
-                <textarea title="${information}" class="reviewInfo" maxlength="250" readonly>${information}</textarea>
+                <textarea title="${information}" class="reviewInfo" id="reviewInfo" maxlength="250" readonly>${information}</textarea>
                 <div style="position: relative; top: calc(6 * (1vmin - 1vmax))">
-                    <button title="Delete review." class="deleteBtn" onclick="changeReviewCount(-1, Number(this.parentElement.parentElement.parentElement.id.replace('review', '')), ${realId})">-</button>
+                    <button title="Delete review." class="deleteBtn" onclick="deleteReview(${id}, this.parentElement.parentElement, ${rating}, ${realId})">-</button>
                 </div>
         </strong>
         <div title="${price}" class="reviewPrice">${price}<text style="font-size: calc((1vmin/ 2 + 1vmax)); margin-top: font-size: calc((1vw/ 2 + 1vh/ 4))">⚡</text></div>
@@ -145,7 +145,20 @@ async function addReviewItemCanWrite(id, name, information, rating, realId, pric
     reviewItem.appendChild(item);
 }
 
-
+async function deleteReview(id, node, rating, realId) {
+    console.log(rating);
+    console.log(node.querySelector("#reviewInfo").value);
+    let information = node.querySelector("#reviewInfo").value;
+    await fetch("/deleteReview", {method: "POST", body: JSON.stringify(new function() {
+        this.Message = information;
+        this.Rating = Number(rating);
+        this.ProductId = Number(realId);
+        })})
+    setTimeout(() => {
+        location.reload();
+    }, 2000)
+    //await removeReview(Number(id));
+}
 
 let Name = undefined;
 let Price = undefined;
@@ -271,17 +284,18 @@ function Review(id, name, information, rating, count, realId, price){
 let timeout = 1000;
 async function addReview(reviewId, reviewElement) {
     try {
-        let messageText = reviewElement.parentElement.querySelector("#reviewInfo").value;
-        console.log(messageText)
-/*        if (sendingUserReviews.length > 3)
+        let messageInfo = reviewElement.parentElement.querySelector("#reviewInfo");
+        productRating = reviewElement.parentElement.parentElement.querySelector(".rating_value").innerText;
+        console.log(productRating)
+        if (sendingUserReviews.length > 3)
         {
             sendingUserReviews = [];
             await reloadPage();
-        }*/
-        await AddSendingData(messageText);
+        }
+        await AddSendingData(messageInfo);
     }
     catch (exception) {
-        reloadPage()
+        //reloadPage()
     }
 }
 
@@ -295,18 +309,25 @@ function SendingReview(id ,reviewerId, productId, rating, message) {
 
 let sendingUserReviews = [];  
 async function AddSendingData(message) {
-    console.log(message)
-    console.log("FWE")
-    sendingUserReviews.push(new SendingReview(-1, -1, productId, productRating, message));
+    productRating = Number(productRating) * 10;
+    console.log(productRating);
+    sendingUserReviews.push(new SendingReview(-1, -1, Number(productId), Number(productRating), message.value));
     if (!isSending){
         SendDataToDB();
     }
+    let userName = document.querySelector("#userName");
+/*    message.value = "Loading...";
+    setTimeout(() => {location.reload()}, 6 * 1000)*/
+    await addReviewItemCanEdit(reviewsId.length, userName.innerText, message.value, Number(productRating), Number(productId), Price);
+    message.value = null;
 }
 function SendDataToDB() {
+    console.log(1)
     isSending = true;
     window.setTimeout(() => {
         let response = fetch("/addReviews",
             { method: "POST", body: JSON.stringify(sendingUserReviews)});
+        console.log(sendingUserReviews)
         sendingUserReviews = [];
         response.then(response => {if (!response.ok){
             location.reload();
@@ -340,14 +361,18 @@ function makeStars(rating) {
 async function removeReview(id) {
     if (id < reviewsId.length) {
         document.getElementById(String(id) + "review").remove();
+        console.log(reviewsOnDB);
         await moveUpElements(id);
-        count -= 20;
+        count -= 21;
         reviewsId.pop();
+        console.log(reviewsOnPage)
         for (let i = id; i < reviewsOnPage.length - 1; i++){
             reviewsOnPage[i] = reviewsOnPage[i + 1];
             reviewsOnPage[i].id--;
         }
         reviewsOnDB.pop();
+        console.log(reviewsOnPage)
+        console.log(reviewsOnDB);
     }
 }
 
@@ -356,7 +381,7 @@ async function moveUpElements(deletedId) {
         let review = document.getElementById(i + "review");
         review.setAttribute("id",
             (Number(review.id.replace("review", "")) - 1) + "review");
-        review.setAttribute("style", "top:" + 'calc(' + Number(review.id.replace("product", "") * 21 + 7) + ' * (1vmin + 1vmax))');
+        review.setAttribute("style", "top:" + 'calc(' + Number(review.id.replace("review", "") * 21 + 7) + ' * (1vmin + 1vmax))');
     }
 }
 
