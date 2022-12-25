@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRS", "PRS\PRS.csproj", "{0F3954DB-E157-4606-B2F7-7CDDAA1FE18D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPSClient", "RPSClient\RPSClient.csproj", "{B3A3F144-265D-4DB4-B742-558BB0AAE671}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client2", "Client2\Client2.csproj", "{509463A4-4E46-45A9-97AF-DE079CF292A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F3954DB-E157-4606-B2F7-7CDDAA1FE18D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F3954DB-E157-4606-B2F7-7CDDAA1FE18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F3954DB-E157-4606-B2F7-7CDDAA1FE18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F3954DB-E157-4606-B2F7-7CDDAA1FE18D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3A3F144-265D-4DB4-B742-558BB0AAE671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3A3F144-265D-4DB4-B742-558BB0AAE671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3A3F144-265D-4DB4-B742-558BB0AAE671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3A3F144-265D-4DB4-B742-558BB0AAE671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{509463A4-4E46-45A9-97AF-DE079CF292A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{509463A4-4E46-45A9-97AF-DE079CF292A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{509463A4-4E46-45A9-97AF-DE079CF292A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{509463A4-4E46-45A9-97AF-DE079CF292A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
