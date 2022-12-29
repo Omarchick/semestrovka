@@ -100,10 +100,10 @@ namespace CasinoGame
             var buffer = new byte[256];
 
             await tcpSocket.ReceiveAsync(buffer, SocketFlags.None);
-            var time = buffer[0] + 3;
-            while (time >= 3)
+            var time = buffer[0];
+            while (time > 0)
             {
-                timerLabel.Text = $"Игра начнётся через {time - 3}";
+                timerLabel.Text = $"Игра начнётся через {time}";
                 time--;
                 await Task.Delay(1000);
             }
@@ -115,7 +115,7 @@ namespace CasinoGame
             } while (tcpSocket.Available > 0);
             var resultOfGame = answer.ToString().Split("-");
             answer.Clear();
-            answer.Append($"Выпала цифра - {resultOfGame[1]}");
+            answer.Append($"Выпало число - {resultOfGame[1]}");
             if (resultOfGame[0] == "0")
             {
                 answer.Append("\nПоражение");
