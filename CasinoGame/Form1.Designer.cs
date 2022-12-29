@@ -28,134 +28,154 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.textArea = new System.Windows.Forms.Label();
+            this.inputMoney = new System.Windows.Forms.TextBox();
+            this.chooseBetMoney = new System.Windows.Forms.Button();
+            this.chooseRange = new System.Windows.Forms.Button();
+            this.chooseColour = new System.Windows.Forms.Button();
+            this.chooseRed = new System.Windows.Forms.Button();
+            this.chooseBlack = new System.Windows.Forms.Button();
+            this.start = new System.Windows.Forms.Button();
+            this.endGame = new System.Windows.Forms.Button();
+            this.chooseNumber = new System.Windows.Forms.TextBox();
+            this.betButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
+            // textArea
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(654, 117);
-            this.label1.Margin = new System.Windows.Forms.Padding(30, 0, 30, 0);
-            this.label1.MaximumSize = new System.Drawing.Size(300, 80);
-            this.label1.MinimumSize = new System.Drawing.Size(300, 80);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(300, 80);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Сумма ставки?";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.textArea.AutoSize = true;
+            this.textArea.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.textArea.Location = new System.Drawing.Point(453, 56);
+            this.textArea.Margin = new System.Windows.Forms.Padding(30, 0, 30, 0);
+            this.textArea.MaximumSize = new System.Drawing.Size(300, 130);
+            this.textArea.MinimumSize = new System.Drawing.Size(300, 130);
+            this.textArea.Name = "textArea";
+            this.textArea.Size = new System.Drawing.Size(300, 130);
+            this.textArea.TabIndex = 0;
+            this.textArea.Text = "Сумма ставки?";
+            this.textArea.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.textArea.Click += new System.EventHandler(this.label1_Click);
             // 
-            // textBox1
+            // inputMoney
             // 
-            this.textBox1.Location = new System.Drawing.Point(572, 200);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(361, 31);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.inputMoney.Location = new System.Drawing.Point(425, 198);
+            this.inputMoney.Name = "inputMoney";
+            this.inputMoney.Size = new System.Drawing.Size(361, 31);
+            this.inputMoney.TabIndex = 1;
+            this.inputMoney.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // button1
+            // chooseBetMoney
             // 
-            this.button1.Location = new System.Drawing.Point(670, 256);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 34);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "выбрать";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.chooseBetMoney.Location = new System.Drawing.Point(523, 254);
+            this.chooseBetMoney.Name = "chooseBetMoney";
+            this.chooseBetMoney.Size = new System.Drawing.Size(112, 34);
+            this.chooseBetMoney.TabIndex = 2;
+            this.chooseBetMoney.Text = "выбрать";
+            this.chooseBetMoney.UseVisualStyleBackColor = true;
+            this.chooseBetMoney.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // chooseRange
             // 
-            this.button2.Location = new System.Drawing.Point(435, 342);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(183, 34);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Выбрать: 1- 152";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.chooseRange.Location = new System.Drawing.Point(409, 254);
+            this.chooseRange.Name = "chooseRange";
+            this.chooseRange.Size = new System.Drawing.Size(183, 34);
+            this.chooseRange.TabIndex = 3;
+            this.chooseRange.Text = "Выбрать: 1- 152";
+            this.chooseRange.UseVisualStyleBackColor = true;
+            this.chooseRange.Visible = false;
+            this.chooseRange.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // chooseColour
             // 
-            this.button3.Location = new System.Drawing.Point(963, 331);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(158, 34);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Выбрать цвет";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.chooseColour.Location = new System.Drawing.Point(641, 254);
+            this.chooseColour.Name = "chooseColour";
+            this.chooseColour.Size = new System.Drawing.Size(158, 34);
+            this.chooseColour.TabIndex = 4;
+            this.chooseColour.Text = "Выбрать цвет";
+            this.chooseColour.UseVisualStyleBackColor = true;
+            this.chooseColour.Visible = false;
+            this.chooseColour.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // chooseRed
             // 
-            this.button4.Location = new System.Drawing.Point(878, 412);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(112, 34);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "красный";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.chooseRed.Location = new System.Drawing.Point(425, 254);
+            this.chooseRed.Name = "chooseRed";
+            this.chooseRed.Size = new System.Drawing.Size(112, 34);
+            this.chooseRed.TabIndex = 5;
+            this.chooseRed.Text = "красный";
+            this.chooseRed.UseVisualStyleBackColor = true;
+            this.chooseRed.Visible = false;
+            this.chooseRed.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button5
+            // chooseBlack
             // 
-            this.button5.Location = new System.Drawing.Point(1109, 412);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(112, 34);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "чёрный";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.chooseBlack.Location = new System.Drawing.Point(641, 254);
+            this.chooseBlack.Name = "chooseBlack";
+            this.chooseBlack.Size = new System.Drawing.Size(112, 34);
+            this.chooseBlack.TabIndex = 6;
+            this.chooseBlack.Text = "чёрный";
+            this.chooseBlack.UseVisualStyleBackColor = true;
+            this.chooseBlack.Visible = false;
+            this.chooseBlack.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button6
+            // start
             // 
-            this.button6.Location = new System.Drawing.Point(1051, 208);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(112, 34);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "СТАРТ";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.start.Location = new System.Drawing.Point(523, 308);
+            this.start.Name = "start";
+            this.start.Size = new System.Drawing.Size(112, 34);
+            this.start.TabIndex = 7;
+            this.start.Text = "СТАРТ";
+            this.start.UseVisualStyleBackColor = true;
+            this.start.Visible = false;
+            this.start.Click += new System.EventHandler(this.button6_Click);
             // 
-            // button7
+            // endGame
             // 
-            this.button7.Location = new System.Drawing.Point(852, 532);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(112, 34);
-            this.button7.TabIndex = 8;
-            this.button7.Text = "Закончить";
-            this.button7.UseVisualStyleBackColor = true;
+            this.endGame.Location = new System.Drawing.Point(523, 429);
+            this.endGame.Name = "endGame";
+            this.endGame.Size = new System.Drawing.Size(112, 34);
+            this.endGame.TabIndex = 8;
+            this.endGame.Text = "Закончить";
+            this.endGame.UseVisualStyleBackColor = true;
+            this.endGame.Visible = false;
+            this.endGame.Click += new System.EventHandler(this.button7_Click);
             // 
-            // button8
+            // chooseNumber
             // 
-            this.button8.Location = new System.Drawing.Point(621, 532);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(125, 34);
-            this.button8.TabIndex = 9;
-            this.button8.Text = "Продолжить";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.chooseNumber.Location = new System.Drawing.Point(508, 198);
+            this.chooseNumber.Name = "chooseNumber";
+            this.chooseNumber.Size = new System.Drawing.Size(150, 31);
+            this.chooseNumber.TabIndex = 10;
+            this.chooseNumber.Visible = false;
+            this.chooseNumber.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // betButton
+            // 
+            this.betButton.Location = new System.Drawing.Point(523, 254);
+            this.betButton.Name = "betButton";
+            this.betButton.Size = new System.Drawing.Size(112, 34);
+            this.betButton.TabIndex = 11;
+            this.betButton.Text = "ставка";
+            this.betButton.UseVisualStyleBackColor = true;
+            this.betButton.Visible = false;
+            this.betButton.Click += new System.EventHandler(this.button9_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1684, 905);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(1286, 672);
+            this.Controls.Add(this.betButton);
+            this.Controls.Add(this.chooseNumber);
+            this.Controls.Add(this.endGame);
+            this.Controls.Add(this.start);
+            this.Controls.Add(this.chooseBlack);
+            this.Controls.Add(this.chooseRed);
+            this.Controls.Add(this.chooseColour);
+            this.Controls.Add(this.chooseRange);
+            this.Controls.Add(this.chooseBetMoney);
+            this.Controls.Add(this.inputMoney);
+            this.Controls.Add(this.textArea);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -166,15 +186,16 @@
 
         #endregion
 
-        private Label label1;
-        private TextBox textBox1;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
-        private Button button5;
-        private Button button6;
-        private Button button7;
-        private Button button8;
+        private Label textArea;
+        private TextBox inputMoney;
+        private Button chooseBetMoney;
+        private Button chooseRange;
+        private Button chooseColour;
+        private Button chooseRed;
+        private Button chooseBlack;
+        private Button start;
+        private Button endGame;
+        private TextBox chooseNumber;
+        private Button betButton;
     }
 }

@@ -23,31 +23,40 @@ namespace CasinoGame
             tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             tcpSocket.Connect(tcpEndPoint);
-            label1.Text = "Сумма ставки?";
+            textArea.Text = "Сумма ставки?";
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private async void button5_Click(object sender, EventArgs e)
         {
-
+            await tcpSocket.SendAsync(new byte[] { 2 }, SocketFlags.None);
+            await CheckPrize(tcpSocket, textArea);
+            chooseRed.Visible = false;
+            chooseBlack.Visible = false;
+            endGame.Visible = true;
+            chooseBetMoney.Visible = true;
+            inputMoney.Visible = true;
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            var bet = await CheckBet(tcpSocket, label1, textBox1);
+            endGame.Visible = false;
+            var bet = await CheckBet(tcpSocket, textArea, inputMoney);
 
             if (bet > 0)
             {
                 await tcpSocket.SendAsync(Encoding.UTF8.GetBytes(bet.ToString()), SocketFlags.None);
 
-                label1.Text = @$"Вы поставили: + {await GetAnswer(tcpSocket)}
-    Выберите действие:
-        1. Выберите 1 позицию
-        2. Выберите цвет";
+                textArea.Text = $"Вы поставили: {await GetAnswer(tcpSocket)}\nВыберите действие";
             }
+            else return;
+            chooseRange.Visible = true;
+            chooseColour.Visible = true;
+            inputMoney.Visible = false;
+            chooseBetMoney.Visible = false;
         }
 
         static async Task<string> GetAnswer(Socket tcpSocket)
@@ -81,11 +90,11 @@ namespace CasinoGame
             {
                 label.Text = "Введите число";
             }
-
+            textBox.Text = string.Empty;
             return resultBet;
         }
 
-        static async Task CheckPrize(Socket tcpSocket)
+        static async Task CheckPrize(Socket tcpSocket, Label label)
         {
             var answer = new StringBuilder();
             var buffer = new byte[256];
@@ -95,23 +104,26 @@ namespace CasinoGame
                 var size = await tcpSocket.ReceiveAsync(buffer, SocketFlags.None);
                 answer.Append(Encoding.UTF8.GetString(buffer, 0, size));
             } while (tcpSocket.Available > 0);
-
             var resultOfGame = answer.ToString().Split("-");
-            Console.WriteLine($"Выпала цифра - {resultOfGame[1]}");
+            answer.Clear();
+            answer.Append($"Выпала цифра - {resultOfGame[1]}");
             if (resultOfGame[0] == "0")
             {
-                Console.WriteLine("Поражение");
-                return;
+                answer.Append("\nПоражение");
             }
-            Console.WriteLine($"Вы выиграли {resultOfGame[0]}");
+            else
+            {
+                answer.Append($"\nВы выиграли {resultOfGame[0]}");
+            }
+            label.Text = answer.ToString();
         }
 
         static async Task CheckEnd(Socket tcpSocket, Label label)
         {
-            await CheckPrize(tcpSocket);
+            await CheckPrize(tcpSocket, label);
             //tcpSocket.Shutdown(SocketShutdown.Both);
-            label.Text = @"Желаете продолжить?
-            1. Y 2. N";
+/*            label.Text = @"Желаете продолжить?
+            1. Y 2. N";*/
 /*            var resumeGame = Console.ReadLine();
             if (resumeGame == "1")
             {
@@ -127,41 +139,87 @@ namespace CasinoGame
 
         private async void button6_Click(object sender, EventArgs e)
         {
-            button6.Enabled = false;
+            start.Visible = false;
+            const string ip = "127.0.0.1";
+            const int port = 8080;
+            var tcpEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            tcpSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            tcpSocket.Connect(tcpEndPoint);
+            textArea.Text = "Сумма ставки?";
+            chooseBetMoney.Visible = true;
+            inputMoney.Visible = true;
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            var choice = textBox1.Text;
-            byte number = 0;
-            if (!(byte.TryParse(choice, out number) && number is >= 1 and <= 152))
-            {
-                textBox1.Text = "Выбери число: 1 - 152";
-                return;
-            }
-
-            await CheckNumber(number, tcpSocket);
+            await tcpSocket.SendAsync(new byte[] { 1 }, SocketFlags.None);
+            textArea.Text = "Выбери число: 1 - 152";
+            chooseRange.Visible = false;
+            chooseColour.Visible = false;
+            chooseNumber.Visible = true;
+            betButton.Visible = true;
         }
 
         private async void button3_Click(object sender, EventArgs e)
         {
-            textBox1.Text = "Выбери цвет: 1. Красный / 2. Черный";
+            textArea.Text = @"Выбери цвет";
             await CheckColour(2, tcpSocket);
+            chooseRange.Visible = false;
+            chooseColour.Visible = false;
+            chooseRed.Visible = true;
+            chooseBlack.Visible = true;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private async void button4_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
+            await tcpSocket.SendAsync(new byte[] { 1 }, SocketFlags.None);
+            await CheckPrize(tcpSocket, textArea);
+            chooseBlack.Visible = false;
+            chooseRed.Visible = false;
+            endGame.Visible = true;
+            chooseBetMoney.Visible = true;
+            inputMoney.Visible = true;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private async void button9_Click(object sender, EventArgs e)
+        {
+            var choice = chooseNumber.Text;
+            byte number = 0;
+            if (!(byte.TryParse(choice, out number) && number is >= 1 and <= 152))
+            {
+                textArea.Text = "Выбери число: 1 - 152";
+                return;
+            }
+            await CheckNumber(number, tcpSocket);
+            await CheckPrize(tcpSocket, textArea);
+            endGame.Visible = true;
+            chooseBetMoney.Visible = true;
+            inputMoney.Visible = true;
+            chooseRange.Visible = false;
+            chooseNumber.Visible = false;
+            betButton.Visible = false;
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            endGame.Visible = false;
+            chooseBetMoney.Visible = false;
+            inputMoney.Visible = false;
+            tcpSocket.Shutdown(SocketShutdown.Both);
+           tcpSocket.Close();
+            start.Visible = true;
         }
     }
 }
