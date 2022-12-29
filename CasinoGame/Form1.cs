@@ -33,9 +33,9 @@ namespace CasinoGame
         private async void button5_Click(object sender, EventArgs e)
         {
             await tcpSocket.SendAsync(new byte[] { 2 }, SocketFlags.None);
-            await CheckPrize(tcpSocket, textArea);
             chooseRed.Visible = false;
             chooseBlack.Visible = false;
+            await CheckPrize(tcpSocket, textArea);
             endGame.Visible = true;
             chooseBetMoney.Visible = true;
             inputMoney.Visible = true;
@@ -45,7 +45,6 @@ namespace CasinoGame
         {
             endGame.Visible = false;
             var bet = await CheckBet(tcpSocket, textArea, inputMoney);
-
             if (bet > 0)
             {
                 await tcpSocket.SendAsync(Encoding.UTF8.GetBytes(bet.ToString()), SocketFlags.None);
@@ -99,6 +98,14 @@ namespace CasinoGame
             var answer = new StringBuilder();
             var buffer = new byte[256];
 
+            await tcpSocket.ReceiveAsync(buffer, SocketFlags.None);
+            var time = buffer[0];
+            while (time <= 30)
+            {
+                label.Text = $"Игра начнётся через {30 - time}";
+                time++;
+                await Task.Delay(1000);
+            }
             do
             {
                 var size = await tcpSocket.ReceiveAsync(buffer, SocketFlags.None);
@@ -174,9 +181,9 @@ namespace CasinoGame
         private async void button4_Click(object sender, EventArgs e)
         {
             await tcpSocket.SendAsync(new byte[] { 1 }, SocketFlags.None);
-            await CheckPrize(tcpSocket, textArea);
             chooseBlack.Visible = false;
             chooseRed.Visible = false;
+            await CheckPrize(tcpSocket, textArea);
             endGame.Visible = true;
             chooseBetMoney.Visible = true;
             inputMoney.Visible = true;
@@ -193,17 +200,17 @@ namespace CasinoGame
             byte number = 0;
             if (!(byte.TryParse(choice, out number) && number is >= 1 and <= 152))
             {
-                textArea.Text = "Выбери число: 1 - 152";
+                textArea.Text = "Выбери число от 1 до 152";
                 return;
             }
             await CheckNumber(number, tcpSocket);
+            chooseRange.Visible = false;
+            chooseNumber.Visible = false;
+            betButton.Visible = false;
             await CheckPrize(tcpSocket, textArea);
             endGame.Visible = true;
             chooseBetMoney.Visible = true;
             inputMoney.Visible = true;
-            chooseRange.Visible = false;
-            chooseNumber.Visible = false;
-            betButton.Visible = false;
 
         }
 
