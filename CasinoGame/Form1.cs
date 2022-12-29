@@ -32,10 +32,11 @@ namespace CasinoGame
 
         private async void button5_Click(object sender, EventArgs e)
         {
+            textArea.Text = $"Вы выбрали чёрный";
             await tcpSocket.SendAsync(new byte[] { 2 }, SocketFlags.None);
             chooseRed.Visible = false;
             chooseBlack.Visible = false;
-            await CheckPrize(tcpSocket, textArea);
+            await CheckPrize(tcpSocket, textArea, timerLabel);
             endGame.Visible = true;
             chooseBetMoney.Visible = true;
             inputMoney.Visible = true;
@@ -93,8 +94,9 @@ namespace CasinoGame
             return resultBet;
         }
 
-        static async Task CheckPrize(Socket tcpSocket, Label label)
+        static async Task CheckPrize(Socket tcpSocket, Label label, Label timerLabel)
         {
+            timerLabel.Text = "nsadf";
             var answer = new StringBuilder();
             var buffer = new byte[256];
 
@@ -102,10 +104,11 @@ namespace CasinoGame
             var time = buffer[0];
             while (time <= 30)
             {
-                label.Text = $"Игра начнётся через {30 - time}";
+                timerLabel.Text = $"Игра начнётся через {30 - time}";
                 time++;
                 await Task.Delay(1000);
             }
+            timerLabel.Text = string.Empty;
             do
             {
                 var size = await tcpSocket.ReceiveAsync(buffer, SocketFlags.None);
@@ -123,25 +126,6 @@ namespace CasinoGame
                 answer.Append($"\nВы выиграли {resultOfGame[0]}");
             }
             label.Text = answer.ToString();
-        }
-
-        static async Task CheckEnd(Socket tcpSocket, Label label)
-        {
-            await CheckPrize(tcpSocket, label);
-            //tcpSocket.Shutdown(SocketShutdown.Both);
-/*            label.Text = @"Желаете продолжить?
-            1. Y 2. N";*/
-/*            var resumeGame = Console.ReadLine();
-            if (resumeGame == "1")
-            {
-                label.Text = "продолжаем";
-            }
-            else
-            {
-                label.Text = "До новых встреч";
-                tcpSocket.Close();
-                return;
-            }*/
         }
 
         private async void button6_Click(object sender, EventArgs e)
@@ -180,10 +164,11 @@ namespace CasinoGame
 
         private async void button4_Click(object sender, EventArgs e)
         {
+            textArea.Text = "Вы выбрали красный";
             await tcpSocket.SendAsync(new byte[] { 1 }, SocketFlags.None);
             chooseBlack.Visible = false;
             chooseRed.Visible = false;
-            await CheckPrize(tcpSocket, textArea);
+            await CheckPrize(tcpSocket, textArea, timerLabel);
             endGame.Visible = true;
             chooseBetMoney.Visible = true;
             inputMoney.Visible = true;
@@ -203,11 +188,12 @@ namespace CasinoGame
                 textArea.Text = "Выбери число от 1 до 152";
                 return;
             }
+            textArea.Text = $"Вы выбрали {number}";
             await CheckNumber(number, tcpSocket);
             chooseRange.Visible = false;
             chooseNumber.Visible = false;
             betButton.Visible = false;
-            await CheckPrize(tcpSocket, textArea);
+            await CheckPrize(tcpSocket, textArea, timerLabel);
             endGame.Visible = true;
             chooseBetMoney.Visible = true;
             inputMoney.Visible = true;
@@ -227,6 +213,11 @@ namespace CasinoGame
             tcpSocket.Shutdown(SocketShutdown.Both);
            tcpSocket.Close();
             start.Visible = true;
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

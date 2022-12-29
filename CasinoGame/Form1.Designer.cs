@@ -39,6 +39,7 @@
             this.endGame = new System.Windows.Forms.Button();
             this.chooseNumber = new System.Windows.Forms.TextBox();
             this.betButton = new System.Windows.Forms.Button();
+            this.timerLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textArea
@@ -160,11 +161,22 @@
             this.betButton.Visible = false;
             this.betButton.Click += new System.EventHandler(this.button9_Click);
             // 
+            // timerLabel
+            // 
+            this.timerLabel.AutoSize = true;
+            this.timerLabel.Location = new System.Drawing.Point(508, 367);
+            this.timerLabel.Name = "timerLabel";
+            this.timerLabel.Size = new System.Drawing.Size(53, 25);
+            this.timerLabel.TabIndex = 12;
+            this.timerLabel.Text = "timer";
+            this.timerLabel.Click += new System.EventHandler(this.label1_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1286, 672);
+            this.Controls.Add(this.timerLabel);
             this.Controls.Add(this.betButton);
             this.Controls.Add(this.chooseNumber);
             this.Controls.Add(this.endGame);
@@ -197,5 +209,6 @@
         private Button endGame;
         private TextBox chooseNumber;
         private Button betButton;
+        private Label timerLabel;
     }
 }
