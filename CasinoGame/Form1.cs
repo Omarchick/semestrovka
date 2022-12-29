@@ -96,16 +96,15 @@ namespace CasinoGame
 
         static async Task CheckPrize(Socket tcpSocket, Label label, Label timerLabel)
         {
-            timerLabel.Text = "nsadf";
             var answer = new StringBuilder();
             var buffer = new byte[256];
 
             await tcpSocket.ReceiveAsync(buffer, SocketFlags.None);
-            var time = buffer[0];
-            while (time <= 30)
+            var time = buffer[0] + 3;
+            while (time >= 3)
             {
-                timerLabel.Text = $"Игра начнётся через {30 - time}";
-                time++;
+                timerLabel.Text = $"Игра начнётся через {time - 3}";
+                time--;
                 await Task.Delay(1000);
             }
             timerLabel.Text = string.Empty;

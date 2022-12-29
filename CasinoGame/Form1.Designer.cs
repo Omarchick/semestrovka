@@ -166,9 +166,8 @@
             this.timerLabel.AutoSize = true;
             this.timerLabel.Location = new System.Drawing.Point(508, 367);
             this.timerLabel.Name = "timerLabel";
-            this.timerLabel.Size = new System.Drawing.Size(53, 25);
+            this.timerLabel.Size = new System.Drawing.Size(0, 25);
             this.timerLabel.TabIndex = 12;
-            this.timerLabel.Text = "timer";
             this.timerLabel.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // Form1
